@@ -155,3 +155,17 @@ def assign_roots(g: Graph) -> None:
             if n.role == Role.USER and n.turn == latest_turn:
                 s = 1.0
             g.roots[n.id] = s
+
+
+def reassign_frames(g: Graph) -> None:
+    """Recompute frame boundaries from roles: a new frame at every user turn and
+    after every decision (used after an edge-inferrer relabels roles)."""
+    frame = 0
+    prev_turn = None
+    for n in g.ordered():
+        if n.turn != prev_turn:
+            frame += 1
+            prev_turn = n.turn
+        n.frame = frame
+        if n.role == Role.DECISION:
+            frame += 1

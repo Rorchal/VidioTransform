@@ -5,11 +5,19 @@ from __future__ import annotations
 import re
 
 from ctxgc.compress import Result, build_graph
-from ctxgc.model import EdgeType, L2
+from ctxgc.model import EdgeType, L2, Role
 
 from .synth import Case, Question
 
 FORMAT_EDGES = {EdgeType.TOOL, EdgeType.READS}   # given by the transcript format, not inferred
+
+
+def inferred(e, g) -> bool:
+    """Edges the mark phase had to infer: everything except result->call,
+    text->results-just-read and call->its own message's text (format-given)."""
+    if e.type in FORMAT_EDGES:
+        return False
+    return not (e.type == EdgeType.CHAIN and g.nodes[e.src].role == Role.TOOL_CALL)
 
 
 def present(text: str, answer: str) -> bool:
@@ -33,12 +41,14 @@ def score_question(q: Question, r: Result) -> dict:
     return out
 
 
-def edge_quality(case: Case) -> dict:
-    """Heuristic (structural+symbolic, model-free) edges vs the oracle's."""
-    g = build_graph(case.messages)
+def edge_quality(case: Case, g=None) -> dict:
+    """Inferred edges vs the oracle's. Default graph: the model-free heuristics
+    (structural + symbolic + regex tombstones); pass an LLM-built graph to score
+    the model's mark phase instead."""
+    g = g if g is not None else build_graph(case.messages)
     truth = {(s, d) for s, d, _ in case.oracle.edges}
     truth |= set(case.oracle.supersedes) | set(case.oracle.rejects)
-    pred = {(e.src, e.dst) for e in g.edges if e.type not in FORMAT_EDGES}
+    pred = {(e.src, e.dst) for e in g.edges if inferred(e, g)}
     hit = pred & truth
     # tombstone correctness: was the outdated/rejected node tombstoned at all (lenient),
     # and was it attributed to the exact node the oracle names (strict)?

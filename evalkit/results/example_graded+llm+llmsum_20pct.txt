@@ -1,0 +1,33 @@
+[#m0.s0 goal] BillingService on /api/billing is timing out under load (error E4041).
+[#m0.s1 goal] Please find the root cause and fix it.
+[#m0.s2 constraint] You must not modify the auth module.
+[#m1 assistant] Let me look at the slow query log first.
+[#m1.c0 tool_call] grep({"path": "logs/slow.log", "pattern": "BillingService"})
+[#m2 tool_result|brief] The billing timeout E4041 coincides with BillingService.computeInvoice issuing 68 queries per request with pool waits on carts and payments as high as 773ms and 712ms.
+[#m3 assistant|summary] The log shows BillingService.computeInvoice issuing dozens of SELECTs against invoices per request. Let me read the source.
+[#m3.c0 tool_call] read_file({"path": "src/services/billing_service.py"})
+[#m4 tool_result|brief] computeInvoice's per-id query loop (marked `# TODO batch this`) causes N+1 queries, the likely root cause of BillingService timeouts.
+[#m5 decision|summary] Root cause: computeInvoice() in src/services/billing_service.py issues one SELECT per id against the invoices table (N+1); the log shows 68 queries per request.
+[#m6 REJECTED, see #m7.s0: Add a Memcached cache in front of invoices lookups to cut query volume.]
+[#m7.s0 constraint] Skip the Memcached idea; we must not introduce new infrastructure.
+[#m7.s1 goal] Rewrite computeInvoice() to use one IN query.
+[#m8 assistant] Understood. Before changing code I'll check the current timeout config.
+[#m8.c0 tool_call] read_file({"path": "config/app.yaml"})
+[#m9 tool_result|brief] The service configuration shows UPSTREAM_TIMEOUT: 60s, POOL_SIZE: 53, MAX_CONNECTIONS: 36, WORKER_THREADS: 22 and QUEUE_DEPTH: 56.
+[#m10 SUPERSEDED by #m18: Keep UPSTREAM_TIMEOUT = 60s for now because the batched query should bring latency well under it.]
+[#m11.s0 chatter] By the way, for the new metrics dashboard I like olive as the primary color.
+[#m11.s1 chatter] Any name ideas?
+[#m12 assistant] Olive reads well on dark backgrounds. Name ideas: Pulse, Lantern, Meridian.
+[#m13 assistant] Now applying the fix to computeInvoice() in src/services/billing_service.py.
+[#m13.c0 tool_call] edit_file({"path": "src/services/billing_service.py", "replace": "loop", "with": "IN query"})
+[#m14 tool_result|brief] computeInvoice was changed from N per-id queries to one batched `WHERE id IN %s` query.
+[#m15 assistant|summary] Running the test suite.
+[#m15.c0 tool_call] run_tests({"suite": "all"})
+[#m16 tool_result|summary] Full test suite run: 162 passed, 0 failed in 8.6s. Notable passing tests include test_auth_403, test_auth_197, test_login_107, test_invoice_277, test_cart_176, and test_index_343; no failures reported.
+[#m17 decision|summary] Fix applied in src/services/billing_service.py: computeInvoice() now runs a single IN query; 162 tests pass.
+[#m18 user] Actually, change UPSTREAM_TIMEOUT to 20s (was 60s).
+[#m19 decision] Done, UPSTREAM_TIMEOUT is now 20s.
+[#m19.c0 tool_call] edit_file({"path": "config/app.yaml", "set": "UPSTREAM_TIMEOUT=20s"})
+[#m20 tool_result] config/app.yaml updated: UPSTREAM_TIMEOUT: 20s
+[#m21.s0 user] Great.
+[#m21.s1 goal] Now write the PR description.

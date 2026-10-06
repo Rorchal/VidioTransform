@@ -18,34 +18,30 @@ class BillingService:
 [#m5 decision] Root cause: computeInvoice() in src/services/billing_service.py issues one SELECT per id against the invoices table (N+1); the log shows 68 queries per request.
 [#m6 REJECTED, see #m7.s0: Proposal: add a Memcached cache in front of invoices lookups t …]
 [#m7.s0 constraint] Skip the Memcached idea; we must not introduce new infrastructure.
-[#m7.s1 user] Rewrite computeInvoice() to use one IN query.
+[#m7.s1 goal] Rewrite computeInvoice() to use one IN query.
 [#m8 assistant] Understood. Before changing code I'll check the current timeout config.
 [#m8.c0 tool_call] read_file({"path": "config/app.yaml"})
 [#m9 tool_result|brief] read_file → 15 lines; UPSTREAM_TIMEOUT: 60s
 [#m10 SUPERSEDED by #m18: Decision: keep UPSTREAM_TIMEOUT = 60s for now; the batched que …]
 [#m11.s0 chatter] By the way, for the new metrics dashboard I like olive as the primary color.
 [#m11.s1 chatter] Any name ideas?
-[#m12 assistant|brief] Olive reads well on dark backgrounds.
+[#m12 assistant] Olive reads well on dark backgrounds. Name ideas: Pulse, Lantern, Meridian.
 [#m13 assistant] Now applying the fix to computeInvoice() in src/services/billing_service.py.
 [#m13.c0 tool_call] edit_file({"path": "src/services/billing_service.py", "replace": "loop", "with": "IN query"})
-[#m14 tool_result] --- a/src/services/billing_service.py
+[#m14 tool_result|summary] edit_file result (11 lines), key lines:
+--- a/src/services/billing_service.py
 +++ b/src/services/billing_service.py
-@@ -41,6 +41,4 @@ class BillingService:
      def computeInvoice(self, ids):
+@@ -41,6 +41,4 @@ class BillingService:
 -        rows = []
 -        for id in ids:
--            rows.append(self.db.query('SELECT * FROM invoices WHERE id = %s', id))
--        # TODO batch this
--        return rows
-+        rows = self.db.query('SELECT * FROM invoices WHERE id IN %s', tuple(ids))
-+        return list(rows)
 [#m15 assistant] Running the test suite.
 [#m15.c0 tool_call] run_tests({"suite": "all"})
 [#m16 tool_result|brief] run_tests → 27 lines; test_auth_403 PASSED
 [#m17 decision|summary] Decision: fix applied in src/services/billing_service.py; computeInvoice() now runs a single IN query; 162 tests pass.
 [#m18 user] Actually, change UPSTREAM_TIMEOUT to 20s (was 60s).
-[#m19 assistant] Done, UPSTREAM_TIMEOUT is now 20s.
-[#m19.c0 call edit_file]
-[#m20 tool_result|brief] config/app.yaml updated: UPSTREAM_TIMEOUT: 20s
-[#m21.s0 goal] Great.
+[#m19 decision] Done, UPSTREAM_TIMEOUT is now 20s.
+[#m19.c0 tool_call] edit_file({"path": "config/app.yaml", "set": "UPSTREAM_TIMEOUT=20s"})
+[#m20 tool_result] config/app.yaml updated: UPSTREAM_TIMEOUT: 20s
+[#m21.s0 user] Great.
 [#m21.s1 goal] Now write the PR description.

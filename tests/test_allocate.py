@@ -82,7 +82,12 @@ def test_everything_verbatim_with_a_huge_budget_and_stubs_only_with_a_tiny_one()
     assert all(level[nid] == L3 for nid, n in g.nodes.items() if not n.tombstoned)
 
 
-def test_versions_are_monotone_in_tokens():
+def test_versions_are_monotone_in_tokens_and_stubs_keep_their_id():
     g = build()
     for nid, vv in versions_for(g).items():
-        assert count(vv[L0]) >= count(vv[L1]) >= count(vv[L2]) >= count(vv[L3]), nid
+        assert count(vv[L0]) >= count(vv[L1]) >= count(vv[L2]), nid
+        # the stub is exempt from the size rule: for a one-line node it can be
+        # longer than L2, but it must always carry the id so the node can be
+        # asked for (a free promotion is harmless, a stub without an id is not)
+        if not g.nodes[nid].tombstoned:
+            assert vv[L3].startswith(f"[#{nid}"), nid

@@ -44,7 +44,29 @@ def build_graph(
     chain: bool = True,
     tombstones: bool = True,
     oracle: Oracle | None = None,
+    llm=None,
+    llm_heuristics: bool = False,
+    llm_workers: int = 8,
 ) -> Graph:
+    if llm is not None:
+        # model-based mark phase (see llm.infer_graph). By default the model
+        # replaces the heuristic edge sources (chain/serves/symbolic/regex
+        # tombstones) the way the oracle does; llm_heuristics=True keeps them
+        # too and the model's edges are added on top.
+        from .llm import infer_graph
+        g = ingest(messages, split_facts=split_facts, chain=llm_heuristics and chain, serves=llm_heuristics)
+        if llm_heuristics and symbolic:
+            add_symbolic_edges(g)
+        if llm_heuristics and tombstones:
+            detect_supersedes(g)
+            detect_rejects(g)
+        infer_graph(g, llm, workers=llm_workers)
+        if not tombstones:
+            for n in g.nodes.values():
+                n.superseded_by = n.rejected_by = None
+        assign_roots(g)
+        return g
+
     if oracle is not None:
         # perfect edge inference: structural TOOL/READS from the format + oracle edges
         g = ingest(messages, split_facts=split_facts, chain=False, serves=False)

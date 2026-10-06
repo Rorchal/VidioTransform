@@ -22,6 +22,16 @@ class Summarizer(Protocol):
     def versions(self, node: Node) -> dict[int, str]: ...
 
 
+def monotonic(v: dict[int, str]) -> dict[int, str]:
+    """Resolutions must not grow as the level gets coarser. The L3 stub is
+    exempt: it carries the node id (a stub without an id cannot be asked for),
+    and it is a few words anyway."""
+    for lvl in (L1, L2):
+        if count(v[lvl]) > count(v[lvl - 1]):
+            v[lvl] = v[lvl - 1]
+    return v
+
+
 def conversation_hints(nodes: list[Node], min_df: int = 2, max_df_ratio: float = 0.5) -> set[str]:
     """Identifiers mentioned in at least two prose nodes (user/assistant text):
     the things the conversation is about."""
@@ -66,11 +76,7 @@ class ExtractiveSummarizer:
                  L3: f"[#{node.id} call {node.tool_name or 'tool'}]"}
         else:
             v = self._prose(node, text)
-        # resolutions must not grow as the level gets coarser
-        for lvl in (L1, L2, L3):
-            if count(v[lvl]) > count(v[lvl - 1]):
-                v[lvl] = v[lvl - 1]
-        return v
+        return monotonic(v)
 
     def _prose(self, node: Node, text: str) -> dict[int, str]:
         sentences = [s for s in SENT_SPLIT_RE.split(text) if s.strip()] or [text]
