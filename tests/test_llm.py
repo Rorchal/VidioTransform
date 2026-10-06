@@ -178,6 +178,23 @@ def test_deepseek_transport_validates_and_retries(tmp_path):
         DeepSeekLLM(transport=lambda b: {"choices": [{"message": {"content": "{}"}}]}, api_key="x",
                     retries=2).json("s", "u", SUMMARY_SCHEMA)
 
+    # reasoning that eats the whole max_tokens budget leaves an empty answer with
+    # finish_reason "length": retry with a doubled budget, up to the cap
+    seen = []
+
+    def truncating(body):
+        seen.append(body["max_tokens"])
+        if body["max_tokens"] < 4000:
+            return {"choices": [{"message": {"content": ""}, "finish_reason": "length"}]}
+        return {"choices": [{"message": {"content": json.dumps({"l1": "a", "l2": "b"})}, "finish_reason": "stop"}]}
+
+    llm = DeepSeekLLM(transport=truncating, api_key="x", max_tokens=1000, max_tokens_cap=8000, retries=1)
+    assert llm.json("s", "u", SUMMARY_SCHEMA) == {"l1": "a", "l2": "b"}
+    assert seen == [1000, 2000, 4000] and llm.usage["truncated"] == 2 and llm.usage["retries"] == 0
+    with pytest.raises(RuntimeError):      # cap reached and still no answer
+        DeepSeekLLM(transport=lambda b: {"choices": [{"message": {"content": ""}, "finish_reason": "length"}]},
+                    api_key="x", max_tokens=1000, max_tokens_cap=2000, retries=1).json("s", "u", SUMMARY_SCHEMA)
+
     # disk cache: second identical call never reaches the transport
     hits = []
     cached = CachedLLM(DeepSeekLLM(transport=lambda b: hits.append(1) or {

@@ -86,11 +86,13 @@ class DeepSeekLLM:
     URL = "https://api.deepseek.com/chat/completions"
     name: str
 
-    def __init__(self, model: str = DEEPSEEK_MODEL, effort: str = "low", max_tokens: int = 2048,
-                 retries: int = 3, timeout: float = 120.0, api_key: str | None = None, transport=None):
+    def __init__(self, model: str = DEEPSEEK_MODEL, effort: str = "low", max_tokens: int = 4096,
+                 max_tokens_cap: int = 32768, retries: int = 3, timeout: float = 180.0,
+                 api_key: str | None = None, transport=None):
         self.model = model
         self.effort = effort
-        self.max_tokens = max_tokens
+        self.max_tokens = max_tokens          # reasoning tokens count against it: doubled on truncation
+        self.max_tokens_cap = max_tokens_cap
         self.retries = retries
         self.timeout = timeout
         self.api_key = api_key or os.environ.get("DEEPSEEK_API_KEY")
@@ -98,7 +100,8 @@ class DeepSeekLLM:
         # a fully cached run needs no credentials at all
         self.transport = transport or self._http       # transport(body: dict) -> response dict (for tests)
         self.name = f"deepseek:{model}:{effort}"
-        self.usage = {"calls": 0, "prompt_tokens": 0, "completion_tokens": 0, "reasoning_tokens": 0, "retries": 0}
+        self.usage = {"calls": 0, "prompt_tokens": 0, "completion_tokens": 0, "reasoning_tokens": 0,
+                      "retries": 0, "truncated": 0}
         self._lock = threading.Lock()
 
     def _http(self, body: dict) -> dict:
@@ -131,8 +134,10 @@ class DeepSeekLLM:
                       f"{json.dumps(schema)}")
         messages = [{"role": "system", "content": sys_prompt}, {"role": "user", "content": user}]
         last_err: Exception | None = None
-        for attempt in range(self.retries):
-            body: dict = {"model": self.model, "messages": messages, "max_tokens": self.max_tokens,
+        max_tokens = self.max_tokens
+        bad = 0
+        while bad < self.retries:
+            body: dict = {"model": self.model, "messages": messages, "max_tokens": max_tokens,
                           "response_format": {"type": "json_object"}}
             if self.effort == "off":
                 body["thinking"] = {"type": "disabled"}
@@ -140,7 +145,16 @@ class DeepSeekLLM:
                 body["reasoning_effort"] = self.effort
             resp = self.transport(body)
             self._account(resp)
-            content = resp["choices"][0]["message"].get("content") or ""
+            choice = resp["choices"][0]
+            content = choice["message"].get("content") or ""
+            if choice.get("finish_reason") == "length" and max_tokens < self.max_tokens_cap:
+                # the model thought past the limit and never wrote the answer:
+                # give it more room, same conversation
+                max_tokens = min(max_tokens * 2, self.max_tokens_cap)
+                with self._lock:
+                    self.usage["truncated"] += 1
+                continue
+            bad += 1
             try:
                 out = json.loads(content)
                 validate(out, schema)
