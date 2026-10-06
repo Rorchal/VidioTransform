@@ -275,7 +275,7 @@ Given one NEW chunk and an INDEX of earlier chunks (one line each), output:
     supersedes    the new chunk replaces that chunk's value or decision (the old one is now stale)
     rejects       the new chunk rejects that proposal
     mentions      only mentions it
-Connect at most 4 chunks. Prefer no edge over a doubtful one. confidence in [0,1].
+Connect at most {max_edges} chunks. Prefer no edge over a doubtful one. confidence in [0,1].
 A goal or constraint chunk that opens the conversation has no edges. Chatter has no edges to task chunks.
 A follow-up ask from the user is derived_from the earlier decisions and results the assistant needs to carry it out."""
 
@@ -323,9 +323,16 @@ def edge_prompt(new_node: Node, index: list[tuple[str, str]]) -> str:
     return f"INDEX:\n{idx}\n\nNEW CHUNK #{new_node.id} (said by the {speaker}):\n{new_node.text}"
 
 
-def infer_edges(llm: LLM, new_node: Node, index: list[tuple[str, str]]) -> dict:
+MAX_EDGES = 4
+
+
+def edge_system(max_edges: int = MAX_EDGES) -> str:
+    return EDGE_SYSTEM.replace("{max_edges}", str(max_edges))
+
+
+def infer_edges(llm: LLM, new_node: Node, index: list[tuple[str, str]], max_edges: int = MAX_EDGES) -> dict:
     """index: [(node_id, one-line summary), ...] for existing nodes."""
-    out = llm.json(EDGE_SYSTEM, edge_prompt(new_node, index), EDGE_SCHEMA)
+    out = llm.json(edge_system(max_edges), edge_prompt(new_node, index), EDGE_SCHEMA)
     for e in out.get("edges", []):
         e["to"] = str(e["to"]).lstrip("#")
         e["strength"] = TYPE_STRENGTH[e["type"]] * max(0.0, min(1.0, float(e["confidence"])))
@@ -336,7 +343,8 @@ def index_line(node: Node, versions: dict[int, str]) -> str:
     return f"[{node.role.value}] {versions[L2]}"
 
 
-def infer_graph(g: Graph, llm: LLM, *, workers: int = 8, index_summarizer=None) -> dict[str, dict]:
+def infer_graph(g: Graph, llm: LLM, *, workers: int = 8, index_summarizer=None,
+                max_edges: int = MAX_EDGES) -> dict[str, dict]:
     """Model-based mark phase over an ingested graph (structural TOOL/READS edges
     already present). For every prose node, in conversation order, ask the model
     for its role and edges to earlier nodes. Calls are independent (the index is
@@ -353,7 +361,7 @@ def infer_graph(g: Graph, llm: LLM, *, workers: int = 8, index_summarizer=None) 
 
     def ask(item):
         i, n = item
-        return n.id, infer_edges(llm, n, index_lines[:i])
+        return n.id, infer_edges(llm, n, index_lines[:i], max_edges)
 
     with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
         raw = dict(ex.map(ask, targets))

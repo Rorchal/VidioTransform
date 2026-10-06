@@ -47,6 +47,7 @@ def build_graph(
     llm=None,
     llm_heuristics: bool = False,
     llm_workers: int = 8,
+    llm_max_edges: int = 4,
 ) -> Graph:
     if llm is not None:
         # model-based mark phase (see llm.infer_graph). By default the model
@@ -60,7 +61,7 @@ def build_graph(
         if llm_heuristics and tombstones:
             detect_supersedes(g)
             detect_rejects(g)
-        infer_graph(g, llm, workers=llm_workers)
+        infer_graph(g, llm, workers=llm_workers, max_edges=llm_max_edges)
         if not tombstones:
             for n in g.nodes.values():
                 n.superseded_by = n.rejected_by = None

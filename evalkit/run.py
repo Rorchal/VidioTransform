@@ -61,7 +61,7 @@ LLM_METHODS: dict[str, tuple[dict, dict]] = {
 
 
 def run(n_cases: int, out_dir: Path, methods: list[str], llm=None, edge_llm=None, summary_llm=None,
-        workers: int = 8) -> dict:
+        workers: int = 8, max_edges: int = 4) -> dict:
     """llm: legacy single backend for both stages; edge_llm / summary_llm override
     per stage (the summaries are usually run without thinking)."""
     edge_llm = edge_llm or llm
@@ -91,6 +91,7 @@ def run(n_cases: int, out_dir: Path, methods: list[str], llm=None, edge_llm=None
                         raise SystemExit(f"method {name} needs --llm")
                     opts["llm"] = edge_llm
                     opts["llm_workers"] = workers
+                    opts["llm_max_edges"] = max_edges
                 g = build_graph(case.messages, **opts)
                 if "llm" in opts and not opts.get("llm_heuristics"):
                     llm_edge_stats.append(edge_quality(case, g))
@@ -120,7 +121,8 @@ def run(n_cases: int, out_dir: Path, methods: list[str], llm=None, edge_llm=None
         print(f"case {seed + 1}/{n_cases} done", flush=True)
     summary = summarize(rows, tokens, edge_stats, methods, llm_edge_stats)
     if edge_llm is not None:
-        summary["llm"] = {"edges": getattr(edge_llm, "name", "?"), "summaries": getattr(summary_llm, "name", "?")}
+        summary["llm"] = {"edges": getattr(edge_llm, "name", "?"), "summaries": getattr(summary_llm, "name", "?"),
+                          "max_edges": max_edges}
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "results.json").write_text(json.dumps({"summary": summary, "rows": rows}, indent=1))
     (out_dir / "summary.md").write_text(to_markdown(summary, n_cases))
@@ -199,7 +201,8 @@ def to_markdown(summary: dict, n_cases: int) -> str:
     lines += ["\n## Model-free edge heuristics vs oracle edges (mark phase)\n"] + _edge_lines(summary["edges"])
     if summary.get("llm_edges"):
         llm = summary.get("llm", {})
-        lines += [f"\n## Model-built edges ({llm.get('edges', '?')}) vs oracle edges (mark phase)\n"] + _edge_lines(summary["llm_edges"])
+        lines += [f"\n## Model-built edges ({llm.get('edges', '?')}, at most {llm.get('max_edges', 4)} edges per chunk) "
+                  "vs oracle edges (mark phase)\n"] + _edge_lines(summary["llm_edges"])
         lines.append(f"- summaries for the *llmsum methods: {llm.get('summaries', '?')}")
     return "\n".join(lines) + "\n"
 
@@ -224,13 +227,15 @@ def main() -> None:
     ap.add_argument("--summary-effort", default="off", help="thinking effort for L1/L2 summaries (off/low/high)")
     ap.add_argument("--cache", type=Path, default=Path("evalkit/results/llm_cache.jsonl"), help="model reply cache file")
     ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--max-edges", type=int, default=4, help="edges the model may attach per chunk")
     args = ap.parse_args()
     methods = args.methods or list(METHODS) + (list(LLM_METHODS) if args.llm else [])
     edge_llm = summary_llm = None
     if args.llm:
         edge_llm = make_llm(args.llm, effort=args.edge_effort, cache_path=args.cache)
         summary_llm = make_llm(args.llm, effort=args.summary_effort, cache_path=args.cache)
-    summary = run(args.cases, args.out, methods, edge_llm=edge_llm, summary_llm=summary_llm, workers=args.workers)
+    summary = run(args.cases, args.out, methods, edge_llm=edge_llm, summary_llm=summary_llm, workers=args.workers,
+                  max_edges=args.max_edges)
     print(to_markdown(summary, args.cases))
     for label, llm in (("edges", edge_llm), ("summaries", summary_llm)):
         if llm is not None:
