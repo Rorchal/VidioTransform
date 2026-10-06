@@ -1,6 +1,7 @@
 """Budget-driven level allocation.
 
-Start with every node at L3 (stub). Goals/constraints are pinned at L0.
+Start with every node at L3 (stub). Goals/constraints are floored at the finest
+level that fits a share of the budget.
 Repeatedly promote the node with the best (score x gain / token delta), pulling
 its strong dependencies up to within one level of it so a verbatim conclusion
 never points at an evicted premise. Tombstoned nodes are fixed. Nodes the goal
@@ -21,6 +22,17 @@ from .tokens import count
 GAIN = {3: 1.0, 2: 0.6, 1: 0.4}
 PINNED_ROLES = (Role.GOAL, Role.CONSTRAINT)
 
+# How the value of a promotion is measured (prio = score x gain / token delta):
+#   "level"   the fixed table above: breadth first, every node gets a one-liner
+#             before anything gets its paragraph back
+#   "tokens"  gain = tokens added, so prio = score: resolution follows distance
+#             and nothing else (the one-line statement of the design)
+#   "idents"  gain = concrete referents (identifiers) the finer version adds:
+#             a file view earns its verbatim copy, chatter does not
+#   "hybrid"  the level table times (1 + identifiers added): the table's
+#             breadth-first shape, but a chunk dense in referents earns more
+GAIN_MODES = ("level", "tokens", "idents", "hybrid")
+
 
 def allocate(
     g: Graph,
@@ -32,10 +44,30 @@ def allocate(
     cascade: bool = True,
     cascade_min_strength: float = 0.6,
     reachable_min: float = 0.1,
+    gain: str = "level",
+    pin_fraction: float | None = 0.3,
 ) -> tuple[dict[str, int], int]:
+    """pin_fraction: goals/constraints are guaranteed the finest uniform level
+    that fits this share of the budget and stay promotable like any other node
+    (a long opening request must not eat the whole budget: on real SWE-agent
+    transcripts the issue text alone exceeded a 10% budget). None fixes them at
+    L0 whatever they cost."""
+    if gain not in GAIN_MODES:
+        raise ValueError(f"gain must be one of {GAIN_MODES}")
     order: list[Node] = g.ordered()
     pos = {n.id: i for i, n in enumerate(order)}
     cost = {nid: {lvl: count(render_node(g.nodes[nid], lvl, v)) for lvl in LEVELS} for nid, v in versions.items()}
+    if gain in ("idents", "hybrid"):
+        from .edges import identifiers
+        n_idents = {nid: {lvl: len(identifiers(v[lvl])) for lvl in LEVELS} for nid, v in versions.items()}
+
+    def gain_of(nid: str, lvl: int) -> float:
+        if gain == "level":
+            return GAIN[lvl]
+        if gain == "tokens":
+            return max(1, cost[nid][lvl - 1] - cost[nid][lvl])
+        added = 1 + max(0, n_idents[nid][lvl - 1] - n_idents[nid][lvl])
+        return GAIN[lvl] * added if gain == "hybrid" else added
     group_cache: dict[tuple[str, ...], int] = {}
 
     def run_cost(run: list[Node]) -> int:
@@ -64,12 +96,23 @@ def allocate(
 
     level = {nid: L3 for nid in g.nodes}
     fixed = set()
+    pinned = [nid for nid, node in g.nodes.items()
+              if pin_roots and nid in g.roots and node.role in PINNED_ROLES and not node.tombstoned]
     for nid, node in g.nodes.items():
         if node.tombstoned:
             fixed.add(nid)
-        elif pin_roots and nid in g.roots and node.role in PINNED_ROLES:
+    if pin_fraction is None:
+        for nid in pinned:
             level[nid] = L0
             fixed.add(nid)
+    elif pinned:
+        floor = L3
+        for lvl in LEVELS:
+            if sum(cost[nid][lvl] for nid in pinned) <= pin_fraction * budget:
+                floor = lvl
+                break
+        for nid in pinned:
+            level[nid] = floor
     used = seg_cost(0, len(order) - 1, level)
 
     def plan_for(nid: str) -> dict[str, int]:
@@ -121,7 +164,7 @@ def allocate(
                 d = delta_of(plan)
                 if used + d > budget:
                     continue
-                prio = score.get(nid, 0.0) * GAIN[level[nid]] / max(d, 1)
+                prio = score.get(nid, 0.0) * gain_of(nid, level[nid]) / max(d, 1)
                 key = (prio, g.nodes[nid].seq)
                 if best is None or key > best[0]:
                     best = (key, plan, d)

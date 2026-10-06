@@ -35,10 +35,24 @@ def stub_label(node: Node) -> str:
     return f'{node.role.value} "{head}"'
 
 
+def group_kind(node: Node) -> str:
+    if node.role in (Role.TOOL_RESULT, Role.TOOL_CALL):
+        return f"{node.tool_name or 'tool'} {'result' if node.role == Role.TOOL_RESULT else 'call'}"
+    return node.role.value
+
+
 def group_stub(nodes: list[Node]) -> str:
+    """A run of evicted chunks: every id (so any of them can be asked for) plus
+    what kinds they are. No per-chunk preview: on a real transcript with dozens
+    of chunks the previews alone ate most of a tight budget, and they leaked
+    answers in the synthetic eval."""
     ids = " ".join(f"#{n.id}" for n in nodes)
-    labels = "; ".join(stub_label(n) for n in nodes)
-    return f"[{ids} — {len(nodes)} chunks: {labels}]"
+    counts: dict[str, int] = {}
+    for n in nodes:
+        k = group_kind(n)
+        counts[k] = counts.get(k, 0) + 1
+    kinds = ", ".join(f"{k} ×{c}" if c > 1 else k for k, c in counts.items())
+    return f"[{ids} — {len(nodes)} chunks: {kinds}]"
 
 
 def render_node(node: Node, level: int, versions: dict[int, str]) -> str:

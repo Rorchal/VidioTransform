@@ -43,6 +43,7 @@ METHODS: dict[str, tuple[dict, dict]] = {
     "uniform":         ({}, {"method": "uniform"}),
     "gc_binary":       ({}, {"method": "gc_binary"}),
     "graded":          ({}, {"method": "graded"}),
+    "graded-agent":    ({}, {"method": "graded", "gain": "idents"}),   # allocator gain = identifiers added
     "graded+oracle":   ({"oracle": True}, {"method": "graded"}),
     "graded-facts":    ({"split_facts": False}, {"method": "graded"}),
     "graded-tomb":     ({"tombstones": False}, {"method": "graded"}),

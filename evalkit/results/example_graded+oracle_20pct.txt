@@ -28,24 +28,30 @@ class BillingService:
 [#m12 assistant|brief] Olive reads well on dark backgrounds.
 [#m13 assistant] Now applying the fix to computeInvoice() in src/services/billing_service.py.
 [#m13.c0 tool_call] edit_file({"path": "src/services/billing_service.py", "replace": "loop", "with": "IN query"})
-[#m14 tool_result] --- a/src/services/billing_service.py
+[#m14 tool_result|summary] edit_file result (11 lines), key lines:
+--- a/src/services/billing_service.py
 +++ b/src/services/billing_service.py
-@@ -41,6 +41,4 @@ class BillingService:
      def computeInvoice(self, ids):
+@@ -41,6 +41,4 @@ class BillingService:
 -        rows = []
 -        for id in ids:
--            rows.append(self.db.query('SELECT * FROM invoices WHERE id = %s', id))
--        # TODO batch this
--        return rows
-+        rows = self.db.query('SELECT * FROM invoices WHERE id IN %s', tuple(ids))
-+        return list(rows)
 [#m15 assistant] Running the test suite.
 [#m15.c0 tool_call] run_tests({"suite": "all"})
-[#m16 tool_result|brief] run_tests → 27 lines; test_auth_403 PASSED
-[#m17 decision|summary] Decision: fix applied in src/services/billing_service.py; computeInvoice() now runs a single IN query; 162 tests pass.
+[#m16 tool_result|summary] run_tests result (27 lines), key lines:
+test_auth_403 PASSED
+test_auth_197 PASSED
+test_login_107 PASSED
+test_login_162 PASSED
+test_cart_176 PASSED
+test_index_343 PASSED
+test_cart_134 PASSED
+test_auth_344 PASSED
+test_cart_157 PASSED
+test_login_183 PASSED
+test_invoice_277 PASSED
+[#m17 decision] Decision: fix applied in src/services/billing_service.py; computeInvoice() now runs a single IN query; 162 tests pass.
 [#m18 user] Actually, change UPSTREAM_TIMEOUT to 20s (was 60s).
 [#m19 assistant] Done, UPSTREAM_TIMEOUT is now 20s.
-[#m19.c0 call edit_file]
-[#m20 tool_result|brief] config/app.yaml updated: UPSTREAM_TIMEOUT: 20s
+[#m19.c0 #m20 — 2 chunks: edit_file call, edit_file result]
 [#m21.s0 goal] Great.
 [#m21.s1 goal] Now write the PR description.

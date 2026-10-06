@@ -61,11 +61,15 @@ class ExtractiveSummarizer:
     Lines of a tool result that mention one are kept first - task-relative
     salience, the cheap stand-in for what an LLM summarizer would do."""
 
-    def __init__(self, l1_tokens: int = 60, l2_tokens: int = 16, stub_words: int = 6):
+    def __init__(self, l1_tokens: int = 60, l2_tokens: int = 16, stub_words: int = 6, l1_ratio: float = 0.0):
         self.l1_tokens = l1_tokens
         self.l2_tokens = l2_tokens
         self.stub_words = stub_words
+        self.l1_ratio = l1_ratio       # >0: L1 budget = max(l1_tokens, ratio x L0 tokens), mipmap-style
         self.hints: set[str] = set()
+
+    def _l1_budget(self, text: str) -> int:
+        return max(self.l1_tokens, int(self.l1_ratio * count(text))) if self.l1_ratio else self.l1_tokens
 
     def versions(self, node: Node) -> dict[int, str]:
         text = node.text.strip()
@@ -82,11 +86,12 @@ class ExtractiveSummarizer:
         sentences = [s for s in SENT_SPLIT_RE.split(text) if s.strip()] or [text]
         l1_parts: list[str] = []
         used = 0
+        l1_budget = self._l1_budget(text)
         # first sentence always, then salient sentences in order
         for i, s in enumerate(sentences):
             if i == 0 or SALIENT_RE.search(s):
                 c = count(s)
-                if used + c > self.l1_tokens and l1_parts:
+                if used + c > l1_budget and l1_parts:
                     break
                 l1_parts.append(s)
                 used += c
@@ -101,11 +106,12 @@ class ExtractiveSummarizer:
         salient = hinted + [ln for ln in lines if ln not in hinted and SALIENT_RE.search(ln)] or lines
         picked: list[str] = []
         used = 0
+        l1_budget = self._l1_budget(text)
         for ln in salient:
             c = count(ln)
-            if used + c > self.l1_tokens and picked:
+            if used + c > l1_budget and picked:
                 break
-            picked.append(fit_tokens(ln, self.l1_tokens))
+            picked.append(fit_tokens(ln, l1_budget))
             used += count(picked[-1])
         tool = node.tool_name or "tool"
         l1 = f"{tool} result ({len(lines)} lines), key lines:\n" + "\n".join(picked)
