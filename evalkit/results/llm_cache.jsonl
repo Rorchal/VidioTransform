@@ -1907,3 +1907,56 @@
 {"k": "9a14b6d2ed7644fce2deba3b95513597", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "#m0.s1", "type": "supports", "confidence": 0.9}]}}
 {"k": "8417e1bd967d4e2f00b8cc577be789b1", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "m0.s0", "type": "supports", "confidence": 0.95}, {"to": "m9.s2", "type": "derived_from", "confidence": 0.9}, {"to": "m14", "type": "derived_from", "confidence": 0.95}, {"to": "m16", "type": "derived_from", "confidence": 0.95}]}}
 {"k": "6064d78a24206f5c783d2cef20d553eb", "v": {"role": "goal", "closes_frame": false, "edges": [{"to": "m12", "type": "supersedes", "confidence": 1.0}]}}
+{"k": "615e75ab5de9f356d5e424291a2d0477", "v": {"role": "user", "closes_frame": false, "edges": []}}
+{"k": "cdc83d9d6a7b22442d93b670799908ec", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "#m18.s0", "type": "supports", "confidence": 0.9}, {"to": "#m12", "type": "supersedes", "confidence": 0.9}]}}
+{"k": "3e41912ca8b05f44b6dd7f5ea4b8430c", "v": {"role": "user", "closes_frame": false, "edges": [{"to": "#m12", "type": "supersedes", "confidence": 0.95}]}}
+{"k": "c8174f2b29ad17c7695f3a0dd1ec4016", "v": {"role": "goal", "closes_frame": false, "edges": [{"to": "#m5", "type": "derived_from", "confidence": 0.9}, {"to": "#m17", "type": "derived_from", "confidence": 0.9}, {"to": "#m20", "type": "derived_from", "confidence": 0.9}]}}
+{"k": "ea149bb731aac92cdbcfe892774a6fbc", "v": {"role": "goal", "closes_frame": false, "edges": []}}
+{"k": "f5603180502441e86f66c6bd7614bf74", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "#m2", "type": "derived_from", "confidence": 1.0}, {"to": "#m0.s1", "type": "supports", "confidence": 0.9}]}}
+{"k": "9d4a7aabb47132ad06424da24d8b5934", "v": {"role": "constraint", "closes_frame": false, "edges": [{"to": "#m6", "type": "rejects", "confidence": 1.0}, {"to": "#m0.s1", "type": "supports", "confidence": 0.8}]}}
+{"k": "23098d09c6bb48be247fa7311f2b92ed", "v": {"role": "chatter", "closes_frame": false, "edges": []}}
+{"k": "83aa9c9f28b82db2e04763f7b9003340", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "#m3", "type": "derived_from", "confidence": 0.9}, {"to": "#m4", "type": "derived_from", "confidence": 0.9}, {"to": "#m0.s1", "type": "supports", "confidence": 0.8}]}}
+{"k": "0aedb02765fa87eef6034ce0219b6e75", "v": {"role": "decision", "closes_frame": false, "edges": [{"to": "#m5", "type": "derived_from", "confidence": 0.9}, {"to": "#m0.s0", "type": "supports", "confidence": 0.8}, {"to": "#m0.s1", "type": "supports", "confidence": 0.8}]}}
+{"k": "5769313b778fa21e16196706b5edd8e8", "v": {"role": "user", "closes_frame": false, "edges": [{"to": "m6", "type": "supersedes", "confidence": 0.9}, {"to": "m5", "type": "derived_from", "confidence": 0.8}, {"to": "m0.s1", "type": "supports", "confidence": 0.7}]}}
+{"k": "80a3e559b9dd5b5876c38353426838c4", "v": {"role": "chatter", "closes_frame": false, "edges": []}}
+{"k": "1216599a999c9ced6822a0a696bde372", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "m7.s1", "type": "supports", "confidence": 0.9}]}}
+{"k": "c833896caea1c31915fc3ccf12db31ed", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "m5", "type": "derived_from", "confidence": 0.9}, {"to": "m7.s1", "type": "derived_from", "confidence": 0.9}]}}
+{"k": "5fcf6fa18f82985cf9187b984cd47a21", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "#m11", "type": "derived_from", "confidence": 0.9}, {"to": "#m0.s1", "type": "supports", "confidence": 0.9}, {"to": "#m7.s1", "type": "derived_from", "confidence": 0.85}]}}
+{"k": "bf3b000ed15124e767a4d0411e755313", "v": {"role": "chatter", "closes_frame": false, "edges": [{"to": "m8.s1", "type": "supports", "confidence": 0.9}]}}
+{"k": "d220cae52a266828d0186eead6a7e631", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "#m5", "type": "derived_from", "confidence": 1.0}, {"to": "#m7.s1", "type": "supports", "confidence": 1.0}, {"to": "#m14", "type": "derived_from", "confidence": 1.0}, {"to": "#m16", "type": "derived_from", "confidence": 1.0}]}}
+{"k": "59d92ec0738d52e5ab8a3d131fbaa783", "v": {"role": "assistant", "closes_frame": false, "edges": []}}
+{"k": "bd6e87d07e40178cadb7490d75ab9deb", "v": {"role": "user", "closes_frame": false, "edges": []}}
+{"k": "c3aae1c66b3e290eae3c10ac194e97f5", "v": {"role": "user", "closes_frame": false, "edges": [{"to": "#m12", "type": "supersedes", "confidence": 0.95}]}}
+{"k": "f7e539b2e40fb1ea9e730e9c84de71f3", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "#m18", "type": "supports", "confidence": 0.95}]}}
+{"k": "03975264bcd5061feba83d234e05e5e8", "v": {"role": "goal", "closes_frame": false, "edges": [{"to": "#m5", "type": "derived_from", "confidence": 0.9}, {"to": "#m17", "type": "derived_from", "confidence": 0.95}, {"to": "#m19", "type": "derived_from", "confidence": 0.95}, {"to": "#m20", "type": "derived_from", "confidence": 0.95}]}}
+{"k": "9a266b289bb6eb9d974d264d6cd23eec", "v": {"role": "goal", "closes_frame": false, "edges": []}}
+{"k": "876f21fc46ed0b07f32a5a9713ba4ddb", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "#m2", "type": "derived_from", "confidence": 0.95}, {"to": "#m4", "type": "derived_from", "confidence": 0.95}, {"to": "#m0.s1", "type": "supports", "confidence": 0.9}]}}
+{"k": "489f8c7851a627669485838ede1d7f88", "v": {"role": "constraint", "closes_frame": false, "edges": [{"to": "m6", "type": "rejects", "confidence": 1.0}]}}
+{"k": "29ca420623e04357e80457cfdaf7d454", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "#m5", "type": "derived_from", "confidence": 0.95}, {"to": "#m0.s1", "type": "supports", "confidence": 0.9}]}}
+{"k": "ff4661c764830a411483eb04930b8e06", "v": {"role": "chatter", "closes_frame": false, "edges": []}}
+{"k": "23db92174ca08d539384d892f95641c5", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "m2", "type": "derived_from", "confidence": 0.9}, {"to": "m0.s1", "type": "supports", "confidence": 0.9}]}}
+{"k": "b986cc26d7a1b1836ad3da30fb85e7e1", "v": {"role": "constraint", "closes_frame": false, "edges": [{"to": "#m6", "type": "rejects", "confidence": 0.9}, {"to": "#m7.s0", "type": "supports", "confidence": 0.8}]}}
+{"k": "0c6ab2664d5ca59e8056c45e43a1b073", "v": {"role": "chatter", "closes_frame": false, "edges": []}}
+{"k": "16deee33e3c2750340e86ef18c989a63", "v": {"role": "user", "closes_frame": false, "edges": [{"to": "#m6", "type": "supersedes", "confidence": 0.9}, {"to": "#m0.s1", "type": "supports", "confidence": 0.95}, {"to": "#m7.s0", "type": "supports", "confidence": 0.9}]}}
+{"k": "e015e904850725f9fba10d30458dda46", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "#m8.s0", "type": "derived_from", "confidence": 0.9}, {"to": "#m8.s1", "type": "derived_from", "confidence": 0.9}]}}
+{"k": "b802df797fb24bdc9184ed676cd2e261", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "#m5", "type": "derived_from", "confidence": 0.95}, {"to": "#m7.s2", "type": "supports", "confidence": 0.95}]}}
+{"k": "70a91a041a18c9713a6cafba0e9debd5", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "m7.s2", "type": "supports", "confidence": 0.9}, {"to": "m7.s0", "type": "derived_from", "confidence": 0.8}, {"to": "m7.s1", "type": "derived_from", "confidence": 0.8}]}}
+{"k": "9aaa9f2436f9df49051ec96ce0dd0b6a", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "#m0.s1", "type": "supports", "confidence": 0.95}, {"to": "#m7.s2", "type": "derived_from", "confidence": 0.9}, {"to": "#m14", "type": "derived_from", "confidence": 0.95}, {"to": "#m16", "type": "derived_from", "confidence": 0.95}]}}
+{"k": "eed67b406a978ee47e2359c2b2ac5c3a", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "#m0.s1", "type": "supports", "confidence": 0.9}]}}
+{"k": "5185f628734d4adb961ccd967e7b1c52", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "#m7.s2", "type": "derived_from", "confidence": 0.9}, {"to": "#m5", "type": "derived_from", "confidence": 0.8}, {"to": "#m11", "type": "derived_from", "confidence": 0.6}]}}
+{"k": "bf35760ef53c179e401edab6bcb5e649", "v": {"role": "user", "closes_frame": false, "edges": [{"to": "m12", "type": "supersedes", "confidence": 1.0}]}}
+{"k": "068eeacd3103369638cce4fcfaa5c943", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "#m18", "type": "supports", "confidence": 0.95}, {"to": "#m12", "type": "supersedes", "confidence": 0.9}]}}
+{"k": "89b6c387ee088c97ff0af400925fae3c", "v": {"role": "goal", "closes_frame": false, "edges": [{"to": "#m17", "type": "derived_from", "confidence": 0.9}, {"to": "#m5", "type": "derived_from", "confidence": 0.9}, {"to": "#m18", "type": "derived_from", "confidence": 0.8}]}}
+{"k": "96eae12e730f7453abb407c7af39c445", "v": {"role": "user", "closes_frame": true, "edges": [{"to": "m19", "type": "mentions", "confidence": 0.95}]}}
+{"k": "588679fdf953554ba278ae4848151694", "v": {"role": "goal", "closes_frame": false, "edges": []}}
+{"k": "d0c80954220f6ee0e2c1b1b174798ccc", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "m0.s1", "type": "supports", "confidence": 0.9}]}}
+{"k": "268faecbaba780a4833e7d5a02519928", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "#m2", "type": "derived_from", "confidence": 0.9}]}}
+{"k": "4afecc49a9c5095fd77436a77eca7463", "v": {"role": "constraint", "closes_frame": false, "edges": [{"to": "m0.s1", "type": "supports", "confidence": 0.9}]}}
+{"k": "1e022701f8cd12ff84ae44e27a0206cb", "v": {"role": "chatter", "closes_frame": false, "edges": []}}
+{"k": "857ed0e759b58bfbcc6fe545e9aa81ab", "v": {"role": "chatter", "closes_frame": false, "edges": []}}
+{"k": "b3dc1af7ba46325129b40a1f474c75c2", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "m4", "type": "derived_from", "confidence": 0.95}, {"to": "m2", "type": "derived_from", "confidence": 0.95}, {"to": "m3", "type": "derived_from", "confidence": 0.7}]}}
+{"k": "f00c3f4c8880df117082312c9817a35c", "v": {"role": "constraint", "closes_frame": false, "edges": [{"to": "m8", "type": "rejects", "confidence": 0.95}, {"to": "m9.s0", "type": "supports", "confidence": 0.9}]}}
+{"k": "11e8aaf017bce2f39206f30ab98ed711", "v": {"role": "user", "closes_frame": true, "edges": [{"to": "#m8", "type": "rejects", "confidence": 0.95}]}}
+{"k": "0b3804bfabc52e7d1f3544b4b9e1faff", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "#m6.s1", "type": "supports", "confidence": 0.95}, {"to": "#m6.s0", "type": "supports", "confidence": 0.9}]}}
+{"k": "28401319e3cb2d681ccbb8478ce7b33c", "v": {"role": "decision", "closes_frame": true, "edges": [{"to": "m5", "type": "derived_from", "confidence": 0.9}, {"to": "m0.s1", "type": "supports", "confidence": 0.95}, {"to": "m0.s0", "type": "supports", "confidence": 0.9}]}}
+{"k": "54487aeb09ca4a29c24dfe92fb9ddd7b", "v": {"role": "assistant", "closes_frame": false, "edges": [{"to": "#m9.s2", "type": "supports", "confidence": 0.9}]}}
