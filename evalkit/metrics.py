@@ -6,6 +6,7 @@ import re
 
 from ctxgc.compress import Result, build_graph
 from ctxgc.model import EdgeType, L2, Role
+from ctxgc.render import stub_names
 
 from .synth import Case, Question
 
@@ -25,13 +26,22 @@ def present(text: str, answer: str) -> bool:
     return re.search(pat, text, re.I) is not None
 
 
-def stub_present(text: str, node_id: str) -> bool:
+def stub_present(text: str, node_id: str, order: list[str] | None = None) -> bool:
+    """The node is named in the output: literally, or inside a stub id range
+    when the document order is given."""
+    if order is not None:
+        return stub_names(text, node_id, order)
     return re.search(r"#" + re.escape(node_id) + r"(?![\w.])", text) is not None
+
+
+def node_order(r: Result) -> list[str]:
+    return [n.id for n in r.graph.ordered()]
 
 
 def score_question(q: Question, r: Result) -> dict:
     kept = any(present(r.text, a) for a in q.answers)
-    retrievable = kept or any(stub_present(r.text, nid) for nid in q.node_ids)
+    order = node_order(r)
+    retrievable = kept or any(stub_present(r.text, nid, order) for nid in q.node_ids)
     out = {"category": q.category, "kept": kept, "retrievable": retrievable}
     if q.stale_node is not None:
         node = r.graph.nodes.get(q.stale_node)

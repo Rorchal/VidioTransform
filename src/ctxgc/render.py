@@ -8,6 +8,7 @@ the budget before anything is promoted.
 
 from __future__ import annotations
 
+import re
 from collections.abc import Iterable
 
 from .model import L0, L1, L2, L3, Graph, Node, Role
@@ -41,18 +42,45 @@ def group_kind(node: Node) -> str:
     return node.role.value
 
 
+RANGE_MIN = 4   # runs at least this long are written as a range of ids
+
+
 def group_stub(nodes: list[Node]) -> str:
-    """A run of evicted chunks: every id (so any of them can be asked for) plus
-    what kinds they are. No per-chunk preview: on a real transcript with dozens
-    of chunks the previews alone ate most of a tight budget, and they leaked
-    answers in the synthetic eval."""
-    ids = " ".join(f"#{n.id}" for n in nodes)
+    """A run of evicted chunks, written so that any of them can be asked for,
+    plus what kinds they are. Short runs list every id; long runs give the first
+    and last id as a range - ids are deterministic (message index, sentence /
+    call suffix), so a range names everything between in document order and
+    the stub cost stops growing with the number of chunks. On a 1,100-chunk chat
+    history the id list alone was 12% of the full text. No per-chunk preview:
+    previews ate most of a tight budget and leaked answers in the synthetic
+    eval."""
+    if len(nodes) >= RANGE_MIN:
+        ids = f"#{nodes[0].id} … #{nodes[-1].id}"
+    else:
+        ids = " ".join(f"#{n.id}" for n in nodes)
     counts: dict[str, int] = {}
     for n in nodes:
         k = group_kind(n)
         counts[k] = counts.get(k, 0) + 1
     kinds = ", ".join(f"{k} ×{c}" if c > 1 else k for k, c in counts.items())
     return f"[{ids} — {len(nodes)} chunks: {kinds}]"
+
+
+RANGE_RE = re.compile(r"#([\w.]+) … #([\w.]+)")
+
+
+def stub_names(text: str, nid: str, order: list[str]) -> bool:
+    """Does the rendered text name node `nid`, either literally (#id) or inside
+    a stub range? `order` is the document order of node ids."""
+    if re.search(r"#" + re.escape(nid) + r"(?![\w.])", text):
+        return True
+    pos = {x: i for i, x in enumerate(order)}
+    if nid not in pos:
+        return False
+    for a, b in RANGE_RE.findall(text):
+        if a in pos and b in pos and pos[a] <= pos[nid] <= pos[b]:
+            return True
+    return False
 
 
 def render_node(node: Node, level: int, versions: dict[int, str]) -> str:

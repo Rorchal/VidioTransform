@@ -11,18 +11,18 @@ Budget = fraction of the full-context token count. Cells = fraction of questions
 | random | 0.57 | 0.79 | 0.87 | 0.85 |
 | uniform | 0.49 | 0.57 | 0.85 | 0.88 |
 | gc_binary | 0.43 | 0.61 | 0.86 | 0.90 |
-| graded | 0.44 | 0.81 | 0.98 | 0.98 |
-| graded-agent | 0.32 | 0.70 | 0.95 | 0.98 |
-| graded+oracle | 0.41 | 0.79 | 0.98 | 0.98 |
-| graded-facts | 0.48 | 0.81 | 0.98 | 0.98 |
-| graded-tomb | 0.43 | 0.81 | 0.98 | 0.98 |
+| graded | 0.48 | 0.81 | 0.98 | 0.98 |
+| graded-agent | 0.31 | 0.74 | 0.96 | 0.98 |
+| graded+oracle | 0.42 | 0.79 | 0.98 | 0.98 |
+| graded-facts | 0.49 | 0.81 | 0.98 | 0.98 |
+| graded-tomb | 0.48 | 0.81 | 0.98 | 0.98 |
 | graded-frame | 0.39 | 0.77 | 0.98 | 0.98 |
-| graded-cascade | 0.44 | 0.81 | 0.98 | 0.98 |
-| graded-symbolic | 0.44 | 0.81 | 0.98 | 0.98 |
-| graded+llm | 0.43 | 0.78 | 0.98 | 0.98 |
-| graded+llm+heur | 0.41 | 0.78 | 0.98 | 0.98 |
-| graded+llmsum | 0.47 | 0.85 | 1.00 | 1.00 |
-| graded+llm+llmsum | 0.47 | 0.84 | 1.00 | 1.00 |
+| graded-cascade | 0.50 | 0.81 | 0.98 | 0.98 |
+| graded-symbolic | 0.48 | 0.81 | 0.98 | 0.98 |
+| graded+llm | 0.44 | 0.78 | 0.98 | 0.98 |
+| graded+llm+heur | 0.43 | 0.78 | 0.98 | 0.98 |
+| graded+llmsum | 0.51 | 0.85 | 1.00 | 1.00 |
+| graded+llm+llmsum | 0.52 | 0.84 | 1.00 | 1.00 |
 
 ## Retrievable (answer kept OR a stub pointing at its node kept)
 
@@ -36,7 +36,7 @@ Budget = fraction of the full-context token count. Cells = fraction of questions
 | graded | 1.00 | 1.00 | 1.00 | 1.00 |
 | graded-agent | 1.00 | 1.00 | 1.00 | 1.00 |
 | graded+oracle | 1.00 | 1.00 | 1.00 | 1.00 |
-| graded-facts | 0.97 | 1.00 | 1.00 | 1.00 |
+| graded-facts | 0.96 | 1.00 | 1.00 | 1.00 |
 | graded-tomb | 1.00 | 1.00 | 1.00 | 1.00 |
 | graded-frame | 1.00 | 1.00 | 1.00 | 1.00 |
 | graded-cascade | 1.00 | 1.00 | 1.00 | 1.00 |
@@ -59,7 +59,7 @@ Budget = fraction of the full-context token count. Cells = fraction of questions
 | graded-agent | 0.00 | 0.00 | 0.00 | 0.00 |
 | graded+oracle | 0.00 | 0.00 | 0.00 | 0.00 |
 | graded-facts | 0.00 | 0.00 | 0.00 | 0.00 |
-| graded-tomb | 0.83 | 1.00 | 1.00 | 1.00 |
+| graded-tomb | 0.87 | 1.00 | 1.00 | 1.00 |
 | graded-frame | 0.00 | 0.00 | 0.00 | 0.00 |
 | graded-cascade | 0.00 | 0.00 | 0.00 | 0.00 |
 | graded-symbolic | 0.00 | 0.00 | 0.00 | 0.00 |
@@ -99,18 +99,18 @@ Budget = fraction of the full-context token count. Cells = fraction of questions
 | random | 0.82 | 0.66 | 0.23 | 0.86 | 0.51 | 0.39 | 0.99 |
 | uniform | 1.00 | 0.23 | 0.00 | 0.63 | 0.33 | 1.00 | 1.00 |
 | gc_binary | 0.10 | 0.00 | 0.12 | 1.00 | 0.67 | 0.00 | 1.00 |
-| graded | 0.67 | 1.00 | 0.00 | 0.93 | 0.26 | 1.00 | 0.00 |
-| graded-agent | 0.00 | 1.00 | 0.00 | 0.63 | 0.16 | 1.00 | 0.13 |
-| graded+oracle | 0.00 | 0.80 | 0.00 | 0.90 | 0.30 | 1.00 | 0.53 |
-| graded-facts | 0.43 | 1.00 | 0.00 | 1.00 | 0.34 | 1.00 | 0.33 |
-| graded-tomb | 0.60 | 1.00 | 0.00 | 0.97 | 0.26 | 1.00 | 0.00 |
-| graded-frame | 0.13 | 1.00 | 0.00 | 0.90 | 0.27 | 1.00 | 0.03 |
-| graded-cascade | 0.63 | 1.00 | 0.00 | 0.93 | 0.27 | 1.00 | 0.03 |
-| graded-symbolic | 0.67 | 1.00 | 0.00 | 0.93 | 0.26 | 1.00 | 0.00 |
-| graded+llm | 0.00 | 0.77 | 0.00 | 0.80 | 0.29 | 1.00 | 0.87 |
-| graded+llm+heur | 0.00 | 0.77 | 0.00 | 0.80 | 0.24 | 1.00 | 0.83 |
-| graded+llmsum | 0.80 | 1.00 | 0.00 | 1.00 | 0.28 | 0.93 | 0.13 |
-| graded+llm+llmsum | 0.00 | 0.77 | 0.00 | 1.00 | 0.33 | 1.00 | 0.93 |
+| graded | 0.80 | 1.00 | 0.00 | 0.97 | 0.32 | 1.00 | 0.03 |
+| graded-agent | 0.03 | 1.00 | 0.00 | 0.63 | 0.14 | 0.90 | 0.07 |
+| graded+oracle | 0.07 | 0.80 | 0.00 | 0.90 | 0.33 | 1.00 | 0.43 |
+| graded-facts | 0.53 | 1.00 | 0.00 | 1.00 | 0.39 | 1.00 | 0.20 |
+| graded-tomb | 0.87 | 1.00 | 0.00 | 1.00 | 0.32 | 1.00 | 0.00 |
+| graded-frame | 0.20 | 1.00 | 0.00 | 0.87 | 0.28 | 1.00 | 0.00 |
+| graded-cascade | 0.83 | 1.00 | 0.00 | 0.97 | 0.39 | 1.00 | 0.03 |
+| graded-symbolic | 0.80 | 1.00 | 0.00 | 0.97 | 0.32 | 1.00 | 0.03 |
+| graded+llm | 0.00 | 0.77 | 0.00 | 0.80 | 0.33 | 1.00 | 0.87 |
+| graded+llm+heur | 0.07 | 0.77 | 0.00 | 0.80 | 0.32 | 1.00 | 0.73 |
+| graded+llmsum | 0.90 | 1.00 | 0.00 | 1.00 | 0.40 | 0.93 | 0.03 |
+| graded+llm+llmsum | 0.00 | 0.77 | 0.00 | 1.00 | 0.49 | 1.00 | 1.00 |
 
 ## Retention by question category @ 20% budget
 
@@ -122,17 +122,17 @@ Budget = fraction of the full-context token count. Cells = fraction of questions
 | uniform | 1.00 | 0.87 | 0.00 | 0.87 | 0.33 | 1.00 | 1.00 |
 | gc_binary | 0.60 | 0.00 | 0.50 | 1.00 | 0.69 | 0.47 | 1.00 |
 | graded | 1.00 | 1.00 | 0.03 | 1.00 | 1.00 | 1.00 | 1.00 |
-| graded-agent | 0.53 | 1.00 | 0.00 | 1.00 | 0.90 | 1.00 | 0.80 |
-| graded+oracle | 0.97 | 1.00 | 0.05 | 1.00 | 0.93 | 1.00 | 1.00 |
+| graded-agent | 0.77 | 1.00 | 0.00 | 1.00 | 0.92 | 1.00 | 0.83 |
+| graded+oracle | 1.00 | 1.00 | 0.05 | 1.00 | 0.94 | 1.00 | 1.00 |
 | graded-facts | 1.00 | 1.00 | 0.03 | 1.00 | 1.00 | 1.00 | 1.00 |
 | graded-tomb | 1.00 | 1.00 | 0.03 | 1.00 | 1.00 | 1.00 | 1.00 |
-| graded-frame | 1.00 | 1.00 | 0.03 | 1.00 | 0.89 | 1.00 | 0.97 |
+| graded-frame | 1.00 | 1.00 | 0.03 | 1.00 | 0.89 | 1.00 | 0.93 |
 | graded-cascade | 1.00 | 1.00 | 0.05 | 1.00 | 1.00 | 1.00 | 1.00 |
 | graded-symbolic | 1.00 | 1.00 | 0.03 | 1.00 | 1.00 | 1.00 | 1.00 |
 | graded+llm | 0.80 | 1.00 | 0.10 | 1.00 | 0.93 | 1.00 | 1.00 |
-| graded+llm+heur | 0.93 | 1.00 | 0.07 | 1.00 | 0.92 | 1.00 | 1.00 |
+| graded+llm+heur | 0.90 | 1.00 | 0.07 | 1.00 | 0.91 | 1.00 | 1.00 |
 | graded+llmsum | 0.97 | 1.00 | 0.28 | 1.00 | 1.00 | 1.00 | 1.00 |
-| graded+llm+llmsum | 0.83 | 1.00 | 0.28 | 1.00 | 1.00 | 1.00 | 1.00 |
+| graded+llm+llmsum | 0.80 | 1.00 | 0.28 | 1.00 | 1.00 | 1.00 | 1.00 |
 
 ## Retention by question category @ 35% budget
 
@@ -144,7 +144,7 @@ Budget = fraction of the full-context token count. Cells = fraction of questions
 | uniform | 1.00 | 1.00 | 0.37 | 1.00 | 0.93 | 1.00 | 1.00 |
 | gc_binary | 1.00 | 0.60 | 0.50 | 1.00 | 1.00 | 1.00 | 1.00 |
 | graded | 1.00 | 1.00 | 0.88 | 1.00 | 1.00 | 1.00 | 1.00 |
-| graded-agent | 1.00 | 1.00 | 0.73 | 1.00 | 1.00 | 1.00 | 1.00 |
+| graded-agent | 1.00 | 1.00 | 0.78 | 1.00 | 1.00 | 1.00 | 1.00 |
 | graded+oracle | 1.00 | 1.00 | 0.92 | 1.00 | 1.00 | 1.00 | 1.00 |
 | graded-facts | 1.00 | 1.00 | 0.90 | 1.00 | 1.00 | 1.00 | 1.00 |
 | graded-tomb | 1.00 | 1.00 | 0.88 | 1.00 | 1.00 | 1.00 | 1.00 |

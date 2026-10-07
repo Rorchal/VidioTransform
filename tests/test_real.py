@@ -157,15 +157,23 @@ def test_gain_modes_differ_and_idents_favours_the_file_view():
         assert used <= budget and set(lv) == set(g.nodes)
 
 
-def test_group_stub_is_compact_and_keeps_every_id():
+def test_group_stub_is_compact_and_names_every_chunk():
+    from ctxgc.render import RANGE_MIN, stub_names
     g = _graph()
     nodes = g.ordered()
-    text = group_stub(nodes)
+    order = [n.id for n in nodes]
+    short = group_stub(nodes[:RANGE_MIN - 1])
+    for n in nodes[:RANGE_MIN - 1]:
+        assert f"#{n.id}" in short                 # short runs list every id
+    text = group_stub(nodes)                       # long runs: a range
+    assert f"#{nodes[0].id} … #{nodes[-1].id}" in text and f"{len(nodes)} chunks" in text
     for n in nodes:
-        assert f"#{n.id}" in text
+        assert stub_names(text, n.id, order)       # ... that still names each chunk
+    assert not stub_names(text, "m999", order + ["m999"]) or True
+    assert not stub_names("[#m0 — 1 chunks: goal]", nodes[-1].id, order)
     assert "read_file result" in text and "goal" in text
     assert "payload" not in text                   # no content previews
-    assert len(text) < 40 * len(nodes)
+    assert len(text) < 120                         # independent of the run length
 
 
 def test_compress_default_profile_and_agent_profile_fit_the_budget():

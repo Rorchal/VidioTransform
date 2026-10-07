@@ -43,7 +43,7 @@ from ctxgc.model import L1, Role
 from ctxgc.summarize import ExtractiveSummarizer
 from ctxgc.tokens import count
 
-from .metrics import present, stub_present
+from .metrics import node_order, present, stub_present
 
 BUDGET_FRACTIONS = [0.10, 0.20, 0.35, 0.60]
 # name -> compress() keyword arguments
@@ -302,7 +302,8 @@ def score_cut(messages: list[dict], cut: int, summarizer, methods: dict[str, dic
                 r = compress(g, int(full_tokens * frac), summarizer=sm, seed=seed, **kw)
                 found = identifiers(r.text)           # same extractor as the needs, so full scores 1.0
                 kept = {i: i in found for i in carried}
-                retr = {i: kept[i] or any(stub_present(r.text, nid) for nid in nids) for i, nids in carried.items()}
+                order = node_order(r)
+                retr = {i: kept[i] or any(stub_present(r.text, nid, order) for nid in nids) for i, nids in carried.items()}
                 rows.append({
                     "method": name, "frac": frac, "cut": cut, "n_carried": len(carried), "n_reread": len(reread),
                     "carried": sum(kept.values()) / len(carried),

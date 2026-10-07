@@ -18,8 +18,10 @@ Per question the history (plus the question as the final user turn) is
 compressed at equal budgets and scored:
 
   answer      the answer string survives in the compressed context
-  evidence    labelled evidence turns rendered verbatim (L0), and at L0 or L1
-  retrievable the answer survives, or a stub for an evidence node survives
+  evidence    labelled evidence turns whose content words all survive in the
+              rendering (verbatim, or a summary that reproduces the turn), and
+              the stricter "rendered verbatim (L0)"
+  retrievable the answer survives, or a stub naming an evidence node survives
   tokens      fraction of the full history actually used
 
 Histories are long (LongMemEval ~120k tokens); to keep the allocator tractable
@@ -37,12 +39,12 @@ from collections import defaultdict
 from pathlib import Path
 
 from ctxgc.compress import build_graph, compress
-from ctxgc.edges import add_lexical_edges
+from ctxgc.edges import add_lexical_edges, content_words
 from ctxgc.ingest import assign_roots
-from ctxgc.model import L0, L1, Role
+from ctxgc.model import L0, Role
 from ctxgc.summarize import ExtractiveSummarizer
 
-from .metrics import present, stub_present
+from .metrics import node_order, present, stub_present
 
 BUDGET_FRACTIONS = [0.10, 0.20, 0.35, 0.60]
 METHODS: dict[str, dict] = {
@@ -193,19 +195,23 @@ def score_case(case: dict, summarizer, methods: dict[str, dict] = METHODS, budge
                 g_lex = chat_graph(case["messages"], case["question_index"], lexical=True)
             g = g_lex
         evidence = ev_nodes(g)
+        ev_words = {nid: content_words(g.nodes[nid].text) for nid in evidence}
         for frac in budgets:
             seeds = range(random_seeds) if kw.get("method") == "random" else [0]
             for seed in seeds:
                 r = compress(g, int(full_tokens * frac), summarizer=summarizer, seed=seed, **kw)
                 kept = any(present(r.text, a) for a in case["answers"])
                 shown = [nid for nid in evidence if nid not in r.dropped]
+                out_words = content_words(r.text)
                 ev_l0 = sum(r.level.get(nid, 3) == L0 for nid in shown) / len(evidence) if evidence else None
-                ev_l1 = sum(r.level.get(nid, 3) <= L1 for nid in shown) / len(evidence) if evidence else None
+                ev_kept = (sum(bool(ev_words[nid]) and ev_words[nid] <= out_words for nid in shown) / len(evidence)
+                           if evidence else None)
+                order = node_order(r)
                 rows.append({
                     "case": case["id"], "type": case["type"], "method": name, "frac": frac,
                     "answer": kept,
-                    "evidence_l0": ev_l0, "evidence_l1": ev_l1,
-                    "retrievable": kept or any(stub_present(r.text, nid) for nid in evidence),
+                    "evidence_l0": ev_l0, "evidence_l1": ev_kept,
+                    "retrievable": kept or any(stub_present(r.text, nid, order) for nid in evidence),
                     "tokens": r.tokens / full_tokens, "full_tokens": full_tokens, "nodes": len(g.nodes),
                 })
     return rows
@@ -250,7 +256,7 @@ def to_markdown(summary: dict, title: str) -> str:
              f"≈ {summary['nodes_per_case']:.0f} nodes per question (the question itself is the final user turn). "
              "Budget = fraction of the full history's token count.\n"]
     for key, desc in (("answer", "Answer string present in the compressed context"),
-                      ("evidence_l1", "Labelled evidence turns kept verbatim or as a paragraph summary (L0/L1)"),
+                      ("evidence_l1", "Labelled evidence turns whose content words all survive (verbatim or a faithful summary)"),
                       ("evidence_l0", "Labelled evidence turns kept verbatim (L0)"),
                       ("retrievable", "Retrievable (answer present, or a stub for an evidence turn survives)"),
                       ("tokens", "Tokens actually used (fraction of full)")):
@@ -261,7 +267,7 @@ def to_markdown(summary: dict, title: str) -> str:
     for f in (0.2,):
         if f not in fr:
             continue
-        for key, desc in (("answer", "Answer present"), ("evidence_l1", "Evidence at L0/L1")):
+        for key, desc in (("answer", "Answer present"), ("evidence_l1", "Evidence content words survive")):
             lines += [f"\n## {desc} by question type @ {int(f*100)}% budget\n",
                       "| method | " + " | ".join(summary["types"]) + " |", "|---|" + "---|" * len(summary["types"])]
             for m in summary["methods"]:

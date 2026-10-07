@@ -58,7 +58,10 @@ def test_graded_pins_constraints_and_never_deletes():
     for nid, node in g.nodes.items():
         if node.role.value in ("goal", "constraint"):
             assert r.level[nid] == L0
-    # every node is either rendered at some level or as a tombstone; stubs carry their id
+    # every node is either rendered at some level or as a tombstone; stubs name
+    # their node, literally or inside a stub id range
+    from ctxgc.render import stub_names
+    order = [n.id for n in g.ordered()]
     for nid, node in g.nodes.items():
         if r.level[nid] == L3 and not node.tombstoned:
-            assert f"#{nid}" in r.text
+            assert stub_names(r.text, nid, order)
