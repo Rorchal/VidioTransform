@@ -14,7 +14,7 @@ consecutive stubs into one line, so `used` equals the rendered size.
 
 from __future__ import annotations
 
-from .model import L0, L3, LEVELS, Graph, Node, Role
+from .model import L0, L1, L3, LEVELS, Graph, Node, Role
 from .render import group_stub, is_stub, render_node
 from .tokens import count
 
@@ -46,14 +46,30 @@ def allocate(
     reachable_min: float = 0.1,
     gain: str = "level",
     pin_fraction: float | None = 0.3,
+    tool_l1: bool = True,
+    pin_promote: str = "last",
 ) -> tuple[dict[str, int], int]:
     """pin_fraction: goals/constraints are guaranteed the finest uniform level
     that fits this share of the budget and stay promotable like any other node
     (a long opening request must not eat the whole budget: on real SWE-agent
     transcripts the issue text alone exceeded a 10% budget). None fixes them at
-    L0 whatever they cost."""
+    L0 whatever they cost.
+    pin_promote: how pinned nodes may rise above their floor. "last" (default):
+    only after every other reachable node has had its turn - on real
+    trajectories the opening request, scoring 1.0 as a root, otherwise took a
+    third of a 20% budget for its own text while the tool output the agent was
+    about to act on sat at one line. "always": compete like any node. "never":
+    the floor is all the task statement gets. Roots drive propagation at full
+    strength either way; this only concerns their own resolution.
+    tool_l1: False skips the L1 (extractive paragraph) rung for tool results, so
+    they are promoted straight from one line to verbatim. An extractive excerpt
+    of a file view or log cannot know which name the agent will act on next; on
+    real trajectories almost every identifier lost at a generous budget sat in a
+    tool result parked at L1."""
     if gain not in GAIN_MODES:
         raise ValueError(f"gain must be one of {GAIN_MODES}")
+    if pin_promote not in ("always", "last", "never"):
+        raise ValueError("pin_promote must be always | last | never")
     order: list[Node] = g.ordered()
     pos = {n.id: i for i, n in enumerate(order)}
     cost = {nid: {lvl: count(render_node(g.nodes[nid], lvl, v)) for lvl in LEVELS} for nid, v in versions.items()}
@@ -113,10 +129,18 @@ def allocate(
                 break
         for nid in pinned:
             level[nid] = floor
+            if pin_promote == "never":
+                fixed.add(nid)
     used = seg_cost(0, len(order) - 1, level)
 
+    def next_level(nid: str) -> int:
+        nxt = level[nid] - 1
+        if nxt == L1 and not tool_l1 and g.nodes[nid].role == Role.TOOL_RESULT:
+            nxt = L0
+        return nxt
+
     def plan_for(nid: str) -> dict[str, int]:
-        plan = {nid: level[nid] - 1}
+        plan = {nid: next_level(nid)}
         if not cascade:
             return plan
         stack = [nid]
@@ -177,6 +201,8 @@ def allocate(
     # phase 1: nodes the goal reaches, by value density; phase 2: leftover budget
     # goes to unreachable nodes (recency floor only), most recent first
     reachable = {nid for nid in g.nodes if score.get(nid, 0.0) >= reachable_min}
-    promote_phase(reachable)
-    promote_phase(set(g.nodes) - reachable)
+    deferred = set(pinned) if (pin_promote == "last" and pin_fraction is not None) else set()
+    promote_phase(reachable - deferred)
+    promote_phase(deferred)
+    promote_phase(set(g.nodes) - reachable - deferred)
     return level, used

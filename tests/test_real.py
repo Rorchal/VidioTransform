@@ -175,3 +175,51 @@ def test_compress_default_profile_and_agent_profile_fit_the_budget():
         r = compress(g, int(0.2 * full), method="graded", **kw)
         assert r.tokens <= int(0.2 * full) + len(g.nodes) // 4 + 2 or kw.get("pin_fraction", 0.3) is None
         assert not r.dropped
+
+
+def test_pin_promote_policies():
+    g = _graph()
+    sm = ExtractiveSummarizer()
+    v = {n.id: sm.versions(n) for n in g.nodes.values()}
+    score = {nid: (1.0 if n.role == Role.GOAL else 0.5) for nid, n in g.nodes.items()}
+    pinned = [nid for nid, n in g.nodes.items() if n.role == Role.GOAL]
+    file_node = next(nid for nid, n in g.nodes.items() if n.role == Role.TOOL_RESULT)
+    from ctxgc.tokens import count
+    budget = int(0.5 * sum(count(vv[L0]) for vv in v.values()))
+    always, _ = allocate(g, score, v, budget, gain="idents", pin_promote="always")
+    last, _ = allocate(g, score, v, budget, gain="idents", pin_promote="last")
+    never, _ = allocate(g, score, v, budget, gain="idents", pin_promote="never")
+    # deferring the pins leaves at least as much budget for the file view
+    assert last[file_node] <= always[file_node]
+    assert sum(last[n] for n in pinned) >= sum(always[n] for n in pinned)
+    # "never" holds the pins at their floor even with a huge budget
+    huge, _ = allocate(g, score, v, 10**6, gain="idents", pin_promote="never")
+    floor_lvls = {huge[n] for n in pinned}
+    assert floor_lvls == {L0}          # the floor itself is L0 when 30% of the budget fits the pins
+    with pytest.raises(ValueError):
+        allocate(g, score, v, budget, pin_promote="sometimes")
+
+
+def test_llm_summarizer_role_and_size_filters():
+    from ctxgc.llm import LLMSummarizer
+
+    class Counting:
+        name = "counting"
+
+        def __init__(self):
+            self.calls = 0
+
+        def json(self, system, user, schema):
+            self.calls += 1
+            return {"l1": "model l1", "l2": "model l2"}
+
+    g = _graph()
+    llm = Counting()
+    sm = LLMSummarizer(llm, roles=(Role.TOOL_RESULT,), min_tokens=80)
+    sm.prefetch(g.ordered(), workers=2)
+    big_results = [n for n in g.nodes.values() if n.role == Role.TOOL_RESULT and len(n.text) // 4 >= 80]
+    assert llm.calls == len(big_results) >= 1
+    assert sm.skipped == len(g.nodes) - len(big_results)
+    for n in g.nodes.values():
+        v = sm.versions(n)
+        assert (v[L1] == "model l1") == (n in big_results)

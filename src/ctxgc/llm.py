@@ -35,6 +35,7 @@ from typing import Protocol
 from .ingest import assign_roots, reassign_frames
 from .model import L1, L2, Edge, EdgeType, Graph, Node, Role
 from .summarize import ExtractiveSummarizer, monotonic
+from .tokens import count
 
 ANTHROPIC_MODEL = "claude-opus-5-5"
 DEEPSEEK_MODEL = "deepseek-flash"
@@ -442,13 +443,21 @@ class LLMSummarizer(ExtractiveSummarizer):
     `context` is the task description the model should judge salience against
     (set per conversation, see graph_context)."""
 
-    def __init__(self, llm: LLM, context: str = "", **kw):
+    def __init__(self, llm: LLM, context: str = "", roles=None, min_tokens: int = 0, **kw):
         super().__init__(**kw)
         self.llm = llm
         self.context = context
+        self.roles = set(roles) if roles else None     # None: every node goes to the model
+        self.min_tokens = min_tokens                   # shorter nodes keep the extractive versions
         self.cache: dict[str, dict[int, str]] = {}
         self.failures = 0
+        self.skipped = 0
         self._lock = threading.Lock()
+
+    def _wants_model(self, node: Node) -> bool:
+        if self.roles is not None and node.role not in self.roles:
+            return False
+        return count(node.text) >= self.min_tokens
 
     def _key(self, node: Node) -> str:
         return f"{node.id}:{hash((node.text, node.role.value, self.context))}"
@@ -459,6 +468,11 @@ class LLMSummarizer(ExtractiveSummarizer):
             if key in self.cache:
                 return self.cache[key]
         v = super().versions(node)
+        if not self._wants_model(node):
+            with self._lock:
+                self.skipped += 1
+                self.cache[key] = v
+            return v
         try:
             out = self.llm.json(SUMMARY_SYSTEM, summary_prompt(node, self.context), SUMMARY_SCHEMA)
             l1, l2 = out["l1"].strip(), out["l2"].strip()

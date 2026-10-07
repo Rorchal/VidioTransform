@@ -13,16 +13,16 @@ Budget = fraction of the full-context token count. Cells = fraction of questions
 | gc_binary | 0.43 | 0.61 | 0.86 | 0.90 |
 | graded | 0.44 | 0.81 | 0.98 | 0.98 |
 | graded-agent | 0.32 | 0.70 | 0.95 | 0.98 |
-| graded+oracle | 0.42 | 0.79 | 0.98 | 0.98 |
+| graded+oracle | 0.41 | 0.79 | 0.98 | 0.98 |
 | graded-facts | 0.48 | 0.81 | 0.98 | 0.98 |
 | graded-tomb | 0.43 | 0.81 | 0.98 | 0.98 |
 | graded-frame | 0.39 | 0.77 | 0.98 | 0.98 |
 | graded-cascade | 0.44 | 0.81 | 0.98 | 0.98 |
 | graded-symbolic | 0.44 | 0.81 | 0.98 | 0.98 |
-| graded+llm | 0.44 | 0.78 | 0.98 | 0.98 |
-| graded+llm+heur | 0.43 | 0.78 | 0.98 | 0.98 |
+| graded+llm | 0.43 | 0.78 | 0.98 | 0.98 |
+| graded+llm+heur | 0.41 | 0.78 | 0.98 | 0.98 |
 | graded+llmsum | 0.47 | 0.85 | 1.00 | 1.00 |
-| graded+llm+llmsum | 0.45 | 0.84 | 1.00 | 1.00 |
+| graded+llm+llmsum | 0.47 | 0.84 | 1.00 | 1.00 |
 
 ## Retrievable (answer kept OR a stub pointing at its node kept)
 
@@ -101,16 +101,16 @@ Budget = fraction of the full-context token count. Cells = fraction of questions
 | gc_binary | 0.10 | 0.00 | 0.12 | 1.00 | 0.67 | 0.00 | 1.00 |
 | graded | 0.67 | 1.00 | 0.00 | 0.93 | 0.26 | 1.00 | 0.00 |
 | graded-agent | 0.00 | 1.00 | 0.00 | 0.63 | 0.16 | 1.00 | 0.13 |
-| graded+oracle | 0.00 | 1.00 | 0.00 | 1.00 | 0.27 | 1.00 | 0.40 |
+| graded+oracle | 0.00 | 0.80 | 0.00 | 0.90 | 0.30 | 1.00 | 0.53 |
 | graded-facts | 0.43 | 1.00 | 0.00 | 1.00 | 0.34 | 1.00 | 0.33 |
 | graded-tomb | 0.60 | 1.00 | 0.00 | 0.97 | 0.26 | 1.00 | 0.00 |
 | graded-frame | 0.13 | 1.00 | 0.00 | 0.90 | 0.27 | 1.00 | 0.03 |
 | graded-cascade | 0.63 | 1.00 | 0.00 | 0.93 | 0.27 | 1.00 | 0.03 |
 | graded-symbolic | 0.67 | 1.00 | 0.00 | 0.93 | 0.26 | 1.00 | 0.00 |
-| graded+llm | 0.00 | 1.00 | 0.00 | 1.00 | 0.24 | 1.00 | 0.63 |
-| graded+llm+heur | 0.03 | 1.00 | 0.00 | 1.00 | 0.22 | 1.00 | 0.60 |
+| graded+llm | 0.00 | 0.77 | 0.00 | 0.80 | 0.29 | 1.00 | 0.87 |
+| graded+llm+heur | 0.00 | 0.77 | 0.00 | 0.80 | 0.24 | 1.00 | 0.83 |
 | graded+llmsum | 0.80 | 1.00 | 0.00 | 1.00 | 0.28 | 0.93 | 0.13 |
-| graded+llm+llmsum | 0.00 | 1.00 | 0.00 | 1.00 | 0.27 | 1.00 | 0.73 |
+| graded+llm+llmsum | 0.00 | 0.77 | 0.00 | 1.00 | 0.33 | 1.00 | 0.93 |
 
 ## Retention by question category @ 20% budget
 

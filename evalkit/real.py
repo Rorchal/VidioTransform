@@ -37,6 +37,7 @@ from pathlib import Path
 
 from ctxgc.compress import build_graph, compress
 from ctxgc.edges import identifiers as _identifiers
+from ctxgc.llm import LLMSummarizer, graph_context, make_llm
 from ctxgc.ingest import CONSTRAINT_RE, split_sentences
 from ctxgc.model import L1, Role
 from ctxgc.summarize import ExtractiveSummarizer
@@ -54,8 +55,14 @@ METHODS: dict[str, dict] = {
     "gc_binary": {"method": "gc_binary"},
     "graded": {"method": "graded"},                                  # default allocator (level-table gain)
     "graded-agent": {"method": "graded", "gain": "idents"},          # gain = identifiers a finer version adds
-    "graded-pinL0": {"method": "graded", "pin_fraction": None},      # the old rule: opening request verbatim
+    "graded-pinL0": {"method": "graded", "pin_fraction": None, "pin_promote": "always"},   # the old rule
 }
+# only with --llm: model-written L1/L2 for tool results of at least LLM_MIN_TOKENS tokens
+LLM_METHODS: dict[str, dict] = {
+    "graded+llmsum": {"method": "graded", "llmsum": True},
+    "graded-agent+llmsum": {"method": "graded", "gain": "idents", "llmsum": True},
+}
+LLM_MIN_TOKENS = 80
 CUT_FRACTIONS = [0.5, 0.75]           # cut after this share of the trajectory's tool steps
 PATH_RE = re.compile(r"(?:[\w./-]+/)?[\w-]+\.(?:py|js|ts|sql|md|ya?ml|json|toml|txt|log|cfg|ini)\b")
 
@@ -268,7 +275,7 @@ def constraints_in(messages: list[dict], cut: int) -> list[str]:
 # --------------------------------------------------------------------------- scoring
 
 def score_cut(messages: list[dict], cut: int, summarizer, methods: dict[str, dict] = METHODS,
-              budgets=BUDGET_FRACTIONS, random_seeds: int = 2) -> list[dict]:
+              budgets=BUDGET_FRACTIONS, random_seeds: int = 2, llm=None, workers: int = 5) -> list[dict]:
     prefix = messages[:cut]
     g = build_graph(prefix)
     carried, reread = needs(g, messages, cut)
@@ -277,12 +284,22 @@ def score_cut(messages: list[dict], cut: int, summarizer, methods: dict[str, dic
     if not carried:
         return []
     full_tokens = compress(g, 10**9, method="full", summarizer=summarizer).tokens
+    llm_sm = None
+    if llm is not None and any(kw.get("llmsum") for kw in methods.values()):
+        llm_sm = LLMSummarizer(llm, context=graph_context(g), roles=(Role.TOOL_RESULT,), min_tokens=LLM_MIN_TOKENS)
+        llm_sm.prefetch(g.ordered(), workers=workers)
     rows = []
     for name, kw in methods.items():
+        kw = dict(kw)
+        sm = summarizer
+        if kw.pop("llmsum", False):
+            if llm_sm is None:
+                raise SystemExit(f"method {name} needs --llm")
+            sm = llm_sm
         for frac in budgets:
             seeds = range(random_seeds) if kw.get("method") == "random" else [0]
             for seed in seeds:
-                r = compress(g, int(full_tokens * frac), summarizer=summarizer, seed=seed, **kw)
+                r = compress(g, int(full_tokens * frac), summarizer=sm, seed=seed, **kw)
                 found = identifiers(r.text)           # same extractor as the needs, so full scores 1.0
                 kept = {i: i in found for i in carried}
                 retr = {i: kept[i] or any(stub_present(r.text, nid) for nid in nids) for i, nids in carried.items()}
@@ -299,13 +316,14 @@ def score_cut(messages: list[dict], cut: int, summarizer, methods: dict[str, dic
     return rows
 
 
-def run(trajectories: list[tuple[str, list[dict]]], methods: dict[str, dict] = METHODS, budgets=BUDGET_FRACTIONS) -> dict:
+def run(trajectories: list[tuple[str, list[dict]]], methods: dict[str, dict] = METHODS, budgets=BUDGET_FRACTIONS,
+        llm=None, workers: int = 5) -> dict:
     summarizer = ExtractiveSummarizer()
     rows = []
     n_cuts = 0
     for name, messages in trajectories:
         for cut in cut_points(messages):
-            cut_rows = score_cut(messages, cut, summarizer, methods, budgets)
+            cut_rows = score_cut(messages, cut, summarizer, methods, budgets, llm=llm, workers=workers)
             if cut_rows:
                 n_cuts += 1
             for row in cut_rows:
@@ -384,23 +402,35 @@ def main() -> None:
     ap.add_argument("--skip", type=int, default=10, help="skip the first trajectories of the shuffle (the dev sample)")
     ap.add_argument("--claude-code", type=Path, nargs="*", default=[], help="Claude Code session .jsonl files")
     ap.add_argument("--out", type=Path, default=Path("evalkit/results"))
-    ap.add_argument("--methods", nargs="*", default=list(METHODS))
+    ap.add_argument("--methods", nargs="*", default=None,
+                    help="default: all model-free methods, plus the *llmsum ones when --llm is given")
+    ap.add_argument("--llm", default=None, help="model backend for L1/L2 summaries of big tool results: deepseek | anthropic")
+    ap.add_argument("--summary-effort", default="off")
+    ap.add_argument("--cache", type=Path, default=Path("evalkit/results/llm_cache.jsonl"))
+    ap.add_argument("--workers", type=int, default=5)
     args = ap.parse_args()
-    methods = {m: METHODS[m] for m in args.methods}
+    all_methods = {**METHODS, **LLM_METHODS}
+    names = args.methods or list(METHODS) + (list(LLM_METHODS) if args.llm else [])
+    methods = {m: all_methods[m] for m in names}
+    llm = make_llm(args.llm, effort=args.summary_effort, cache_path=args.cache) if args.llm else None
     args.out.mkdir(parents=True, exist_ok=True)
     if args.swe_agent:
         trajs = load_swe_agent(args.swe_agent, args.n, skip=args.skip)
-        s = run(trajs, methods)
+        s = run(trajs, methods, llm=llm, workers=args.workers)
         md = to_markdown(s, "ctxgc on real SWE-agent trajectories (nebius/SWE-agent-trajectories)")
         (args.out / "real_swe_agent.md").write_text(md)
         (args.out / "real_swe_agent.json").write_text(json.dumps({k: v for k, v in s.items() if k != "rows"}, indent=1))
         print(md)
     if args.claude_code:
         trajs = [(p.stem, from_claude_code_jsonl(p)) for p in args.claude_code]
-        s = run(trajs, methods)
+        s = run(trajs, methods, llm=llm, workers=args.workers)
         md = to_markdown(s, "ctxgc on Claude Code session logs")
         (args.out / "real_claude_code.md").write_text(md)
         print(md)
+    if llm is not None:
+        inner = getattr(llm, "inner", llm)
+        print(f"[summaries] {llm.name}: cache hits {getattr(llm, 'hits', 0)}, misses {getattr(llm, 'misses', 0)}, "
+              f"usage {getattr(inner, 'usage', {})}")
 
 
 if __name__ == "__main__":

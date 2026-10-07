@@ -114,6 +114,8 @@ def compress(
     pin_roots: bool = True,
     gain: str = "level",
     pin_fraction: float | None = 0.3,
+    tool_l1: bool = True,
+    pin_promote: str = "last",
 ) -> Result:
     summarizer = summarizer or ExtractiveSummarizer()
     if isinstance(summarizer, ExtractiveSummarizer):
@@ -187,7 +189,7 @@ def compress(
     elif method == "graded":
         sc = score_nodes(g, frame_pop=frame_pop)
         level, _ = allocate(g, sc, versions, budget, pin_roots=pin_roots, cascade=cascade, gain=gain,
-                            pin_fraction=pin_fraction)
+                            pin_fraction=pin_fraction, tool_l1=tool_l1, pin_promote=pin_promote)
 
     else:
         raise ValueError(f"unknown method {method!r}")

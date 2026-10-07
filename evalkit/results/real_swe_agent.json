@@ -13,7 +13,9 @@
   "gc_binary",
   "graded",
   "graded-agent",
-  "graded-pinL0"
+  "graded-pinL0",
+  "graded+llmsum",
+  "graded-agent+llmsum"
  ],
  "table": {
   "full@0.1": {
@@ -49,232 +51,296 @@
    "tokens": 1.0
   },
   "truncate@0.1": {
-   "carried": 0.7427962623795957,
-   "retrievable": 0.7427962623795957,
-   "reread": 0.7752525252525252,
-   "goal": 0.68994708994709,
+   "carried": 0.6739077551953806,
+   "retrievable": 0.6739077551953806,
+   "reread": 0.66,
+   "goal": 0.6016025641025642,
    "constraints": NaN,
-   "tokens": 0.09920640916434044
+   "tokens": 0.09916701000320194
   },
   "truncate@0.2": {
-   "carried": 0.8334881630714963,
-   "retrievable": 0.8334881630714963,
-   "reread": 0.8282828282828283,
-   "goal": 0.7626984126984127,
+   "carried": 0.8364312461971325,
+   "retrievable": 0.8364312461971325,
+   "reread": 0.8,
+   "goal": 0.6737179487179487,
    "constraints": NaN,
-   "tokens": 0.19916674267140813
+   "tokens": 0.19873309465154781
   },
   "truncate@0.35": {
-   "carried": 0.888362501695835,
-   "retrievable": 0.888362501695835,
-   "reread": 0.8282828282828283,
-   "goal": 0.8111111111111111,
+   "carried": 0.8869956836177573,
+   "retrievable": 0.8869956836177573,
+   "reread": 0.81,
+   "goal": 0.7621794871794871,
    "constraints": NaN,
-   "tokens": 0.34902922904899863
+   "tokens": 0.347301190652277
   },
   "truncate@0.6": {
-   "carried": 0.9835185185185185,
-   "retrievable": 0.9835185185185185,
-   "reread": 0.9545454545454546,
-   "goal": 0.8693121693121693,
+   "carried": 0.9769083554869509,
+   "retrievable": 0.9769083554869509,
+   "reread": 0.93,
+   "goal": 0.9096153846153846,
    "constraints": NaN,
-   "tokens": 0.5988662702307735
+   "tokens": 0.5931196412045601
   },
   "random@0.1": {
-   "carried": 0.6498215981549315,
-   "retrievable": 0.6498215981549315,
-   "reread": 0.7815656565656566,
-   "goal": 0.6842592592592592,
+   "carried": 0.5192642038377824,
+   "retrievable": 0.5192642038377824,
+   "reread": 0.8166666666666668,
+   "goal": 0.6935897435897437,
    "constraints": NaN,
-   "tokens": 0.09894546539502577
+   "tokens": 0.09888820921665342
   },
   "random@0.2": {
-   "carried": 0.7848006545923212,
-   "retrievable": 0.7848006545923212,
-   "reread": 0.9242424242424242,
-   "goal": 0.8318783068783069,
+   "carried": 0.733112624090885,
+   "retrievable": 0.733112624090885,
+   "reread": 0.935,
+   "goal": 0.7751602564102563,
    "constraints": NaN,
-   "tokens": 0.19874340807714624
+   "tokens": 0.19847710580147873
   },
   "random@0.35": {
-   "carried": 0.8871203025369692,
-   "retrievable": 0.8871203025369692,
-   "reread": 0.9431818181818182,
-   "goal": 0.9227513227513228,
+   "carried": 0.8521360987581723,
+   "retrievable": 0.8521360987581723,
+   "reread": 0.99,
+   "goal": 0.9184294871794871,
    "constraints": NaN,
-   "tokens": 0.3483812707630607
+   "tokens": 0.3465314115908217
   },
   "random@0.6": {
-   "carried": 0.9519722561389229,
-   "retrievable": 0.9519722561389229,
-   "reread": 0.9848484848484849,
-   "goal": 0.9551587301587301,
+   "carried": 0.9473627802892016,
+   "retrievable": 0.9473627802892016,
+   "reread": 1.0,
+   "goal": 0.9735576923076923,
    "constraints": NaN,
-   "tokens": 0.5967643304173152
+   "tokens": 0.5914642335761462
   },
   "uniform@0.1": {
-   "carried": 0.26760446343779676,
+   "carried": 0.24491704133844602,
    "retrievable": 1.0,
-   "reread": 0.34595959595959597,
-   "goal": 0.2788359788359788,
+   "reread": 0.12,
+   "goal": 0.41923076923076924,
    "constraints": NaN,
-   "tokens": 0.08766505517654995
+   "tokens": 0.08856209604055403
   },
   "uniform@0.2": {
-   "carried": 0.38131257631257637,
+   "carried": 0.3372987900245425,
    "retrievable": 1.0,
-   "reread": 0.5656565656565657,
-   "goal": 0.3931216931216931,
+   "reread": 0.4033333333333334,
+   "goal": 0.5721153846153846,
    "constraints": NaN,
-   "tokens": 0.15194424336758924
+   "tokens": 0.149402466023418
   },
   "uniform@0.35": {
-   "carried": 0.6268850902184235,
+   "carried": 0.6005129430213042,
    "retrievable": 1.0,
-   "reread": 0.8156565656565657,
-   "goal": 0.5679894179894179,
+   "reread": 0.85,
+   "goal": 0.6778846153846154,
    "constraints": NaN,
-   "tokens": 0.25343272830797986
+   "tokens": 0.2515640397048423
   },
   "uniform@0.6": {
-   "carried": 0.7790566069732736,
+   "carried": 0.771783723522854,
    "retrievable": 1.0,
-   "reread": 0.9646464646464646,
-   "goal": 0.8298941798941799,
+   "reread": 0.95,
+   "goal": 0.8842948717948718,
    "constraints": NaN,
-   "tokens": 0.37499512781836647
+   "tokens": 0.3917255555453861
   },
   "gc_binary@0.1": {
-   "carried": 0.7177962623795957,
-   "retrievable": 0.7177962623795957,
-   "reread": 0.7449494949494949,
-   "goal": 0.68994708994709,
+   "carried": 0.6734132497008751,
+   "retrievable": 0.6734132497008751,
+   "reread": 0.67,
+   "goal": 0.6016025641025642,
    "constraints": NaN,
-   "tokens": 0.0991670334196754
+   "tokens": 0.0990968214587923
   },
   "gc_binary@0.2": {
-   "carried": 0.825154829738163,
-   "retrievable": 0.825154829738163,
-   "reread": 0.8131313131313131,
-   "goal": 0.7626984126984127,
+   "carried": 0.8056620154279017,
+   "retrievable": 0.8056620154279017,
+   "reread": 0.77,
+   "goal": 0.6737179487179487,
    "constraints": NaN,
-   "tokens": 0.19919807820801358
+   "tokens": 0.19873209766934624
   },
   "gc_binary@0.35": {
-   "carried": 0.8800291683625017,
-   "retrievable": 0.8800291683625017,
-   "reread": 0.8131313131313131,
-   "goal": 0.8111111111111111,
+   "carried": 0.8700726066946803,
+   "retrievable": 0.8700726066946803,
+   "reread": 0.8,
+   "goal": 0.7749999999999999,
    "constraints": NaN,
-   "tokens": 0.3490548004646688
+   "tokens": 0.34736707594708377
   },
   "gc_binary@0.6": {
-   "carried": 0.9751851851851852,
-   "retrievable": 0.9751851851851852,
-   "reread": 0.9393939393939394,
-   "goal": 0.8693121693121693,
+   "carried": 0.9599852785638738,
+   "retrievable": 0.9599852785638738,
+   "reread": 0.92,
+   "goal": 0.9096153846153846,
    "constraints": NaN,
-   "tokens": 0.5989089590516959
+   "tokens": 0.5930674363176617
   },
   "graded@0.1": {
-   "carried": 0.2208562271062271,
+   "carried": 0.5023171050428575,
    "retrievable": 1.0,
-   "reread": 0.33585858585858586,
-   "goal": 0.20158730158730157,
+   "reread": 0.8633333333333333,
+   "goal": 0.532051282051282,
    "constraints": NaN,
-   "tokens": 0.09767171117531095
+   "tokens": 0.09841969990986563
   },
   "graded@0.2": {
-   "carried": 0.4513037579704246,
+   "carried": 0.656846488702676,
    "retrievable": 1.0,
-   "reread": 0.7196969696969697,
-   "goal": 0.5023809523809524,
+   "reread": 0.9466666666666668,
+   "goal": 0.8298076923076922,
    "constraints": NaN,
-   "tokens": 0.19706034235736314
+   "tokens": 0.19789721911557687
   },
   "graded@0.35": {
-   "carried": 0.719510751594085,
+   "carried": 0.7949198181974102,
    "retrievable": 1.0,
-   "reread": 0.9191919191919191,
-   "goal": 0.7484126984126984,
+   "reread": 0.99,
+   "goal": 0.9259615384615384,
    "constraints": NaN,
-   "tokens": 0.3422421439255467
+   "tokens": 0.3422061557217582
   },
   "graded@0.6": {
-   "carried": 0.8434878239044906,
+   "carried": 0.895024154589372,
    "retrievable": 1.0,
-   "reread": 0.9848484848484849,
-   "goal": 0.9449735449735449,
+   "reread": 0.99,
+   "goal": 0.9663461538461539,
    "constraints": NaN,
-   "tokens": 0.56034149300204
+   "tokens": 0.5682443309874582
   },
   "graded-agent@0.1": {
-   "carried": 0.5262993487993488,
+   "carried": 0.581682980713081,
    "retrievable": 1.0,
-   "reread": 0.8914141414141414,
-   "goal": 0.5013227513227513,
+   "reread": 0.93,
+   "goal": 0.6967948717948718,
    "constraints": NaN,
-   "tokens": 0.09815867651436133
+   "tokens": 0.0985559399301189
   },
   "graded-agent@0.2": {
-   "carried": 0.7189791073124406,
+   "carried": 0.6822811283848073,
    "retrievable": 1.0,
-   "reread": 0.8964646464646464,
-   "goal": 0.7082010582010582,
+   "reread": 0.97,
+   "goal": 0.8778846153846154,
    "constraints": NaN,
-   "tokens": 0.1973000938354157
+   "tokens": 0.19811468965305953
   },
   "graded-agent@0.35": {
-   "carried": 0.7921338692172025,
+   "carried": 0.8008034106361865,
    "retrievable": 1.0,
-   "reread": 0.9393939393939394,
-   "goal": 0.8716931216931216,
+   "reread": 0.99,
+   "goal": 0.9682692307692308,
    "constraints": NaN,
-   "tokens": 0.3457031519847209
+   "tokens": 0.3449815211915075
   },
   "graded-agent@0.6": {
-   "carried": 0.8773344865011532,
+   "carried": 0.9072593831289484,
    "retrievable": 1.0,
-   "reread": 0.9848484848484849,
-   "goal": 0.9724867724867725,
+   "reread": 0.99,
+   "goal": 0.9759615384615384,
    "constraints": NaN,
-   "tokens": 0.5754309831286305
+   "tokens": 0.5778816029618655
   },
   "graded-pinL0@0.1": {
-   "carried": 0.09289835164835164,
+   "carried": 0.0919448425970165,
    "retrievable": 1.0,
-   "reread": 0.07323232323232323,
-   "goal": 0.9682539682539683,
+   "reread": 0.05,
+   "goal": 1.0,
    "constraints": NaN,
-   "tokens": 0.23046364158499474
+   "tokens": 0.24009573717884203
   },
   "graded-pinL0@0.2": {
-   "carried": 0.23698717948717948,
+   "carried": 0.20525455221107397,
    "retrievable": 1.0,
-   "reread": 0.3282828282828283,
-   "goal": 0.9761904761904762,
+   "reread": 0.29333333333333333,
+   "goal": 1.0,
    "constraints": NaN,
-   "tokens": 0.26242453986181036
+   "tokens": 0.26863887072047105
   },
   "graded-pinL0@0.35": {
-   "carried": 0.5787700108533442,
+   "carried": 0.5284799759883372,
    "retrievable": 1.0,
-   "reread": 0.6919191919191919,
+   "reread": 0.75,
    "goal": 1.0,
    "constraints": NaN,
-   "tokens": 0.36118752921376207
+   "tokens": 0.3618787461672977
   },
   "graded-pinL0@0.6": {
-   "carried": 0.8264507868674535,
+   "carried": 0.8429362425014599,
    "retrievable": 1.0,
-   "reread": 0.9545454545454546,
+   "reread": 0.99,
    "goal": 1.0,
    "constraints": NaN,
-   "tokens": 0.56395136457012
+   "tokens": 0.5599035482269151
+  },
+  "graded+llmsum@0.1": {
+   "carried": 0.5517480122998517,
+   "retrievable": 1.0,
+   "reread": 0.8733333333333333,
+   "goal": 0.608974358974359,
+   "constraints": NaN,
+   "tokens": 0.09845421943056293
+  },
+  "graded+llmsum@0.2": {
+   "carried": 0.7138941771717692,
+   "retrievable": 1.0,
+   "reread": 0.99,
+   "goal": 0.8266025641025642,
+   "constraints": NaN,
+   "tokens": 0.19771825573840673
+  },
+  "graded+llmsum@0.35": {
+   "carried": 0.8898932542745251,
+   "retrievable": 1.0,
+   "reread": 0.99,
+   "goal": 0.9259615384615384,
+   "constraints": NaN,
+   "tokens": 0.34378319961991316
+  },
+  "graded+llmsum@0.6": {
+   "carried": 0.949453734671126,
+   "retrievable": 1.0,
+   "reread": 0.99,
+   "goal": 0.9673076923076922,
+   "constraints": NaN,
+   "tokens": 0.5717007547571491
+  },
+  "graded-agent+llmsum@0.1": {
+   "carried": 0.6921628668618636,
+   "retrievable": 1.0,
+   "reread": 0.92,
+   "goal": 0.808974358974359,
+   "constraints": NaN,
+   "tokens": 0.0986950510776664
+  },
+  "graded-agent+llmsum@0.2": {
+   "carried": 0.7982923950816927,
+   "retrievable": 1.0,
+   "reread": 0.97,
+   "goal": 0.9259615384615384,
+   "constraints": NaN,
+   "tokens": 0.1982358785843625
+  },
+  "graded-agent+llmsum@0.35": {
+   "carried": 0.892760197810365,
+   "retrievable": 1.0,
+   "reread": 0.99,
+   "goal": 0.9778846153846155,
+   "constraints": NaN,
+   "tokens": 0.3456872954267395
+  },
+  "graded-agent+llmsum@0.6": {
+   "carried": 0.9572649572649573,
+   "retrievable": 1.0,
+   "reread": 0.99,
+   "goal": 0.9807692307692307,
+   "constraints": NaN,
+   "tokens": 0.5807041212924408
   }
  },
  "n_trajectories": 60,
- "n_cuts": 90,
- "carried_per_cut": 4.655555555555556,
- "prefix_tokens": 8407.566666666668
+ "n_cuts": 65,
+ "carried_per_cut": 5.3076923076923075,
+ "prefix_tokens": 7837.723076923077
 }
