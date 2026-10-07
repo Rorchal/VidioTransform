@@ -155,7 +155,7 @@ def allocate(
                     stack.append(e.dst)
         return plan
 
-    def delta_of(plan: dict[str, int]) -> int:
+    def delta_of(plan: dict[str, int]) -> tuple[int, list[list[int]]]:
         # only the stub runs touched by the plan can change cost
         segs = []
         for nid in plan:
@@ -175,7 +175,20 @@ def allocate(
             else:
                 merged.append([lo, hi])
         new_level = {**level, **plan}
-        return sum(seg_cost(lo, hi, new_level) - seg_cost(lo, hi, level) for lo, hi in merged)
+        return sum(seg_cost(lo, hi, new_level) - seg_cost(lo, hi, level) for lo, hi in merged), merged
+
+    # A candidate's plan, token delta and priority stay valid until a promotion
+    # touches a node in its plan or a stub run its delta was computed over, so
+    # they are cached and only those candidates are re-evaluated. Same choices as
+    # re-evaluating everything every round (the tests check that), far fewer
+    # evaluations on graphs with hundreds of nodes.
+    cache: dict[str, tuple] = {}
+
+    def evaluate(nid: str) -> tuple:
+        plan = plan_for(nid)
+        d, segs = delta_of(plan)
+        prio = score.get(nid, 0.0) * gain_of(nid, level[nid]) / max(d, 1)
+        return (prio, g.nodes[nid].seq), plan, d, segs
 
     def promote_phase(candidates: set[str]) -> None:
         nonlocal used
@@ -184,19 +197,24 @@ def allocate(
             for nid in candidates:
                 if nid in fixed or level[nid] == L0:
                     continue
-                plan = plan_for(nid)
-                d = delta_of(plan)
+                entry = cache.get(nid)
+                if entry is None:
+                    entry = cache[nid] = evaluate(nid)
+                key, plan, d, segs = entry
                 if used + d > budget:
                     continue
-                prio = score.get(nid, 0.0) * gain_of(nid, level[nid]) / max(d, 1)
-                key = (prio, g.nodes[nid].seq)
                 if best is None or key > best[0]:
-                    best = (key, plan, d)
+                    best = entry
             if best is None:
                 return
-            _, plan, d = best
+            _, plan, d, _ = best
+            changed = set(plan)
+            changed_pos = {pos[n] for n in changed}
             level.update(plan)
             used += d
+            for cid in [c for c, (_, cplan, _, csegs) in cache.items()
+                        if changed & cplan.keys() or any(lo <= p <= hi for lo, hi in csegs for p in changed_pos)]:
+                del cache[cid]
 
     # phase 1: nodes the goal reaches, by value density; phase 2: leftover budget
     # goes to unreachable nodes (recency floor only), most recent first

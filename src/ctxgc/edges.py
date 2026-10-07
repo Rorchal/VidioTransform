@@ -4,8 +4,9 @@ the gap between them and the oracle edges is measured by the eval."""
 
 from __future__ import annotations
 
+import math
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 from .model import Edge, EdgeType, Graph, Role
 
@@ -127,4 +128,62 @@ def detect_rejects(g: Graph, lookback: int = 12) -> int:
                 g.add_edge(Edge(node.id, cand.id, EdgeType.REJECTS, 0.3, source="symbolic"))
                 added += 1
                 break
+    return added
+
+
+# --------------------------------------------------------------------------- lexical edges
+
+LEX_STOP = set("""a an the and or but if then than so of to in on at by for from with without into onto over under
+about as is are was were be been being am do does did done have has had having will would shall should can could may
+might must i me my mine you your yours he him his she her hers it its we us our ours they them their theirs this that
+these those there here what which who whom whose when where why how all any both each few more most other some such no
+nor not only own same too very just also ever never now again further once because while during before after above
+below between through up down out off again please tell know think like want need get got make made say said one two
+new old much many lot lots thing things time times way ways day days yes okay ok hi hello thanks thank""".split())
+LEX_WORD_RE = re.compile(r"[a-z][a-z0-9'\-]{2,}")
+
+
+def content_words(text: str) -> set[str]:
+    return {w for w in LEX_WORD_RE.findall(text.lower()) if w not in LEX_STOP}
+
+
+def add_lexical_edges(g: Graph, query_ids: list[str], top_k: int = 8, min_score: float = 0.1,
+                      max_strength: float = 0.9) -> int:
+    """Retrieval-style edges for prose: from a query node (the latest ask) to the
+    earlier nodes sharing its rarer content words. Score = idf-weighted share of
+    the query's words found in the node; the top_k nodes above min_score get a
+    REFERS edge of strength 0.3 + score (capped). Model-free; what the symbolic
+    identifier edges are for code, this is for chat."""
+    nodes = g.ordered()
+    words = {n.id: content_words(n.text) for n in nodes}
+    df: Counter = Counter()
+    for ws in words.values():
+        df.update(ws)
+    n_docs = len(nodes)
+
+    def idf(w: str) -> float:
+        return math.log((n_docs + 1) / (df[w] + 0.5))
+
+    added = 0
+    for qid in query_ids:
+        if qid not in g.nodes:
+            continue
+        qw = words[qid]
+        qnorm = sum(idf(w) for w in qw)
+        if not qw or qnorm <= 0:
+            continue
+        qseq = g.nodes[qid].seq
+        scored = []
+        for n in nodes:
+            if n.seq >= qseq:
+                continue
+            common = qw & words[n.id]
+            if not common:
+                continue
+            score = sum(idf(w) for w in common) / qnorm
+            if score >= min_score:
+                scored.append((score, n.id))
+        for score, nid in sorted(scored, reverse=True)[:top_k]:
+            g.add_edge(Edge(qid, nid, EdgeType.REFERS, min(max_strength, 0.3 + score), source="lexical"))
+            added += 1
     return added
