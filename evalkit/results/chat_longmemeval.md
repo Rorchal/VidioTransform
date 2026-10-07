@@ -12,22 +12,22 @@
 | random | 0.11 | 0.17 | 0.25 | 0.34 |
 | uniform | 0.10 | 0.18 | 0.37 | 0.38 |
 | gc_binary | 0.13 | 0.23 | 0.28 | 0.35 |
-| graded | 0.17 | 0.38 | 0.42 | 0.45 |
-| graded+lex | 0.23 | 0.38 | 0.45 | 0.45 |
+| graded | 0.20 | 0.38 | 0.42 | 0.45 |
+| graded+lex | 0.25 | 0.38 | 0.45 | 0.45 |
 | graded-agent+lex | 0.30 | 0.37 | 0.42 | 0.45 |
 
-## Labelled evidence turns kept verbatim or as a paragraph summary (L0/L1)
+## Labelled evidence turns whose content words all survive (verbatim or a faithful summary)
 
 | method | 10% | 20% | 35% | 60% |
 |---|---|---|---|---|
 | full | 1.00 | 1.00 | 1.00 | 1.00 |
 | truncate | 0.17 | 0.30 | 0.45 | 0.65 |
 | random | 0.12 | 0.24 | 0.37 | 0.68 |
-| uniform | 0.00 | 0.03 | 0.95 | 1.00 |
+| uniform | 0.12 | 0.34 | 0.85 | 0.86 |
 | gc_binary | 0.17 | 0.30 | 0.45 | 0.65 |
-| graded | 0.33 | 0.88 | 1.00 | 1.00 |
-| graded+lex | 0.39 | 0.91 | 1.00 | 1.00 |
-| graded-agent+lex | 0.49 | 0.92 | 1.00 | 1.00 |
+| graded | 0.42 | 0.85 | 0.92 | 0.98 |
+| graded+lex | 0.54 | 0.85 | 0.98 | 1.00 |
+| graded-agent+lex | 0.56 | 0.86 | 0.92 | 0.98 |
 
 ## Labelled evidence turns kept verbatim (L0)
 
@@ -38,9 +38,9 @@
 | random | 0.12 | 0.24 | 0.37 | 0.68 |
 | uniform | 0.00 | 0.00 | 0.00 | 0.00 |
 | gc_binary | 0.17 | 0.30 | 0.45 | 0.65 |
-| graded | 0.03 | 0.54 | 0.92 | 0.98 |
-| graded+lex | 0.06 | 0.60 | 0.98 | 1.00 |
-| graded-agent+lex | 0.22 | 0.68 | 0.92 | 0.98 |
+| graded | 0.04 | 0.54 | 0.92 | 0.98 |
+| graded+lex | 0.09 | 0.60 | 0.98 | 1.00 |
+| graded-agent+lex | 0.31 | 0.72 | 0.92 | 0.98 |
 
 ## Retrievable (answer present, or a stub for an evidence turn survives)
 
@@ -81,15 +81,15 @@
 | graded+lex | 0.80 | 0.20 | 0.30 | 0.00 | 0.70 | 0.30 |
 | graded-agent+lex | 0.80 | 0.20 | 0.20 | 0.00 | 0.70 | 0.30 |
 
-## Evidence at L0/L1 by question type @ 20% budget
+## Evidence content words survive by question type @ 20% budget
 
 | method | knowledge-update | multi-session | single-session-assistant | single-session-preference | single-session-user | temporal-reasoning |
 |---|---|---|---|---|---|---|
 | full | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
 | truncate | 0.39 | 0.13 | 0.30 | 0.40 | 0.44 | 0.17 |
 | random | 0.22 | 0.29 | 0.17 | 0.31 | 0.18 | 0.25 |
-| uniform | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.20 |
+| uniform | 0.46 | 0.31 | 0.13 | 0.31 | 0.37 | 0.47 |
 | gc_binary | 0.39 | 0.13 | 0.30 | 0.40 | 0.44 | 0.17 |
-| graded | 0.96 | 1.00 | 0.40 | 0.98 | 0.94 | 0.98 |
-| graded+lex | 0.96 | 1.00 | 0.60 | 0.98 | 0.94 | 0.98 |
-| graded-agent+lex | 1.00 | 0.91 | 0.70 | 0.98 | 1.00 | 0.97 |
+| graded | 0.97 | 1.00 | 0.20 | 0.98 | 0.94 | 0.98 |
+| graded+lex | 1.00 | 1.00 | 0.20 | 0.98 | 0.94 | 0.98 |
+| graded-agent+lex | 0.98 | 0.98 | 0.20 | 1.00 | 1.00 | 0.98 |
