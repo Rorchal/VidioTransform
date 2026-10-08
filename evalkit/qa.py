@@ -140,7 +140,7 @@ def run(cases: list[dict], methods: list[str], budgets: list[float], llm=None, d
     if dry_run:
         est_in = int(est_in * TOKEN_SAFETY)
         est = {"input_tokens": est_in, "output_tokens": est_out,
-               "cny": {k: round((est_in * p["in"] + est_out * p["out"]) / 1e6 * CNY_PER_USD, 2) for k, p in PRICE.items()}}
+               "cny": {k: round((est_in * p["in"] + est_out * p["out"]) / 1e6 * CNY_PER_USD, 4) for k, p in PRICE.items()}}
     return {"n_cases": len(cases), "methods": methods, "budgets": budgets, "types": types, "table": table,
             "rows": rows, "estimate": est, "dry_run": dry_run}
 
@@ -150,7 +150,7 @@ def to_markdown(s: dict, title: str) -> str:
     if s["dry_run"]:
         e = s["estimate"]
         lines += [f"Dry run: ≈ {e['input_tokens']/1e6:.1f}M input tokens, {e['output_tokens']/1e3:.0f}k output tokens; "
-                  f"DeepSeek Flash ≈ ¥{e['cny']['off_peak']} off-peak / ¥{e['cny']['peak']} peak.\n"]
+                  f"DeepSeek Flash ≈ ¥{e['cny']['off_peak']:.2f} off-peak / ¥{e['cny']['peak']:.2f} peak.\n"]
     keys = [k for k in s["table"]]
     lines += ["| context | avg tokens | " + (" | ".join(["accuracy"] + s["types"]) if not s["dry_run"] else "") + " |",
               "|---|---|" + ("---|" * (1 + len(s["types"])) if not s["dry_run"] else "")]
