@@ -2306,3 +2306,87 @@
 {"k": "2528c0218dc0e89293bfa41c6a174425", "v": {"l1": "In a monotonicity check for b in range(base, base + 80), the code asserts that once a node first gets lv[\"dec\"] < L3 (first_dec), lv[\"chat\"] == L3, and that increasing budget never demotes: lv[\"dec\"] <= prev[\"dec\"] and lv[\"log\"] <= prev[\"log\"] and lv[\"new\"] <= prev[\"new\"]. assert first_dec is not None; docs patched.", "l2": "The monotonicity assertions held over the 80-budget sweep and docs were patched."}}
 {"k": "ff2e7308611ba9268eb4cde5927b7a58", "v": {"l1": "AssertionError at line 13, \"1 failed, 28 passed in 0.80s\". Results for nebius/SWE-agent-trajectories (60 trajectories, 65 cut points, prefix ≈ 7838 tokens, ≈ 5 carried identifiers per cut) and Claude Code (1 trajectory, 2 cut points, prefix ≈ 77411 tokens, ≈ 128 carried identifiers per cut): graded, graded-agent, graded-pinL0, graded+llmsum, graded-agent+llmsum all Retrievable 1.00 at every budget; full 1.00 across all tables; graded-pinL0 carried identifiers drops to 0.09 at 10%, file paths to 0.05, tokens used 0.24. deepseek:deepseek-flash:off cache hits 210, misses 314, calls 317, prompt_tokens 422728, completion_tokens 54599, retries 3, truncated 0; balance CNY 6.70.", "l2": "The graded family of context-compression methods stays 100% retrievable at all budgets, though graded-pinL0 loses carried identifiers and file paths at 10% budget, while the deepseek summary run reports 317 calls, 210 cache hits, 314 misses and a CNY 6.70 balance."}}
 {"k": "8b80ea50d760cb98782f2f2ada6c539b", "v": {"l1": "The test run shows \"29 passed in 0.84s\". Modified files: README.md, docs/design-notes.md, evalkit/real.py, evalkit/results/llm_cache.jsonl, real_claude_code.md, real_swe_agent.json, real_swe_agent.md, summary.md, src/ctxgc/allocate.py, src/ctxgc/compress.py, src/ctxgc/llm.py, tests/test_allocate.py, tests/test_real.py. Branch 'dev' set up to track 'origin/dev'. Commit 04158f1: \"Defer pinned-node promotion, model summaries for tool results on real trajectories\".", "l2": "All 29 tests passed in 0.84s, with the listed files modified and branch 'dev' tracking 'origin/dev' at commit 04158f1."}}
+{"k": "6a37b4f4d3a1412433720e0af9fe220c", "v": {"answer": "Kansas City Masterpiece BBQ sauce"}}
+{"k": "3df3e763ace54fa193f5fe33373f5520", "v": {"answer": "Kansas City Masterpiece BBQ sauce"}}
+{"k": "fc643e997d6db9d80934d36f693e056e", "v": {"answer": "Kansas City Masterpiece BBQ sauce"}}
+{"k": "d1852cbd5e5e5e175e58a3d6bed61570", "v": {"answer": "Kansas City Masterpiece BBQ sauce"}}
+{"k": "965b5182dfbf41e41a1ec266deda70de", "v": {"correct": true}}
+{"k": "965b5182dfbf41e41a1ec266deda70de", "v": {"correct": true}}
+{"k": "965b5182dfbf41e41a1ec266deda70de", "v": {"correct": true}}
+{"k": "965b5182dfbf41e41a1ec266deda70de", "v": {"correct": true}}
+{"k": "c2bbb2c4f870bb2b32058cbc78196889", "v": {"answer": "Kansas City Masterpiece BBQ sauce"}}
+{"k": "3b5677e917d991f44c343c553523a1a7", "v": {"answer": "Kansas City Masterpiece BBQ sauce"}}
+{"k": "3b5677e917d991f44c343c553523a1a7", "v": {"answer": "Kansas City Masterpiece BBQ sauce"}}
+{"k": "48131cc9eb3b36a254e513405c63ed93", "v": {"answer": "132 points"}}
+{"k": "34441d481277eb7891fe1ac4a73b43f5", "v": {"answer": "132 points"}}
+{"k": "ea4e690b2225c5255fdfb1ebf3546824", "v": {"answer": "132 points"}}
+{"k": "f3201d2aaafe634bda4528926a3a645b", "v": {"answer": "132 points"}}
+{"k": "fa0c7f6d4a7dfabe7a9a301457c42880", "v": {"correct": true}}
+{"k": "fa0c7f6d4a7dfabe7a9a301457c42880", "v": {"correct": true}}
+{"k": "fa0c7f6d4a7dfabe7a9a301457c42880", "v": {"correct": true}}
+{"k": "fa0c7f6d4a7dfabe7a9a301457c42880", "v": {"correct": true}}
+{"k": "fc3feaa662276527b32126cf8a0c7f2c", "v": {"answer": "132 points"}}
+{"k": "4e5a8dbbe7d22abda00c453fe84d1dcd", "v": {"answer": "132 points"}}
+{"k": "b519a84e94c1531df896619781e9a107", "v": {"answer": "132 points"}}
+{"k": "21a8e316cd85dd1561ea25f6a476291f", "v": {"answer": "You mentioned finishing five issues so far."}}
+{"k": "786af4663ea12f4d187d8adee63595af", "v": {"answer": "Five issues"}}
+{"k": "303611edb41ee6830807bc588171e55d", "v": {"answer": "Five"}}
+{"k": "b26c6e52d67b0ad3aaf054619cc33166", "v": {"answer": "Five issues"}}
+{"k": "6a0a5368395972c6da1e170f30304a46", "v": {"correct": true}}
+{"k": "5f22c7f4c6e7e906401e5c3634a0116e", "v": {"correct": true}}
+{"k": "5f22c7f4c6e7e906401e5c3634a0116e", "v": {"correct": true}}
+{"k": "3a2da20776eba92850bc703fe60ef254", "v": {"correct": true}}
+{"k": "f520dc38e579f5300360b1babc8f306e", "v": {"answer": "Five issues, and you were currently on your fourth at one point before finishing your fifth."}}
+{"k": "43e014f2645447791136bf09aad1dda6", "v": {"answer": "Five issues"}}
+{"k": "a6f8561cddf8d877eff2e362704e4797", "v": {"answer": "Five issues"}}
+{"k": "47147e7e17b0eedc6455fbb25e139f9a", "v": {"correct": true}}
+{"k": "20eb2c3ddf24dde90652190d43c2f06d", "v": {"answer": "not in history"}}
+{"k": "7c13d6566d5960fe341be40207f0b60b", "v": {"answer": "7"}}
+{"k": "ed278ab63317a8088036e19886f34b6b", "v": {"answer": "Seven short stories in three months."}}
+{"k": "da0b78c92bd78def68527ec17c617877", "v": {"correct": false}}
+{"k": "c376e377581d89789154713d15d3bde3", "v": {"answer": "7"}}
+{"k": "9b84d4e2951dbc0b54c2b6e7763b94b4", "v": {"correct": true}}
+{"k": "ba049ee4b9eb0808bd7f828e3e0edbf8", "v": {"correct": true}}
+{"k": "ba049ee4b9eb0808bd7f828e3e0edbf8", "v": {"correct": true}}
+{"k": "ba049ee4b9eb0808bd7f828e3e0edbf8", "v": {"correct": true}}
+{"k": "0a72971c414502949c8e8c1cd8338ecb", "v": {"answer": "7"}}
+{"k": "63cdf72dda2af1b68d597d7093f7ff0d", "v": {"answer": "You have completed 7 short stories since you started writing regularly."}}
+{"k": "f28742024722813b4945cadbd90063b0", "v": {"correct": true}}
+{"k": "ea8b5551c7f8e496f485b162f81b07ac", "v": {"answer": "under your bed"}}
+{"k": "3e9a8aa6ef048345cea4fb023355621a", "v": {"answer": "In a shoe rack in your closet"}}
+{"k": "d4af11d203ee3b1dda57203f55ef558b", "v": {"answer": "in a shoe rack in my closet"}}
+{"k": "7cae6fd55d5d73c1be9f91d56f7f7075", "v": {"correct": true}}
+{"k": "2f80aceee15c5e6f7229f1d7df9c5153", "v": {"correct": false}}
+{"k": "ac1304b27b71258c04ec48932224a8ae", "v": {"answer": "under my bed"}}
+{"k": "40f95e0e93b9c88ae0a8aac679d41694", "v": {"correct": true}}
+{"k": "bca5fe88d494e639f7dbc9ff8d24c37a", "v": {"correct": false}}
+{"k": "b2d4110b15ec530725cf28dc9d5bd976", "v": {"answer": "under your bed"}}
+{"k": "1395d91ed61526bfd2089bc597cde30b", "v": {"answer": "under your bed"}}
+{"k": "389f2f34c0b0780e2ed5f5bac462dcb2", "v": {"answer": "under your bed"}}
+{"k": "47b7cf4e8397a4bda63c6757029942a1", "v": {"answer": "7:30 am"}}
+{"k": "431aaaad9ed133b1b2384406cb58241e", "v": {"answer": "8:30 am"}}
+{"k": "99201b14b46ff181dbb434f026d0b0c8", "v": {"answer": "7:30 am"}}
+{"k": "7d22d826e46d2d48f1f493ee8db6726a", "v": {"answer": "7:30 am"}}
+{"k": "206d886b0335e74a2aa4a3b28ed3d8fa", "v": {"correct": true}}
+{"k": "d208bdbf5005ea5943dd9bc4d224e174", "v": {"correct": false}}
+{"k": "206d886b0335e74a2aa4a3b28ed3d8fa", "v": {"correct": true}}
+{"k": "206d886b0335e74a2aa4a3b28ed3d8fa", "v": {"correct": true}}
+{"k": "2b67f746470baa2422be85929c5c8d73", "v": {"answer": "7:30 am"}}
+{"k": "33f6aea7b00d82c37fe159cf891453a2", "v": {"answer": "8:30 am"}}
+{"k": "cbc9bc93eec09f7dda56bb8dcc530c8f", "v": {"answer": "7:30 am"}}
+{"k": "491076b1f07169625faca254bcceb9a4", "v": {"answer": "$420"}}
+{"k": "5b21a6e3d6b891db749be6d5d60e74d8", "v": {"answer": "$420"}}
+{"k": "241d2740c17983ea964d69817e364d44", "v": {"answer": "$420"}}
+{"k": "fb67204382562ee1fba4ec11e999a888", "v": {"answer": "$420"}}
+{"k": "147e2e44856a294efe6540c2d9819053", "v": {"correct": true}}
+{"k": "147e2e44856a294efe6540c2d9819053", "v": {"correct": true}}
+{"k": "147e2e44856a294efe6540c2d9819053", "v": {"correct": true}}
+{"k": "147e2e44856a294efe6540c2d9819053", "v": {"correct": true}}
+{"k": "847bc979f71b2065d03e408e32eaf7f0", "v": {"answer": "$420"}}
+{"k": "185b7b1096ed1b1f2139d70ea3bb6cca", "v": {"answer": "$420"}}
+{"k": "dc8d430213a3678895a7e82a0ec76f90", "v": {"answer": "$420"}}
+{"k": "58207a5985f977e93485bca99745d9b6", "v": {"answer": "Four"}}
+{"k": "a17d1f5459bbf1b3d4a0dec365cfe85f", "v": {"answer": "four"}}
+{"k": "90d6544470e93e9ffe9769d4eabe9e3b", "v": {"answer": "You mentioned trying four different Korean restaurants in your city so far."}}
+{"k": "8f356f61ab74a2c3956ea14b0c80e9bf", "v": {"answer": "Four"}}
+{"k": "1b020d161349b74ca9120cd332ee87a2", "v": {"correct": true}}
