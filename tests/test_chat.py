@@ -143,3 +143,19 @@ def test_allocator_is_deterministic_and_exact_on_synthetic_graphs():
                 if run:
                     parts.append(render_node(run[0], L3, v[run[0].id]) if len(run) == 1 else group_stub(run))
                 assert sum(count(p) for p in parts) == used <= int(full * frac) or frac == 0.1
+
+
+def test_qa_dry_run_builds_contexts_and_estimates_cost(tmp_path):
+    from evalkit.qa import contexts_for, run as qa_run, to_markdown as qa_md
+    data = [_lme_instance("q1", "single-session-user", "What degree did I graduate with?", "Business Administration")]
+    p = tmp_path / "lme.json"
+    p.write_text(json.dumps(data))
+    cases = longmemeval_cases(p, n=1)
+    ctxs = contexts_for(cases[0], ["truncate", "graded"], [0.5], ExtractiveSummarizer())
+    assert set(ctxs) == {("full", 1.0), ("truncate", 0.5), ("graded", 0.5)}
+    # the question is asked in the prompt, not repeated inside the history
+    assert "What degree did I graduate with?" not in ctxs[("full", 1.0)]
+    assert "Business Administration" in ctxs[("full", 1.0)]
+    s = qa_run(cases, ["truncate", "graded"], [0.5], dry_run=True, verbose=False)
+    assert s["estimate"]["input_tokens"] > 0 and s["estimate"]["cny"]["peak"] > s["estimate"]["cny"]["off_peak"]
+    assert "Dry run" in qa_md(s, "t") and "accuracy" not in s["table"]["full@1.0"]
