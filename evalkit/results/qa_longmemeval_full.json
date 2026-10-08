@@ -1,0 +1,94 @@
+{
+ "n_cases": 30,
+ "methods": [
+  "truncate",
+  "graded",
+  "graded-agent+lex"
+ ],
+ "budgets": [
+  0.2,
+  0.35
+ ],
+ "types": [
+  "knowledge-update",
+  "multi-session",
+  "single-session-assistant",
+  "single-session-preference",
+  "single-session-user",
+  "temporal-reasoning"
+ ],
+ "table": {
+  "full@1.0": {
+   "context_tokens": 126085.36666666667,
+   "accuracy": 0.4666666666666667,
+   "accuracy:knowledge-update": 0.6,
+   "accuracy:multi-session": 0.2,
+   "accuracy:single-session-assistant": 1.0,
+   "accuracy:single-session-preference": 0.0,
+   "accuracy:single-session-user": 0.6,
+   "accuracy:temporal-reasoning": 0.4
+  },
+  "truncate@0.2": {
+   "context_tokens": 25178.933333333334,
+   "accuracy": 0.23333333333333334,
+   "accuracy:knowledge-update": 0.6,
+   "accuracy:multi-session": 0.0,
+   "accuracy:single-session-assistant": 0.0,
+   "accuracy:single-session-preference": 0.2,
+   "accuracy:single-session-user": 0.4,
+   "accuracy:temporal-reasoning": 0.2
+  },
+  "truncate@0.35": {
+   "context_tokens": 44077.26666666667,
+   "accuracy": 0.4,
+   "accuracy:knowledge-update": 1.0,
+   "accuracy:multi-session": 0.0,
+   "accuracy:single-session-assistant": 0.4,
+   "accuracy:single-session-preference": 0.4,
+   "accuracy:single-session-user": 0.6,
+   "accuracy:temporal-reasoning": 0.0
+  },
+  "graded@0.2": {
+   "context_tokens": 25098.7,
+   "accuracy": 0.4666666666666667,
+   "accuracy:knowledge-update": 0.8,
+   "accuracy:multi-session": 0.2,
+   "accuracy:single-session-assistant": 0.4,
+   "accuracy:single-session-preference": 0.2,
+   "accuracy:single-session-user": 0.6,
+   "accuracy:temporal-reasoning": 0.6
+  },
+  "graded@0.35": {
+   "context_tokens": 43898.933333333334,
+   "accuracy": 0.5333333333333333,
+   "accuracy:knowledge-update": 0.8,
+   "accuracy:multi-session": 0.2,
+   "accuracy:single-session-assistant": 0.8,
+   "accuracy:single-session-preference": 0.2,
+   "accuracy:single-session-user": 0.6,
+   "accuracy:temporal-reasoning": 0.6
+  },
+  "graded-agent+lex@0.2": {
+   "context_tokens": 25096.9,
+   "accuracy": 0.3333333333333333,
+   "accuracy:knowledge-update": 0.8,
+   "accuracy:multi-session": 0.2,
+   "accuracy:single-session-assistant": 0.4,
+   "accuracy:single-session-preference": 0.0,
+   "accuracy:single-session-user": 0.6,
+   "accuracy:temporal-reasoning": 0.0
+  },
+  "graded-agent+lex@0.35": {
+   "context_tokens": 43928.96666666667,
+   "accuracy": 0.4666666666666667,
+   "accuracy:knowledge-update": 0.8,
+   "accuracy:multi-session": 0.0,
+   "accuracy:single-session-assistant": 1.0,
+   "accuracy:single-session-preference": 0.4,
+   "accuracy:single-session-user": 0.6,
+   "accuracy:temporal-reasoning": 0.0
+  }
+ },
+ "estimate": null,
+ "dry_run": false
+}
