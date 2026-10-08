@@ -1,0 +1,94 @@
+{
+ "n_cases": 120,
+ "methods": [
+  "truncate",
+  "graded",
+  "graded-agent+lex"
+ ],
+ "budgets": [
+  0.2,
+  0.35
+ ],
+ "types": [
+  "knowledge-update",
+  "multi-session",
+  "single-session-assistant",
+  "single-session-preference",
+  "single-session-user",
+  "temporal-reasoning"
+ ],
+ "table": {
+  "full@1.0": {
+   "context_tokens": 30982.966666666667,
+   "accuracy": 0.625,
+   "accuracy:knowledge-update": 0.75,
+   "accuracy:multi-session": 0.55,
+   "accuracy:single-session-assistant": 0.95,
+   "accuracy:single-session-preference": 0.2,
+   "accuracy:single-session-user": 0.9,
+   "accuracy:temporal-reasoning": 0.4
+  },
+  "truncate@0.2": {
+   "context_tokens": 6172.433333333333,
+   "accuracy": 0.23333333333333334,
+   "accuracy:knowledge-update": 0.65,
+   "accuracy:multi-session": 0.05,
+   "accuracy:single-session-assistant": 0.3,
+   "accuracy:single-session-preference": 0.05,
+   "accuracy:single-session-user": 0.2,
+   "accuracy:temporal-reasoning": 0.15
+  },
+  "truncate@0.35": {
+   "context_tokens": 10817.808333333332,
+   "accuracy": 0.31666666666666665,
+   "accuracy:knowledge-update": 0.8,
+   "accuracy:multi-session": 0.15,
+   "accuracy:single-session-assistant": 0.4,
+   "accuracy:single-session-preference": 0.0,
+   "accuracy:single-session-user": 0.35,
+   "accuracy:temporal-reasoning": 0.2
+  },
+  "graded@0.2": {
+   "context_tokens": 6133.966666666666,
+   "accuracy": 0.5083333333333333,
+   "accuracy:knowledge-update": 0.65,
+   "accuracy:multi-session": 0.45,
+   "accuracy:single-session-assistant": 0.45,
+   "accuracy:single-session-preference": 0.15,
+   "accuracy:single-session-user": 0.95,
+   "accuracy:temporal-reasoning": 0.4
+  },
+  "graded@0.35": {
+   "context_tokens": 10683.641666666666,
+   "accuracy": 0.5583333333333333,
+   "accuracy:knowledge-update": 0.7,
+   "accuracy:multi-session": 0.5,
+   "accuracy:single-session-assistant": 0.7,
+   "accuracy:single-session-preference": 0.15,
+   "accuracy:single-session-user": 0.9,
+   "accuracy:temporal-reasoning": 0.4
+  },
+  "graded-agent+lex@0.2": {
+   "context_tokens": 6141.375,
+   "accuracy": 0.49166666666666664,
+   "accuracy:knowledge-update": 0.65,
+   "accuracy:multi-session": 0.65,
+   "accuracy:single-session-assistant": 0.3,
+   "accuracy:single-session-preference": 0.0,
+   "accuracy:single-session-user": 0.95,
+   "accuracy:temporal-reasoning": 0.4
+  },
+  "graded-agent+lex@0.35": {
+   "context_tokens": 10718.225,
+   "accuracy": 0.6333333333333333,
+   "accuracy:knowledge-update": 0.75,
+   "accuracy:multi-session": 0.65,
+   "accuracy:single-session-assistant": 0.75,
+   "accuracy:single-session-preference": 0.25,
+   "accuracy:single-session-user": 0.95,
+   "accuracy:temporal-reasoning": 0.45
+  }
+ },
+ "estimate": null,
+ "dry_run": false
+}
