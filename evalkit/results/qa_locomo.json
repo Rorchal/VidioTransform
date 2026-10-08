@@ -1,0 +1,78 @@
+{
+ "n_cases": 50,
+ "methods": [
+  "truncate",
+  "graded",
+  "graded-agent+lex"
+ ],
+ "budgets": [
+  0.2,
+  0.35
+ ],
+ "types": [
+  "cat1",
+  "cat2",
+  "cat3",
+  "cat4"
+ ],
+ "table": {
+  "full@1.0": {
+   "context_tokens": 24273.1,
+   "accuracy": 0.76,
+   "accuracy:cat1": 0.6666666666666666,
+   "accuracy:cat2": 0.7,
+   "accuracy:cat3": 0.4,
+   "accuracy:cat4": 0.9130434782608695
+  },
+  "truncate@0.2": {
+   "context_tokens": 4811.74,
+   "accuracy": 0.14,
+   "accuracy:cat1": 0.16666666666666666,
+   "accuracy:cat2": 0.1,
+   "accuracy:cat3": 0.0,
+   "accuracy:cat4": 0.17391304347826086
+  },
+  "truncate@0.35": {
+   "context_tokens": 8432.48,
+   "accuracy": 0.24,
+   "accuracy:cat1": 0.16666666666666666,
+   "accuracy:cat2": 0.3,
+   "accuracy:cat3": 0.0,
+   "accuracy:cat4": 0.30434782608695654
+  },
+  "graded@0.2": {
+   "context_tokens": 4797.98,
+   "accuracy": 0.1,
+   "accuracy:cat1": 0.16666666666666666,
+   "accuracy:cat2": 0.0,
+   "accuracy:cat3": 0.0,
+   "accuracy:cat4": 0.13043478260869565
+  },
+  "graded@0.35": {
+   "context_tokens": 8406.34,
+   "accuracy": 0.14,
+   "accuracy:cat1": 0.25,
+   "accuracy:cat2": 0.0,
+   "accuracy:cat3": 0.0,
+   "accuracy:cat4": 0.17391304347826086
+  },
+  "graded-agent+lex@0.2": {
+   "context_tokens": 4803.9,
+   "accuracy": 0.2,
+   "accuracy:cat1": 0.25,
+   "accuracy:cat2": 0.2,
+   "accuracy:cat3": 0.0,
+   "accuracy:cat4": 0.21739130434782608
+  },
+  "graded-agent+lex@0.35": {
+   "context_tokens": 8417.4,
+   "accuracy": 0.34,
+   "accuracy:cat1": 0.25,
+   "accuracy:cat2": 0.3,
+   "accuracy:cat3": 0.0,
+   "accuracy:cat4": 0.4782608695652174
+  }
+ },
+ "estimate": null,
+ "dry_run": false
+}
