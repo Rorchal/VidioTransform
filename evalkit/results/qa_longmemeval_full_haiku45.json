@@ -1,0 +1,94 @@
+{
+ "n_cases": 90,
+ "methods": [
+  "truncate",
+  "graded",
+  "graded-agent+lex"
+ ],
+ "budgets": [
+  0.2,
+  0.35
+ ],
+ "types": [
+  "knowledge-update",
+  "multi-session",
+  "single-session-assistant",
+  "single-session-preference",
+  "single-session-user",
+  "temporal-reasoning"
+ ],
+ "table": {
+  "full@1.0": {
+   "context_tokens": 126249.61111111111,
+   "accuracy": 0.5888888888888889,
+   "accuracy:knowledge-update": 0.7333333333333333,
+   "accuracy:multi-session": 0.5333333333333333,
+   "accuracy:single-session-assistant": 0.9333333333333333,
+   "accuracy:single-session-preference": 0.4,
+   "accuracy:single-session-user": 0.6,
+   "accuracy:temporal-reasoning": 0.3333333333333333
+  },
+  "truncate@0.2": {
+   "context_tokens": 25210.577777777777,
+   "accuracy": 0.18888888888888888,
+   "accuracy:knowledge-update": 0.6,
+   "accuracy:multi-session": 0.06666666666666667,
+   "accuracy:single-session-assistant": 0.26666666666666666,
+   "accuracy:single-session-preference": 0.0,
+   "accuracy:single-session-user": 0.06666666666666667,
+   "accuracy:temporal-reasoning": 0.13333333333333333
+  },
+  "truncate@0.35": {
+   "context_tokens": 44133.23333333333,
+   "accuracy": 0.2777777777777778,
+   "accuracy:knowledge-update": 0.6666666666666666,
+   "accuracy:multi-session": 0.06666666666666667,
+   "accuracy:single-session-assistant": 0.4,
+   "accuracy:single-session-preference": 0.13333333333333333,
+   "accuracy:single-session-user": 0.2,
+   "accuracy:temporal-reasoning": 0.2
+  },
+  "graded@0.2": {
+   "context_tokens": 25130.133333333335,
+   "accuracy": 0.5,
+   "accuracy:knowledge-update": 0.8,
+   "accuracy:multi-session": 0.4,
+   "accuracy:single-session-assistant": 0.13333333333333333,
+   "accuracy:single-session-preference": 0.26666666666666666,
+   "accuracy:single-session-user": 0.8666666666666667,
+   "accuracy:temporal-reasoning": 0.5333333333333333
+  },
+  "graded@0.35": {
+   "context_tokens": 43940.02222222222,
+   "accuracy": 0.5666666666666667,
+   "accuracy:knowledge-update": 0.7333333333333333,
+   "accuracy:multi-session": 0.6,
+   "accuracy:single-session-assistant": 0.6,
+   "accuracy:single-session-preference": 0.3333333333333333,
+   "accuracy:single-session-user": 0.8,
+   "accuracy:temporal-reasoning": 0.3333333333333333
+  },
+  "graded-agent+lex@0.2": {
+   "context_tokens": 25127.71111111111,
+   "accuracy": 0.4888888888888889,
+   "accuracy:knowledge-update": 0.7333333333333333,
+   "accuracy:multi-session": 0.5333333333333333,
+   "accuracy:single-session-assistant": 0.2,
+   "accuracy:single-session-preference": 0.06666666666666667,
+   "accuracy:single-session-user": 0.8666666666666667,
+   "accuracy:temporal-reasoning": 0.5333333333333333
+  },
+  "graded-agent+lex@0.35": {
+   "context_tokens": 43969.7,
+   "accuracy": 0.6333333333333333,
+   "accuracy:knowledge-update": 0.7333333333333333,
+   "accuracy:multi-session": 0.6666666666666666,
+   "accuracy:single-session-assistant": 0.8,
+   "accuracy:single-session-preference": 0.3333333333333333,
+   "accuracy:single-session-user": 0.8,
+   "accuracy:temporal-reasoning": 0.4666666666666667
+  }
+ },
+ "estimate": null,
+ "dry_run": false
+}
