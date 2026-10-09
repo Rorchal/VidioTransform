@@ -255,3 +255,19 @@ def test_coerce_json_tolerates_prose_and_maps_single_field_replies():
         coerce_json("I am not sure.", judge_schema)
     with pytest.raises(ValueError):
         coerce_json("", answer_schema)
+
+
+def test_claude_cli_bare_mode_moves_instructions_into_the_user_message():
+    from ctxgc.llm import ClaudeCLILLM, make_llm
+    seen = []
+
+    def runner(system, user):
+        seen.append((system, user))
+        return {"result": '{"l1": "a", "l2": "b"}', "usage": {}, "total_cost_usd": 0}
+
+    llm = ClaudeCLILLM(model="haiku", runner=runner, bare=True)
+    llm.json("TASK RULES", "the chunk", SUMMARY_SCHEMA)
+    system, user = seen[0]
+    assert system == ClaudeCLILLM.NEUTRAL_SYSTEM
+    assert user.startswith("TASK RULES") and "the chunk" in user and user.rstrip().endswith("}")
+    assert make_llm("claude-cli-bare:claude-haiku-4-5-20251001").name == "claude-cli-bare:claude-haiku-4-5-20251001"

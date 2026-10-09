@@ -189,16 +189,22 @@ class ClaudeCLILLM:
 
     name: str
 
+    NEUTRAL_SYSTEM = "You are a helpful assistant."
+
     def __init__(self, model: str = "haiku", retries: int = 3, timeout: float = 300.0, cwd: str | None = None,
-                 runner=None):
+                 runner=None, bare: bool = False):
+        """bare: send only the neutral one-line system prompt and put the task
+        instructions at the top of the user message (closest the CLI gets to
+        "no system prompt": its own environment note is still attached)."""
         import tempfile
 
         self.model = model
+        self.bare = bare
         self.retries = retries
         self.timeout = timeout
         self.cwd = cwd or tempfile.mkdtemp(prefix="ctxgc-claude-")
         self.runner = runner or self._run        # runner(system, user) -> dict (for tests)
-        self.name = f"claude-cli:{model}"
+        self.name = f"claude-cli{'-bare' if bare else ''}:{model}"
         self.usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "retries": 0}
         self._lock = threading.Lock()
 
@@ -232,8 +238,13 @@ class ClaudeCLILLM:
 
     def json(self, system: str, user: str, schema: dict) -> dict:
         schema_text = json.dumps(schema)
-        sys_prompt = (f"{system}\n\nAnswer with a single JSON object (no prose, no code fence) matching this JSON schema:\n"
-                      f"{schema_text}")
+        instructions = (f"{system}\n\nAnswer with a single JSON object (no prose, no code fence) matching this JSON schema:\n"
+                        f"{schema_text}")
+        if self.bare:
+            sys_prompt = self.NEUTRAL_SYSTEM
+            user = f"{instructions}\n\n{user}"
+        else:
+            sys_prompt = instructions
         # after a 100k-token history the model forgets a format rule given at the
         # top, so the rule is repeated at the very end of the user message too
         tail = f"\n\nReturn only a JSON object matching {schema_text}"
@@ -399,6 +410,8 @@ def make_llm(spec: str, effort: str = "low", cache_path: str | Path | None = Non
         llm = AnthropicLLM(model or ANTHROPIC_MODEL, effort=effort)
     elif backend == "claude-cli":
         llm = ClaudeCLILLM(model or "haiku")
+    elif backend == "claude-cli-bare":
+        llm = ClaudeCLILLM(model or "haiku", bare=True)
     else:
         raise ValueError(f"unknown backend {backend!r}")
     return CachedLLM(llm, cache_path) if cache_path else llm
