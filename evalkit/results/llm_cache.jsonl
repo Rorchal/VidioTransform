@@ -4593,3 +4593,77 @@
 {"k": "993de9da6928c2026948fd303706c710", "v": {"answer": "not in history"}}
 {"k": "ebe2ec01520e6e1b31fdffc907bbae16", "v": {"answer": "not in history"}}
 {"k": "1a17250d03c46c2812949bb78d0760af", "v": {"answer": "not in history"}}
+{"k": "2c131e3fd96bc714b9386a998bfa6d0c", "v": {"answer": "not in history"}}
+{"k": "30a995ab7669f6febcc095f55ca4f789", "v": {"answer": "Kansas City Masterpiece BBQ sauce"}}
+{"k": "7569f515f2d24caae2d894730a52700b", "v": {"answer": "Kansas City Masterpiece BBQ sauce"}}
+{"k": "17c6c36db4eae48474dc9ebd9d10b1aa", "v": {"correct": true}}
+{"k": "e15be84586c341861a42760d204af0af", "v": {"correct": false}}
+{"k": "17c6c36db4eae48474dc9ebd9d10b1aa", "v": {"correct": true}}
+{"k": "3ba2318f70db19fe66ab9a2ce6b0282f", "v": {"answer": "Kansas City Masterpiece BBQ sauce"}}
+{"k": "179f5efa1db3b3589b55fbaab1e7b992", "v": {"answer": "190 pages. You said you're on page 250 of the 440-page 'The Nightingale', so 440 − 250 = 190 pages remain."}}
+{"k": "aa4572671c76fbb2d9cf5bf67480806f", "v": {"answer": "190 pages. You're on page 250 of the 440-page 'The Nightingale', so 440 - 250 = 190 pages remain."}}
+{"k": "41881d0a60ce455eece0d59e40da6a3c", "v": {"answer": "not in history"}}
+{"k": "f0540aff157061f8d5874563149f5591", "v": {"correct": true}}
+{"k": "88fc5adecdf0c25066bf4d7420749c97", "v": {"correct": false}}
+{"k": "4c21364a2ebc8ab4c9e40baaf9f1333b", "v": {"answer": "190 pages. You're on page 250 of the 440-page 'The Nightingale', so 440 - 250 = 190 pages remain."}}
+{"k": "961b8353efd6dc49cd93ac4d34fd4bb9", "v": {"correct": true}}
+{"k": "961b8353efd6dc49cd93ac4d34fd4bb9", "v": {"correct": true}}
+{"k": "e7dc083d30fba81a077dc56d96222dda", "v": {"answer": "In the earlier data privacy conversation (2023/05/23), the two-factor authentication methods I mentioned were biometric authentication and one-time passwords (OTP). Later in that conversation I also referred to fingerprint, facial recognition, and two-factor authentication as simpler security measures."}}
+{"k": "e7f4e8cb6f9f41ae7917d3342445e484", "v": {"answer": "not in history"}}
+{"k": "e3405c50fa7dddb0f3323376de0c5689", "v": {"answer": "The only method I mentioned was a code sent to a mobile device, used in addition to a password. I brought it up as a general personal security step, not as something companies use, and I didn't name any other 2FA methods."}}
+{"k": "cfcdb27e54f2a3a27115f18bb56263ee", "v": {"correct": true}}
+{"k": "09d364527bfdeaf6dd687b73dc420024", "v": {"correct": false}}
+{"k": "5d6316ae54bc3fa42ae9ff7aaad6b410", "v": {"correct": false}}
+{"k": "3fbc318648fb191436f8a40703374831", "v": {"answer": "not in history"}}
+{"k": "7966df4abb6fca29e59bdff1bb0b02e8", "v": {"answer": "not in history"}}
+{"k": "6a608611d5594f875b0b5b356fb46641", "v": {"answer": "not in history"}}
+{"k": "b903f6c57c22660ef9832a069392524c", "v": {"answer": "not in history"}}
+{"k": "4774c0eca4e75d8d0826e32793db1973", "v": {"correct": false}}
+{"k": "4774c0eca4e75d8d0826e32793db1973", "v": {"correct": false}}
+{"k": "4774c0eca4e75d8d0826e32793db1973", "v": {"correct": false}}
+{"k": "f120c94b305f8358e06e6d7d42441439", "v": {"answer": "Denver. Your sister Emily lives in Denver."}}
+{"k": "b52d20a33b10f91db226f4cc47aa61e9", "v": {"answer": "not in history"}}
+{"k": "03329683a36a11fd896e84ed0d79f5ea", "v": {"answer": "In Denver."}}
+{"k": "f63276c0fbee69c10dce8fc74176cb5b", "v": {"correct": true}}
+{"k": "74fcde6d9873ff30851817a8de2be0ec", "v": {"correct": true}}
+{"k": "2e739aa750734282af4560bfdd2c7c66", "v": {"correct": false}}
+{"k": "e261c341fbf7cb2ae68e78846c582583", "v": {"answer": "not in history"}}
+{"k": "80b709412efbee80590e17ce0995af92", "v": {"answer": "Earliest to latest, before today (Feb 14, 2023): Delta (Boston to Miami, the 2022/11 SkyMiles/Miami discussion), then American Airlines (New York to Los Angeles flight with bad in-flight entertainment, referenced on 2023/01/29 and 2023/02/10), then United Airlines (Boston to Chicago flight with a 1-hour air traffic control delay, mentioned 2023/01/28), and finally American Airlines again (LAX to JFK flight delayed 2 hours by weather, mentioned 2023/02/14)."}}
+{"k": "5cc19c2142d9674367252555bd6208bc", "v": {"answer": "Based on the history, the airlines were flown in this order: American Airlines (the New York to Los Angeles flight, which the user described as 'today' on 2023/02/10), then American Airlines again (the LAX to JFK flight delayed 2 hours by weather, mentioned 2023/02/14). Delta and JetBlue were only discussed as options for future bookings, not flights already taken."}}
+{"k": "9bef3fa83756f45c1cacd7b3bb0f4868", "v": {"correct": false}}
+{"k": "2b80d0c9e23e43aa0335b27a7519a410", "v": {"answer": "1. American Airlines: NY to LA, February 10 (2022, inferred from a mention on 2023/01/15)\n2. JetBlue: SFO to BOS red-eye, on or just before 2022/11/17\n3. Delta: Boston to Atlanta round trip, 2023/01/15\n4. United: Boston to Chicago, 2023/01/28 (1-hour delay)\n5. American Airlines: NY to LA, 2023/02/10\n6. American Airlines: LAX to JFK, shortly before 2023/02/14 (2-hour delay)"}}
+{"k": "2ac5cbf4119a3812148a23526730de8e", "v": {"correct": false}}
+{"k": "d09a1ec46754584a45e0a868087241c5", "v": {"correct": false}}
+{"k": "29c224850b8d85bed333304592420ec2", "v": {"answer": "JetBlue (SFO to BOS red-eye, around 2022/11/17), then Delta (Boston to Atlanta round trip, 2023/01/15), then United (Boston to Chicago, 2023/01/28), then American Airlines (NYC to LA on 2023/02/10, and LAX to JFK by 2023/02/14)."}}
+{"k": "002994a0f814b80831c22dc24922e9f8", "v": {"correct": false}}
+{"k": "cb4dce67f9da1d50d907d20fc053553d", "v": {"answer": "190"}}
+{"k": "77031f7ff9cfeea99c826453c4e46d50", "v": {"answer": "not in history"}}
+{"k": "b228abd76f4d48da15918411e1a41672", "v": {"answer": "190 pages (they are on page 250 of a 440-page book)"}}
+{"k": "53eb62eefc115bead56f3a7e5208f7c8", "v": {"answer": "190 pages"}}
+{"k": "a46c733b7eeaf8017db48a33dcd64a50", "v": {"correct": true}}
+{"k": "1c2e3d8f4954be6b005caa1f636880d5", "v": {"correct": false}}
+{"k": "ac3c9c7d974140576fd2d83514071922", "v": {"correct": true}}
+{"k": "3ba80cee9595a56af65861d95d5c898d", "v": {"correct": true}}
+{"k": "ed9596c7dc3c3d1021efc7a36010d93d", "v": {"answer": "not in history"}}
+{"k": "dd4073a998d193babb4a2a26a08a27b5", "v": {"answer": "not in history"}}
+{"k": "1d43901962f840c6aba228fad6513ee1", "v": {"answer": "not in history"}}
+{"k": "6999abb882933c0f8e4cf20c32ced3a0", "v": {"answer": "not in history"}}
+{"k": "822fcb20afe567762ac903ab0866d302", "v": {"answer": "not in history"}}
+{"k": "443affedb8f64506c3bb6d332ce2071f", "v": {"answer": "not in history"}}
+{"k": "822fcb20afe567762ac903ab0866d302", "v": {"answer": "not in history"}}
+{"k": "51088dd0507a647d9579f8e12f429d79", "v": {"answer": "not in history"}}
+{"k": "5e920e6ce8473cf9763866849477ce68", "v": {"answer": "Denver"}}
+{"k": "e4b3e024e94d705584f35d1a6744870a", "v": {"answer": "Denver"}}
+{"k": "d4d879b341953f28033f9aeedcccdc30", "v": {"answer": "not in history"}}
+{"k": "554c2e9c0fbbc9e0d2dccae6a31c76ac", "v": {"correct": true}}
+{"k": "554c2e9c0fbbc9e0d2dccae6a31c76ac", "v": {"correct": true}}
+{"k": "f28a6605e8c7fb4661f3499bc6fb823e", "v": {"correct": false}}
+{"k": "f39b9ad2e867f992bf097f1faf15d482", "v": {"answer": "Denver"}}
+{"k": "a6ab197dc2987618005206be1eeb8539", "v": {"answer": "American Airlines, then JetBlue, then Delta"}}
+{"k": "e7cd98de33566a23baeea2790e401d07", "v": {"answer": "not in history"}}
+{"k": "bab77ef2eaacc281f3745d5eac2982b8", "v": {"answer": "JetBlue (San Francisco to Boston red-eye); United Airlines (Boston to Chicago); American Airlines (New York to Los Angeles); American Airlines (LAX to JFK)"}}
+{"k": "ef912f524d068b7f603ecbe2aca38b6e", "v": {"correct": false}}
+{"k": "44869967f395b2243d692f459a7b0534", "v": {"answer": "JetBlue (San Francisco to Boston red-eye), then United Airlines (Boston to Chicago, 1-hour delay due to air traffic control), then American Airlines (New York to Los Angeles, terrible in-flight entertainment system)"}}
+{"k": "cbd5f155b96671e6f75d332c873e1ec5", "v": {"correct": false}}
+{"k": "8967abacae14dc9510919f55639af2f6", "v": {"correct": false}}
+{"k": "23d09b4424b6a12c87aa0e48bae5c0f8", "v": {"correct": false}}

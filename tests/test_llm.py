@@ -216,3 +216,26 @@ def test_validate_schema_rules():
         validate({"role": "goal", "closes_frame": "yes", "edges": []}, EDGE_SCHEMA)
     with pytest.raises(TypeError):
         validate({"role": "goal", "closes_frame": True, "edges": [{"to": 3, "type": "mentions", "confidence": 1}]}, EDGE_SCHEMA)
+
+
+def test_claude_cli_backend_parses_validates_and_accounts():
+    from ctxgc.llm import ClaudeCLILLM, make_llm
+    replies = iter([
+        {"result": "```json\n{\"l1\": \"a\", \"l2\": \"b\"}\n```", "usage": {"input_tokens": 2, "cache_creation_input_tokens": 100,
+                                                                      "cache_read_input_tokens": 5, "output_tokens": 7}, "total_cost_usd": 0.001},
+    ])
+    seen = []
+
+    def runner(system, user):
+        seen.append((system, user))
+        return next(replies)
+
+    llm = ClaudeCLILLM(model="haiku", runner=runner)
+    assert llm.json("sys", "user text", SUMMARY_SCHEMA) == {"l1": "a", "l2": "b"}      # code fence tolerated
+    assert "JSON schema" in seen[0][0] and seen[0][1] == "user text"
+    assert llm.usage == {"calls": 1, "input_tokens": 107, "output_tokens": 7, "cost_usd": 0.001, "retries": 0}
+    bad = ClaudeCLILLM(runner=lambda s, u: {"result": "nope"}, retries=2)
+    with pytest.raises(RuntimeError):
+        bad.json("s", "u", SUMMARY_SCHEMA)
+    assert bad.usage["retries"] == 2
+    assert make_llm("claude-cli:haiku").name == "claude-cli:haiku"

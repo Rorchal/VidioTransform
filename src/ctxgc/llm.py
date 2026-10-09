@@ -4,6 +4,7 @@ These are the only two places the pipeline calls a model. Everything else is
 deterministic code. Two backends:
 
   AnthropicLLM   claude via the `anthropic` package (ANTHROPIC_API_KEY)
+  ClaudeCLILLM   claude via the local `claude -p` command (the CLI's own sign-in)
   DeepSeekLLM    deepseek via its OpenAI-compatible HTTP API, stdlib only
                  (DEEPSEEK_API_KEY). JSON-object mode + schema in the prompt +
                  validation/retry, since that API does not enforce a schema.
@@ -178,6 +179,90 @@ class DeepSeekLLM:
             self.usage["reasoning_tokens"] += (u.get("completion_tokens_details") or {}).get("reasoning_tokens", 0)
 
 
+class ClaudeCLILLM:
+    """Claude through the local `claude` command in headless mode (`claude -p`),
+    so inference is billed to the Claude subscription the CLI is signed in
+    with rather than to an API key. One process per call, no tools, JSON
+    output; the schema goes into the system prompt and the reply is validated
+    like the DeepSeek backend's. `cwd` defaults to a scratch directory so the
+    nested CLI picks up no project settings or hooks."""
+
+    name: str
+
+    def __init__(self, model: str = "haiku", retries: int = 3, timeout: float = 300.0, cwd: str | None = None,
+                 runner=None):
+        import tempfile
+
+        self.model = model
+        self.retries = retries
+        self.timeout = timeout
+        self.cwd = cwd or tempfile.mkdtemp(prefix="ctxgc-claude-")
+        self.runner = runner or self._run        # runner(system, user) -> dict (for tests)
+        self.name = f"claude-cli:{model}"
+        self.usage = {"calls": 0, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0, "retries": 0}
+        self._lock = threading.Lock()
+
+    def _run(self, system: str, user: str) -> dict:
+        """One `claude -p` process. A failed run (rate limit, usage window
+        exhausted, transient error) is retried with a growing pause, up to about
+        ten minutes in total, so a long batch survives a 5-hour-window reset."""
+        import subprocess
+
+        cmd = ["claude", "-p", "--model", self.model, "--output-format", "json", "--tools", "",
+               "--system-prompt", system]
+        delay = 30.0
+        for attempt in range(6):
+            proc = subprocess.run(cmd, input=user, capture_output=True, text=True, timeout=self.timeout, cwd=self.cwd)
+            out = proc.stdout.strip()
+            if out:
+                try:
+                    resp = json.loads(out)
+                    if not resp.get("is_error"):
+                        return resp
+                    err = str(resp.get("result") or "")[:300]
+                except json.JSONDecodeError:
+                    err = out[-300:]
+            else:
+                err = proc.stderr[-300:]
+            if attempt == 5:
+                raise RuntimeError(f"claude -p failed ({proc.returncode}): {err}")
+            time.sleep(delay)
+            delay = min(delay * 2, 300.0)
+        raise RuntimeError("unreachable")
+
+    def json(self, system: str, user: str, schema: dict) -> dict:
+        sys_prompt = (f"{system}\n\nAnswer with a single JSON object (no prose, no code fence) matching this JSON schema:\n"
+                      f"{json.dumps(schema)}")
+        last_err: Exception | None = None
+        prompt = user
+        for attempt in range(self.retries):
+            resp = self.runner(sys_prompt, prompt)
+            self._account(resp)
+            text = str(resp.get("result") or "").strip()
+            if text.startswith("```"):
+                text = text.strip("`")
+                text = text[text.find("{"):text.rfind("}") + 1]
+            try:
+                out = json.loads(text)
+                validate(out, schema)
+                return out
+            except (ValueError, TypeError) as e:
+                last_err = e
+                with self._lock:
+                    self.usage["retries"] += 1
+                prompt = f"{user}\n\n(Your previous reply was invalid: {e}. Return only a JSON object matching the schema.)"
+        raise RuntimeError(f"claude-cli: no valid JSON after {self.retries} attempts: {last_err}")
+
+    def _account(self, resp: dict) -> None:
+        u = resp.get("usage") or {}
+        with self._lock:
+            self.usage["calls"] += 1
+            self.usage["input_tokens"] += (u.get("input_tokens", 0) + u.get("cache_creation_input_tokens", 0)
+                                           + u.get("cache_read_input_tokens", 0))
+            self.usage["output_tokens"] += u.get("output_tokens", 0)
+            self.usage["cost_usd"] += float(resp.get("total_cost_usd") or 0.0)
+
+
 def validate(value, schema: dict, path: str = "$") -> None:
     """Minimal JSON-schema check: type, enum, required, properties, items,
     additionalProperties (extra keys are dropped rather than rejected)."""
@@ -267,6 +352,8 @@ def make_llm(spec: str, effort: str = "low", cache_path: str | Path | None = Non
         llm: LLM = DeepSeekLLM(model or DEEPSEEK_MODEL, effort=effort)
     elif backend == "anthropic":
         llm = AnthropicLLM(model or ANTHROPIC_MODEL, effort=effort)
+    elif backend == "claude-cli":
+        llm = ClaudeCLILLM(model or "haiku")
     else:
         raise ValueError(f"unknown backend {backend!r}")
     return CachedLLM(llm, cache_path) if cache_path else llm
