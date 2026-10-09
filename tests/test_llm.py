@@ -232,10 +232,26 @@ def test_claude_cli_backend_parses_validates_and_accounts():
 
     llm = ClaudeCLILLM(model="haiku", runner=runner)
     assert llm.json("sys", "user text", SUMMARY_SCHEMA) == {"l1": "a", "l2": "b"}      # code fence tolerated
-    assert "JSON schema" in seen[0][0] and seen[0][1] == "user text"
+    assert "JSON schema" in seen[0][0] and seen[0][1].startswith("user text") and "JSON" in seen[0][1]
     assert llm.usage == {"calls": 1, "input_tokens": 107, "output_tokens": 7, "cost_usd": 0.001, "retries": 0}
     bad = ClaudeCLILLM(runner=lambda s, u: {"result": "nope"}, retries=2)
     with pytest.raises(RuntimeError):
         bad.json("s", "u", SUMMARY_SCHEMA)
     assert bad.usage["retries"] == 2
     assert make_llm("claude-cli:haiku").name == "claude-cli:haiku"
+
+
+def test_coerce_json_tolerates_prose_and_maps_single_field_replies():
+    from ctxgc.llm import coerce_json
+    answer_schema = {"type": "object", "properties": {"answer": {"type": "string"}}, "required": ["answer"]}
+    judge_schema = {"type": "object", "properties": {"correct": {"type": "boolean"}}, "required": ["correct"]}
+    assert coerce_json('{"answer": "x"}', answer_schema) == {"answer": "x"}
+    assert coerce_json('```json\n{"answer": "x"}\n```', answer_schema) == {"answer": "x"}
+    assert coerce_json('Sure! Here it is: {"answer": "x"} hope that helps', answer_schema) == {"answer": "x"}
+    assert coerce_json("Based on the history, Kansas City Masterpiece.", answer_schema) == {"answer": "Based on the history, Kansas City Masterpiece."}
+    assert coerce_json("**Yes**, the answer matches.", judge_schema) == {"correct": True}
+    assert coerce_json("No. The model said 25 minutes.", judge_schema) == {"correct": False}
+    with pytest.raises(ValueError):
+        coerce_json("I am not sure.", judge_schema)
+    with pytest.raises(ValueError):
+        coerce_json("", answer_schema)

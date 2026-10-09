@@ -231,26 +231,27 @@ class ClaudeCLILLM:
         raise RuntimeError("unreachable")
 
     def json(self, system: str, user: str, schema: dict) -> dict:
+        schema_text = json.dumps(schema)
         sys_prompt = (f"{system}\n\nAnswer with a single JSON object (no prose, no code fence) matching this JSON schema:\n"
-                      f"{json.dumps(schema)}")
+                      f"{schema_text}")
+        # after a 100k-token history the model forgets a format rule given at the
+        # top, so the rule is repeated at the very end of the user message too
+        tail = f"\n\nReturn only a JSON object matching {schema_text}"
         last_err: Exception | None = None
-        prompt = user
+        prompt = user + tail
         for attempt in range(self.retries):
             resp = self.runner(sys_prompt, prompt)
             self._account(resp)
             text = str(resp.get("result") or "").strip()
-            if text.startswith("```"):
-                text = text.strip("`")
-                text = text[text.find("{"):text.rfind("}") + 1]
             try:
-                out = json.loads(text)
+                out = coerce_json(text, schema)
                 validate(out, schema)
                 return out
             except (ValueError, TypeError) as e:
                 last_err = e
                 with self._lock:
                     self.usage["retries"] += 1
-                prompt = f"{user}\n\n(Your previous reply was invalid: {e}. Return only a JSON object matching the schema.)"
+                prompt = f"{user}\n\n(Your previous reply was invalid: {e}. Return only a JSON object matching the schema.){tail}"
         raise RuntimeError(f"claude-cli: no valid JSON after {self.retries} attempts: {last_err}")
 
     def _account(self, resp: dict) -> None:
@@ -261,6 +262,50 @@ class ClaudeCLILLM:
                                            + u.get("cache_read_input_tokens", 0))
             self.usage["output_tokens"] += u.get("output_tokens", 0)
             self.usage["cost_usd"] += float(resp.get("total_cost_usd") or 0.0)
+
+
+def coerce_json(text: str, schema: dict):
+    """Parse a model reply as JSON, tolerating a code fence or surrounding prose
+    (the first balanced {...} is taken). A reply with no JSON at all is mapped
+    onto a schema with a single required property: a string property takes the
+    whole text, a boolean one is read from a leading yes / no / true / false /
+    correct / incorrect."""
+    text = text.strip()
+    if text.startswith("```"):
+        text = text.strip("`")
+        if text.lower().startswith("json"):
+            text = text[4:]
+    try:
+        return json.loads(text)
+    except ValueError:
+        pass
+    start = text.find("{")
+    if start >= 0:
+        depth = 0
+        for i in range(start, len(text)):
+            if text[i] == "{":
+                depth += 1
+            elif text[i] == "}":
+                depth -= 1
+                if depth == 0:
+                    try:
+                        return json.loads(text[start:i + 1])
+                    except ValueError:
+                        break
+    props = schema.get("properties", {})
+    required = schema.get("required", list(props))
+    if len(required) == 1 and required[0] in props:
+        key = required[0]
+        kind = props[key].get("type")
+        if kind == "string" and text:
+            return {key: text}
+        if kind == "boolean":
+            head = text.lower().lstrip(" *#\"'")[:12]
+            if head.startswith(("yes", "true", "correct")):
+                return {key: True}
+            if head.startswith(("no", "false", "incorrect", "wrong")):
+                return {key: False}
+    raise ValueError(f"no JSON object in reply: {text[:80]!r}")
 
 
 def validate(value, schema: dict, path: str = "$") -> None:
