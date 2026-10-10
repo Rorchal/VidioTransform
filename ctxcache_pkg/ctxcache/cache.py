@@ -16,11 +16,11 @@ import re
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set, Tuple
 
-from .model import Step, Traj, is_file, tok
+from .model import Step, Traj, canon, is_file, split_prefix, tok
 
 REF_TOK = 25
 TAIL_LINES = 15
-PATHISH = re.compile(r"(?:\./)?[\w.\-]+(?:/[\w.\-]+)+\.\w+")
+PATHISH = re.compile(r"/?(?:\./)?[\w.\-]+(?:/[\w.\-]+)+\.\w+")
 NARR = re.compile(r"^\s*(I will|I'll|Let me|Let's|Now I|Now,? let|Next,? I|First,? I|I need to (check|look|see|run|find|examine|verify|read)|I should (check|look|run|see))", re.I)
 INFER = re.compile(r"\b(because|since|the (issue|bug|problem|root cause|error) (is|was|lies|occurs|comes)|caused by|this (confirms|means|suggests|indicates|shows|explains)|therefore|it (seems|appears|looks like)|the fix (is|should)|fails because|wrong|incorrect)\b", re.I)
 
@@ -49,8 +49,9 @@ def _tail_tok(out: str, rc) -> float:
     return tok("\n".join(lines[-TAIL_LINES:])) + 4
 
 
-def _paths_in(out: str) -> Set[str]:
-    return {p.lstrip("./") for p in PATHISH.findall(out)}
+def _paths_in(out: str, cwd: str = "", root: str = "") -> Set[str]:
+    """files named in a search result, keyed like Step.keys (relative hits resolve against cwd)"""
+    return {canon(p, cwd, root) for p in PATHISH.findall(out)}
 
 
 def _overlap_new_fraction(ranges, rng, total_lines):
@@ -110,30 +111,35 @@ class Replay:
         return s
 
     def _agent_cost(self, s: Step) -> float:
+        # visible side is estimated from text and scaled to the real output tokens; thinking (resent
+        # within a tool loop, not visible in transcripts) is kept by every policy except compact,
+        # which drops it with the rest of the old agent turns
         if self.p in ("slim", "ours"):
             cmd_tok = tok(s.cmd) - tok(s.script_body) + (15 if s.script_body else 0)
             text_tok = tok(s.text) if (INFER.search(s.text) and not NARR.search(s.text)) else 0
-            return cmd_tok + text_tok
-        return tok(s.cmd) + tok(s.text)
+            return (cmd_tok + text_tok) * s.agent_scale + s.think_tok
+        return (tok(s.cmd) + tok(s.text)) * s.agent_scale + s.think_tok
 
     def _obs_node(self, s: Step) -> Node:
-        full = tok(s.out)
+        est = tok(s.out)
+        full = s.obs_tok if s.obs_tok is not None else est
+        f = full / est if est > 0 else 1.0   # real tokens per estimated token, applied to slimmed parts
         key = s.keys[0] if s.keys else s.cmd[:80]
         if s.kind == "run":
             key = s.cmd
         n = Node(step=s.i, kind=s.kind, key=key, full=full, cost=full, last_touch=s.i)
         if s.kind == "search":
-            n.paths = _paths_in(s.out)
+            n.paths = _paths_in(s.out, s.cwd, self.t.root)
         if self.p not in ("slim", "ours"):
             return n
         # write-time slimming
         if s.kind in ("run", "other"):
-            n.cost = min(full, _tail_tok(s.out, s.rc))
+            n.cost = min(full, _tail_tok(s.out, s.rc) * f)
         elif s.kind == "search":
             if n.paths:
-                n.cost = min(full, tok(", ".join(sorted(n.paths)[:30])) + 6)
+                n.cost = min(full, (tok(", ".join(sorted(n.paths)[:30])) + 6) * f)
             else:
-                n.cost = min(full, _tail_tok(s.out, s.rc))
+                n.cost = min(full, _tail_tok(s.out, s.rc) * f)
         elif s.kind == "read" and s.keys:
             prev = [m for m in self.nodes if m.kind == "read" and m.key == key and not m.stale and not m.evicted]
             ranges = [r for m in prev for r in m.ranges]
@@ -236,7 +242,7 @@ class Replay:
     def _check_miss(self, s: Step):
         if s.kind != "edit":
             return
-        head = s.cmd.strip().split()[:2]
+        head = split_prefix(s.cmd)[0].split()[:2]
         if head and (head[0] == "rm" or head == ["git", "checkout"] or head == ["git", "stash"]):
             return  # reverting / deleting does not need the file content
         for k in s.keys:
@@ -259,7 +265,8 @@ class Replay:
 
     # ---------- main loop ----------
     def run(self):
-        for s in self.t.steps:
+        steps = self.t.steps
+        for j, s in enumerate(steps):
             t = s.i
             for k in s.keys:
                 self.freq[k] = self.freq.get(k, 0) + 1
@@ -280,6 +287,8 @@ class Replay:
                 self._compact_proxy(t)
             elif self.p == "ours":
                 self._compact_ours(t)
+            if s.call >= 0 and j + 1 < len(steps) and steps[j + 1].call == s.call:
+                continue  # parallel tool calls of one model call: the context is sent once, after the last
             sz = self.size()
             self.sizes.append(sz)
             if sz > self.budget:

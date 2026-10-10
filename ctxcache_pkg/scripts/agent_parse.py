@@ -40,9 +40,42 @@ def clean_paths(cmd):
     return out
 
 
+PREFIX_CD = re.compile(r"cd\s+(\S+)\s*(?:&&|;|\n)\s*")
+PREFIX_VAR = re.compile(r"([A-Za-z_]\w*)=\S+\s*(?:&&|;|\n)\s*")
+PREFIX_TIMEOUT = re.compile(r"timeout\s+\S+\s+")
+PYTHON_HEAD = re.compile(r"(?:^|/)python[\d.]*$")
+
+
+def split_prefix(cmd):
+    """Strip leading `cd DIR &&`, `VAR=value;` and `timeout N` segments, and rewrite a head that is
+    a python binary by path (`.../venv/bin/python3.9`) or a variable set in the prefix (`$PY`) to
+    `python`. Returns (command, cd_dir or None). Agents in persistent shells (Claude Code) write most
+    commands this way; without it every such command classifies as 'other'."""
+    c, cd, names = cmd.strip(), None, set()
+    while True:
+        m = PREFIX_CD.match(c)
+        if m:
+            d = m[1].strip("\"'")
+            cd = d if cd is None else os.path.join(cd, d)
+            c = c[m.end():]
+            continue
+        m = PREFIX_VAR.match(c) or PREFIX_TIMEOUT.match(c)
+        if m:
+            if m.re is PREFIX_VAR:
+                names.add(m[1])
+            c = c[m.end():]
+            continue
+        break
+    head, sep, rest = c.partition(" ")
+    h = head.strip("\"'")
+    if PYTHON_HEAD.search(h) or h.lstrip("$").strip("{}") in names:
+        c = "python" + sep + rest
+    return c, cd
+
+
 def classify(cmd):
     """Return (kind, keys). kind in read/search/edit/run/gitdiff/submit/other."""
-    c = cmd.strip()
+    c, _ = split_prefix(cmd)
     # strip leading env assignments
     tokens = c.split()
     head = ""
