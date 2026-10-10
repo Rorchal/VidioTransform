@@ -4,7 +4,8 @@ answering models are scored by the same grader.
     python -m evalkit.rejudge --longmemeval longmemeval_s.json --judge claude-cli:claude-opus-5-5 \\
         --run deepseek:deepseek-flash:off:30 --run claude-cli:claude-haiku-4-5-20251001:90
 
-Each --run is <cached backend name>:<n questions>. The script rebuilds every
+Each --run is <cached backend name>:<n questions> (LoCoMo: <name>:<per-conv>).
+The script rebuilds every
 prompt exactly as evalkit.qa did, pulls the answer from the reply cache (a
 miss means the prompt differs from what that run saw, so misses are reported
 as a consistency check), and judges all answers with --judge, --workers calls
@@ -20,7 +21,7 @@ from pathlib import Path
 from ctxgc.llm import CachedLLM, make_llm
 from ctxgc.summarize import ExtractiveSummarizer
 
-from .chat import longmemeval_cases
+from .chat import locomo_cases, longmemeval_cases
 from .qa import ANSWER_SCHEMA, ANSWER_SYSTEM, JUDGE_SCHEMA, JUDGE_SYSTEM, answer_prompt, contexts_for, judge_prompt
 
 
@@ -72,8 +73,9 @@ def rejudge(cases, methods, budgets, run_name: str, judge, cache_path: Path, wor
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--longmemeval", type=Path, required=True)
+    ap.add_argument("--longmemeval", type=Path)
     ap.add_argument("--max-turns", type=int, default=100000)
+    ap.add_argument("--locomo", type=Path, help="re-judge a LoCoMo run instead (n in --run is per-conv)")
     ap.add_argument("--methods", nargs="*", default=["truncate", "graded", "graded-agent+lex"])
     ap.add_argument("--budgets", nargs="*", type=float, default=[0.2, 0.35])
     ap.add_argument("--run", action="append", required=True, help="<cached backend name>:<n>")
@@ -82,11 +84,13 @@ def main() -> None:
     ap.add_argument("--cache", type=Path, default=Path("evalkit/results/llm_cache.jsonl"))
     ap.add_argument("--out", type=Path, default=Path("evalkit/results/qa_longmemeval_full_rejudged.json"))
     args = ap.parse_args()
+    if not args.longmemeval and not args.locomo:
+        raise SystemExit("--longmemeval or --locomo is required")
     judge = make_llm(args.judge, effort="off", cache_path=args.cache)
     results = []
     for spec in args.run:
         name, _, n = spec.rpartition(":")
-        cases = longmemeval_cases(args.longmemeval, int(n), args.max_turns)
+        cases = locomo_cases(args.locomo, int(n)) if args.locomo else longmemeval_cases(args.longmemeval, int(n), args.max_turns)
         r = rejudge(cases, args.methods, args.budgets, name, judge, args.cache, workers=args.workers)
         results.append(r)
         print(f"\n## {name} ({r['n']} questions), judged by {judge.name}: answers found {r['answers_found']}, missing {r['answers_missing']}")

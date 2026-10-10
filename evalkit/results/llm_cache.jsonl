@@ -7372,3 +7372,228 @@
 {"k": "090c0270bde86e2e8b4995e02999a660", "v": {"correct": true}}
 {"k": "090c0270bde86e2e8b4995e02999a660", "v": {"correct": true}}
 {"k": "2aee0d7ef04fc631b52b32941fb932f6", "v": {"correct": false}}
+{"k": "cdbc17f9168bf785ca1eedd52b5b7bc8", "v": {"correct": false}}
+{"k": "5f32ce1f7a4b709bde40b3ea45e2d73f", "v": {"correct": true}}
+{"k": "d1d8e03cd7da31a32fbaa526c4520fb9", "v": {"correct": true}}
+{"k": "cdbc17f9168bf785ca1eedd52b5b7bc8", "v": {"correct": false}}
+{"k": "7c6604929a303708eaa7c14f9623baff", "v": {"answer": "not in history"}}
+{"k": "bb5460b5bfeee287ed19fa2c909dea2c", "v": {"answer": "24 hours"}}
+{"k": "d1d8e03cd7da31a32fbaa526c4520fb9", "v": {"correct": true}}
+{"k": "3db5f9538ce8b877087dd76501ecc12e", "v": {"correct": false}}
+{"k": "d1d8e03cd7da31a32fbaa526c4520fb9", "v": {"correct": true}}
+{"k": "da03ed40b1625412ccd7e72704383227", "v": {"answer": "24 hours"}}
+{"k": "3db5f9538ce8b877087dd76501ecc12e", "v": {"correct": false}}
+{"k": "f811780214e9f43701e2d6b9f409a53e", "v": {"answer": "24 hours"}}
+{"k": "3db5f9538ce8b877087dd76501ecc12e", "v": {"correct": false}}
+{"k": "13afca3ae2fd49dea65c2ff6de7ec650", "v": {"correct": true}}
+{"k": "13afca3ae2fd49dea65c2ff6de7ec650", "v": {"correct": true}}
+{"k": "13afca3ae2fd49dea65c2ff6de7ec650", "v": {"correct": true}}
+{"k": "13afca3ae2fd49dea65c2ff6de7ec650", "v": {"correct": true}}
+{"k": "dce6f4fc4ea486601b94080e60eda579", "v": {"correct": true}}
+{"k": "dce6f4fc4ea486601b94080e60eda579", "v": {"correct": true}}
+{"k": "01e550f0df70be908548d5a8c666e710", "v": {"correct": true}}
+{"k": "1dc4c8919fd273eb57c553bded553aa9", "v": {"correct": true}}
+{"k": "1dc4c8919fd273eb57c553bded553aa9", "v": {"correct": true}}
+{"k": "1dc4c8919fd273eb57c553bded553aa9", "v": {"correct": true}}
+{"k": "1dc4c8919fd273eb57c553bded553aa9", "v": {"correct": true}}
+{"k": "f39fadce01bf7882e14b0548420a39cc", "v": {"correct": true}}
+{"k": "eb23e8e541f85d11a490fee8ee54dba7", "v": {"correct": false}}
+{"k": "eb23e8e541f85d11a490fee8ee54dba7", "v": {"correct": false}}
+{"k": "e0bebe232cc4ab9bf78de3d2e6293012", "v": {"correct": true}}
+{"k": "74b86203636be15afefac9db2740d00d", "v": {"answer": "not in history"}}
+{"k": "e0bebe232cc4ab9bf78de3d2e6293012", "v": {"correct": true}}
+{"k": "d09013846fa174270324594b0da9f860", "v": {"answer": "not in history"}}
+{"k": "e0bebe232cc4ab9bf78de3d2e6293012", "v": {"correct": true}}
+{"k": "e0bebe232cc4ab9bf78de3d2e6293012", "v": {"correct": true}}
+{"k": "b240a43b03c8218573fb3309cc4744a4", "v": {"correct": true}}
+{"k": "ffe96fd9fc0aa1a864445e5afe6fa210", "v": {"answer": "A Philips LED bulb"}}
+{"k": "9381f6793e85d688f688ebf852921ab0", "v": {"correct": false}}
+{"k": "ae7857e28a9fb4fce467435a9eabda1a", "v": {"correct": false}}
+{"k": "9381f6793e85d688f688ebf852921ab0", "v": {"correct": false}}
+{"k": "4b182ca36699c1694fe75faeec11ce17", "v": {"correct": true}}
+{"k": "0ca14ae1d408abd04a3a8e094db984f3", "v": {"correct": true}}
+{"k": "4b182ca36699c1694fe75faeec11ce17", "v": {"correct": true}}
+{"k": "ae7857e28a9fb4fce467435a9eabda1a", "v": {"correct": false}}
+{"k": "4b182ca36699c1694fe75faeec11ce17", "v": {"correct": true}}
+{"k": "5b9cebadb479d99e81260363b4bdd5c1", "v": {"correct": false}}
+{"k": "5b9cebadb479d99e81260363b4bdd5c1", "v": {"correct": false}}
+{"k": "5b9cebadb479d99e81260363b4bdd5c1", "v": {"correct": false}}
+{"k": "6ed645e5b464b2606b58e25660200d6f", "v": {"answer": "not in history"}}
+{"k": "8758a9cddd8ef54b9db253e9902c6498", "v": {"answer": "Philips LED bulb"}}
+{"k": "0251ede5ac92e365b9d866485648e9d6", "v": {"correct": true}}
+{"k": "6a2b858bf2b5f98b5b547434576e60a4", "v": {"answer": "Philips LED bulb"}}
+{"k": "0251ede5ac92e365b9d866485648e9d6", "v": {"correct": true}}
+{"k": "0251ede5ac92e365b9d866485648e9d6", "v": {"correct": true}}
+{"k": "bf83c02033413d729eb789c2b5b07a83", "v": {"answer": "Philips LED bulb"}}
+{"k": "0251ede5ac92e365b9d866485648e9d6", "v": {"correct": true}}
+{"k": "ee651534ccb8d728e15c0c6ce847d0a3", "v": {"correct": true}}
+{"k": "d951dc63c25887bb1d198949e5a2ec72", "v": {"correct": true}}
+{"k": "ee651534ccb8d728e15c0c6ce847d0a3", "v": {"correct": true}}
+{"k": "7b807b1857712c7d1aed7b04b26a31f1", "v": {"correct": false}}
+{"k": "7b807b1857712c7d1aed7b04b26a31f1", "v": {"correct": false}}
+{"k": "ee651534ccb8d728e15c0c6ce847d0a3", "v": {"correct": true}}
+{"k": "fb0c1068b298c2f98ed7af54cf401f76", "v": {"correct": true}}
+{"k": "fb0c1068b298c2f98ed7af54cf401f76", "v": {"correct": true}}
+{"k": "f0ea524d02e2f77169c5987f29b70aad", "v": {"correct": true}}
+{"k": "fb0c1068b298c2f98ed7af54cf401f76", "v": {"correct": true}}
+{"k": "bf9bbbdac17c9d67fd208f3d92f8f040", "v": {"correct": true}}
+{"k": "b9def29fd1976b0c761215b4b699e6ea", "v": {"correct": false}}
+{"k": "bf9bbbdac17c9d67fd208f3d92f8f040", "v": {"correct": true}}
+{"k": "b9def29fd1976b0c761215b4b699e6ea", "v": {"correct": false}}
+{"k": "ea7e0c7254d6f5f74b7884c50fcceba1", "v": {"correct": true}}
+{"k": "0b22ea48d946657060dd9d8fe28a00d8", "v": {"correct": false}}
+{"k": "ea7e0c7254d6f5f74b7884c50fcceba1", "v": {"correct": true}}
+{"k": "ea7e0c7254d6f5f74b7884c50fcceba1", "v": {"correct": true}}
+{"k": "edf4c8230f1de7bcd233858bb2c6dc61", "v": {"correct": true}}
+{"k": "edf4c8230f1de7bcd233858bb2c6dc61", "v": {"correct": true}}
+{"k": "edf4c8230f1de7bcd233858bb2c6dc61", "v": {"correct": true}}
+{"k": "edf4c8230f1de7bcd233858bb2c6dc61", "v": {"correct": true}}
+{"k": "435d16041ccaebc06aa56ecf2c59b7a8", "v": {"correct": true}}
+{"k": "3effd2384381622b0bf0eca09bfe8688", "v": {"correct": false}}
+{"k": "492937d10fde8cfc214e43f75130d5af", "v": {"correct": false}}
+{"k": "492937d10fde8cfc214e43f75130d5af", "v": {"correct": false}}
+{"k": "cf5e269a43a34b75355d5d0e1ff98838", "v": {"correct": true}}
+{"k": "1cbd3944699016904d0229a509012ef2", "v": {"answer": "3 bikes (a road bike, a mountain bike, and a commuter bike)"}}
+{"k": "3a2b85a01e4ed091e072a88b7e8dd983", "v": {"answer": "3 bikes: a road bike, a mountain bike, and a commuter bike"}}
+{"k": "5962146a5e3e54053a83213b2a02e56d", "v": {"answer": "not in history"}}
+{"k": "492937d10fde8cfc214e43f75130d5af", "v": {"correct": false}}
+{"k": "61d4424715f62f64dbaa6a1fade1a8e3", "v": {"correct": true}}
+{"k": "6b0b117b0c4fc25677fab0b5ccb37b51", "v": {"correct": false}}
+{"k": "fcdb31bd521c6030a4fe903372e25593", "v": {"correct": false}}
+{"k": "76b33dbe643fdd1ea1a7e8abc22ecfb9", "v": {"correct": true}}
+{"k": "4ae5c6f6cc452fbbbeb6da8494632448", "v": {"correct": true}}
+{"k": "fcdb31bd521c6030a4fe903372e25593", "v": {"correct": false}}
+{"k": "24915fca2c9747559620bda584fc0f3c", "v": {"correct": false}}
+{"k": "fcdb31bd521c6030a4fe903372e25593", "v": {"correct": false}}
+{"k": "11c49174dd6877a88b67b691d2434a7b", "v": {"correct": true}}
+{"k": "4c5a5f896b9157febc0a55ca421f41dc", "v": {"correct": true}}
+{"k": "7a64fa1e6e41d1a0aa567564b645bc02", "v": {"answer": "You own three bikes: a road bike, a mountain bike, and a commuter bike."}}
+{"k": "4c5a5f896b9157febc0a55ca421f41dc", "v": {"correct": true}}
+{"k": "b47517fa75e635a1ce0d6d6c8b73aae9", "v": {"answer": "You own three bikes - a road bike, a mountain bike, and a commuter bike."}}
+{"k": "f827bbade7f5ab5cefbdee1e7dc2a968", "v": {"answer": "three bikes - a road bike, a mountain bike, and a commuter bike"}}
+{"k": "d57fa224f2a23649682fc04ae3630621", "v": {"correct": false}}
+{"k": "d57fa224f2a23649682fc04ae3630621", "v": {"correct": false}}
+{"k": "d57fa224f2a23649682fc04ae3630621", "v": {"correct": false}}
+{"k": "ec8d6acf57e4a27159760a298e0de7b2", "v": {"correct": true}}
+{"k": "1a5e8f26c09b25dc5580f86388fe8a9f", "v": {"correct": true}}
+{"k": "c7ff04e334e7a9957c9462ad75a77646", "v": {"answer": "You own 3 bikes: a road bike (Trek Emonda), a mountain bike, and a commuter bike."}}
+{"k": "84cbc4235be317e68e3a1534e06013fa", "v": {"correct": true}}
+{"k": "2f3ba7bcb7ffa8c780abb230fea3d51c", "v": {"correct": true}}
+{"k": "3adbaac64904639c42d16818814f09d2", "v": {"correct": true}}
+{"k": "c341fe41cbfdb81a6b70bbb1f79af820", "v": {"correct": false}}
+{"k": "c341fe41cbfdb81a6b70bbb1f79af820", "v": {"correct": false}}
+{"k": "bc6eaca3f51a7a5e508cc81d7bc9eb26", "v": {"correct": true}}
+{"k": "5fadf94edb3914bf6d9e708a0058953d", "v": {"correct": true}}
+{"k": "b2dbd0922014be0eca0b8f569131cb09", "v": {"correct": true}}
+{"k": "2e000aa5358e42294507a4c58cd5870c", "v": {"correct": true}}
+{"k": "6ef2bf54db337c360e44a422369b0ce3", "v": {"correct": true}}
+{"k": "894f3285464b9bf1946af4f724aeb91c", "v": {"correct": false}}
+{"k": "b7ceb4a4c4e00508a7559ebe691e65d5", "v": {"correct": true}}
+{"k": "7991f5ef0e192365d3e80514cb0fefe7", "v": {"correct": false}}
+{"k": "7991f5ef0e192365d3e80514cb0fefe7", "v": {"correct": false}}
+{"k": "31c0ed873736c29d253b277b659e27dc", "v": {"correct": false}}
+{"k": "7991f5ef0e192365d3e80514cb0fefe7", "v": {"correct": false}}
+{"k": "6d6b5a44191c016afa966ec3ad82fa4d", "v": {"correct": true}}
+{"k": "45349dacf5db3e7bf331c722a01464e7", "v": {"correct": false}}
+{"k": "ad5ec4fd29c7c19c6c0255e9a6d24ee0", "v": {"correct": true}}
+{"k": "e639d9adafc64ceeb92543ab8f927c10", "v": {"correct": true}}
+{"k": "45349dacf5db3e7bf331c722a01464e7", "v": {"correct": false}}
+{"k": "4335363d6e1dfe0cfd4d482e35f1760c", "v": {"correct": true}}
+{"k": "1954ac8b0425f27ec4875ce43cf6c9f9", "v": {"answer": "not in history"}}
+{"k": "d3932277e417a37606e3ddf1ba8d6048", "v": {"answer": "from a sports store downtown"}}
+{"k": "31c4d2e2a8801257ca5ab622fe539b43", "v": {"answer": "not in history"}}
+{"k": "287c50e6ce1728469989280dd6a29234", "v": {"correct": true}}
+{"k": "05c183dd55c343239b13d9278b0c5109", "v": {"correct": true}}
+{"k": "2cd6b36323c1d61d638d2f2b08043944", "v": {"correct": false}}
+{"k": "0f93cb7972bb6547d2b68a1568579149", "v": {"answer": "a sports store downtown"}}
+{"k": "2cd6b36323c1d61d638d2f2b08043944", "v": {"correct": false}}
+{"k": "cdbc17f9168bf785ca1eedd52b5b7bc8", "v": {"correct": false}}
+{"k": "5f32ce1f7a4b709bde40b3ea45e2d73f", "v": {"correct": true}}
+{"k": "30bd9fbca3fe000e36959eab68104188", "v": {"correct": false}}
+{"k": "4bb80d5282a56a0dbe2b275f9e03373d", "v": {"correct": true}}
+{"k": "cdbc17f9168bf785ca1eedd52b5b7bc8", "v": {"correct": false}}
+{"k": "3013ab1c88a22787b9d7d5bbd4609a34", "v": {"correct": true}}
+{"k": "ad02ec31359140636db36cb1719ade81", "v": {"correct": true}}
+{"k": "85ee9c054d45cfe60751ddeace424793", "v": {"correct": false}}
+{"k": "0e0eccd8542fadc44b16f019dad6de11", "v": {"answer": "from a sports store downtown"}}
+{"k": "4d055b9dae6be3c4007012d8fcdf8bc4", "v": {"correct": false}}
+{"k": "a18a95d2ddf23f07758330a603cb2a5d", "v": {"correct": true}}
+{"k": "18de725dde541d3352ad4a3be57c0bb9", "v": {"answer": "a sports store downtown"}}
+{"k": "a9f03f329e739ea62cfd41ed1d3bdcbe", "v": {"correct": false}}
+{"k": "edfaa5cdcb75da778bda7363a4982453", "v": {"answer": "a sports store downtown"}}
+{"k": "1ab1ebf0439b4813f9860dcf9678f634", "v": {"correct": false}}
+{"k": "86a681c200a9a1b2bf01dd9d0cfff3d3", "v": {"correct": false}}
+{"k": "961c69a8594c504c6ca0875b2dd21385", "v": {"correct": false}}
+{"k": "d309ce141b517535b00be78f8bb9f377", "v": {"correct": true}}
+{"k": "d309ce141b517535b00be78f8bb9f377", "v": {"correct": true}}
+{"k": "d309ce141b517535b00be78f8bb9f377", "v": {"correct": true}}
+{"k": "d309ce141b517535b00be78f8bb9f377", "v": {"correct": true}}
+{"k": "229ac154675483ed4a7ffcce5b7cb5fa", "v": {"correct": false}}
+{"k": "700347887b5ab8227049f52f5a2d4750", "v": {"correct": false}}
+{"k": "bcfd02164036960c60daedddca7a3a02", "v": {"correct": false}}
+{"k": "8daccfdbdcaf269b932c3937bbe41ff6", "v": {"correct": false}}
+{"k": "8daccfdbdcaf269b932c3937bbe41ff6", "v": {"correct": false}}
+{"k": "1090b539224cefd99ca1756d30ab649c", "v": {"correct": false}}
+{"k": "4c5f2c19081ef5c118ed78ea134e7c59", "v": {"correct": false}}
+{"k": "2f6cc3b83351a7bcff513bcfc80e4cae", "v": {"correct": false}}
+{"k": "5c4ee5543b5cdb94a2988f0cbf5fc397", "v": {"answer": "not in history"}}
+{"k": "cf8a0f23fae5b5a81f590d6c295ba3ef", "v": {"correct": false}}
+{"k": "cf8a0f23fae5b5a81f590d6c295ba3ef", "v": {"correct": false}}
+{"k": "6d759b265f17c3f0604f2fd85495ea26", "v": {"answer": "not in history"}}
+{"k": "b6a71cabe041657993f597c5bcb7cb58", "v": {"correct": true}}
+{"k": "ebe2c69ade7b52d928a46ccb471666de", "v": {"answer": "not in history"}}
+{"k": "b6a71cabe041657993f597c5bcb7cb58", "v": {"correct": true}}
+{"k": "7ac31ebd82d224900be3f6feb0b28d46", "v": {"answer": "not in history"}}
+{"k": "d1d8e03cd7da31a32fbaa526c4520fb9", "v": {"correct": true}}
+{"k": "348a43813427646da7e60451644431e0", "v": {"correct": false}}
+{"k": "a19c09df52b2f733b543a9b3dc22f23e", "v": {"correct": true}}
+{"k": "d1d8e03cd7da31a32fbaa526c4520fb9", "v": {"correct": true}}
+{"k": "b347c0dc3ea7e65b931d0da4c4c4fa45", "v": {"correct": false}}
+{"k": "d1d8e03cd7da31a32fbaa526c4520fb9", "v": {"correct": true}}
+{"k": "b347c0dc3ea7e65b931d0da4c4c4fa45", "v": {"correct": false}}
+{"k": "d1d8e03cd7da31a32fbaa526c4520fb9", "v": {"correct": true}}
+{"k": "a7f75f6b52bd8299f1c1f65359a8332e", "v": {"correct": true}}
+{"k": "3e2d6bf196f379dfa4d44c55aaf6634a", "v": {"correct": false}}
+{"k": "32235e2e43d9a33b37b8ebb9b99dfaf4", "v": {"answer": "not in history"}}
+{"k": "e7111216c90df90bb6e38e00bafe1419", "v": {"correct": false}}
+{"k": "1c197657cb71f074ad9082793d8e8c48", "v": {"correct": true}}
+{"k": "d2257356093c063569052857534880a5", "v": {"answer": "not in history"}}
+{"k": "1e72aef34558ac5e251ed77fd8e2575e", "v": {"correct": true}}
+{"k": "9c0ff1c69f39d4a6088ef6aa67661ae2", "v": {"correct": false}}
+{"k": "fab0a83f1de245142462058c5c5b15a4", "v": {"answer": "not in history"}}
+{"k": "1e72aef34558ac5e251ed77fd8e2575e", "v": {"correct": true}}
+{"k": "097d1d90eb72c31cd1985b327d306d0f", "v": {"correct": false}}
+{"k": "cddee5f6d36ded59b66fe9765584ad0d", "v": {"correct": false}}
+{"k": "097d1d90eb72c31cd1985b327d306d0f", "v": {"correct": false}}
+{"k": "cdfa5e81d4d45bae82aaab81f34cd8b7", "v": {"correct": true}}
+{"k": "a038b86ac8164772df40b083754779f9", "v": {"correct": false}}
+{"k": "b5d4b5ce99840baf31c3ee28f55166f8", "v": {"correct": false}}
+{"k": "821221f3bd72d02acff6116cb6911f5d", "v": {"correct": true}}
+{"k": "754fcbfafff4dbf26a723b97bc938d3e", "v": {"correct": true}}
+{"k": "dfdcabd4660d22cb6403d4a5fc28a171", "v": {"correct": true}}
+{"k": "dfdcabd4660d22cb6403d4a5fc28a171", "v": {"correct": true}}
+{"k": "ecf195082f4777374422427728d2109c", "v": {"correct": true}}
+{"k": "a315c1ad21e1634eeac0a6de64b6ae80", "v": {"correct": false}}
+{"k": "a315c1ad21e1634eeac0a6de64b6ae80", "v": {"correct": false}}
+{"k": "a315c1ad21e1634eeac0a6de64b6ae80", "v": {"correct": false}}
+{"k": "a315c1ad21e1634eeac0a6de64b6ae80", "v": {"correct": false}}
+{"k": "f214b11c82d053f4855c58f2a7762d47", "v": {"correct": true}}
+{"k": "d55d29a58844f13b1369beeb3e42a72d", "v": {"answer": "The Seven Husbands of Evelyn Hugo"}}
+{"k": "308d0f886886792432c457a03789f727", "v": {"answer": "not in history"}}
+{"k": "363b76ba083955871240290c20aca920", "v": {"answer": "not in history"}}
+{"k": "5bb3a782ba36dfee4f9791b968357327", "v": {"answer": "The Seven Husbands of Evelyn Hugo"}}
+{"k": "13afca3ae2fd49dea65c2ff6de7ec650", "v": {"correct": true}}
+{"k": "3db5f9538ce8b877087dd76501ecc12e", "v": {"correct": false}}
+{"k": "3db5f9538ce8b877087dd76501ecc12e", "v": {"correct": false}}
+{"k": "13afca3ae2fd49dea65c2ff6de7ec650", "v": {"correct": true}}
+{"k": "bb223bd9af26d56742a99e386c878100", "v": {"answer": "The Seven Husbands of Evelyn Hugo"}}
+{"k": "e57431f63dcf13c2a22d1bdc4cfa8084", "v": {"answer": "The Seven Husbands of Evelyn Hugo"}}
+{"k": "ebb0ca07ba52b204e7f05803e087d4f9", "v": {"answer": "The Seven Husbands of Evelyn Hugo"}}
+{"k": "ec6e317e08e9a423df36f3a2062dfbd3", "v": {"answer": "not in history"}}
+{"k": "dc5b96c35bfbaad43706d08ffa510a3b", "v": {"answer": "45 minutes each way"}}
+{"k": "4749a64fa0d83eccd999e34321987596", "v": {"answer": "not in history"}}
+{"k": "cecf84fb2441b48c3420d5892c85026a", "v": {"answer": "not in history"}}
+{"k": "5c2ceef4d1ad54bd2e89ed32a78e888a", "v": {"correct": false}}
+{"k": "dce6f4fc4ea486601b94080e60eda579", "v": {"correct": true}}
+{"k": "5c2ceef4d1ad54bd2e89ed32a78e888a", "v": {"correct": false}}
+{"k": "5c2ceef4d1ad54bd2e89ed32a78e888a", "v": {"correct": false}}
