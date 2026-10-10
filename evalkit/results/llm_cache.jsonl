@@ -6625,3 +6625,59 @@
 {"k": "4a2212216d6874d027b969ccbed79571", "v": {"correct": false}}
 {"k": "0161a619567ca88a5dbecfdf63d3c6b9", "v": {"correct": false}}
 {"k": "3482330b75b62bfe21d4cb02557282b4", "v": {"answer": "not in history"}}
+{"k": "eb81e9f8e4848aff5ad68c55f8b7a9a9", "v": {"answer": "Based on the conversation history, you mentioned spending on the following luxury items in recent months: a Gucci handbag for $1,200, a luxury evening gown for $800, and leather boots from a high-end Italian designer for $500. The total amount spent on luxury items is $2,500."}}
+{"k": "14a506076dec70b0dbd2fe995c9db85c", "v": {"answer": "$2,500 - This includes a Gucci handbag ($1,200), a luxury evening gown ($800), and Italian designer leather boots ($500)"}}
+{"k": "30e751a7a5bcc4f85282063162a6ad63", "v": {"answer": "$1,300 (luxury evening gown for $800 and leather boots from Italian designer for $500)"}}
+{"k": "ad43daf54902ae3c15e5c4839179196d", "v": {"correct": true}}
+{"k": "87e7b2cd1e24a623e7b9fa4d9e6285bd", "v": {"correct": true}}
+{"k": "88f924c7355c0493d978e71a204b0b5c", "v": {"correct": false}}
+{"k": "668d6b59fabdc9e114cf0d8e4f3c7ef6", "v": {"answer": "The user mentioned three pieces of furniture: 1) a new coffee table from West Elm (bought), 2) a kitchen table with a wobbly leg (fixed), and 3) an IKEA bookshelf (assembled about two months ago)."}}
+{"k": "a80f34808e96df0732d2db4dc1e54428", "v": {"answer": "3 pieces of furniture: you bought/got a wooden coffee table with metal legs from West Elm, assembled an IKEA bookshelf in your home office, and fixed a wobbly leg on your kitchen table."}}
+{"k": "7f03fec27274c4757e4cf0c887766091", "v": {"answer": "3 pieces of furniture: 1 coffee table from West Elm (bought), 1 kitchen table leg (fixed), and 1 IKEA bookshelf (assembled)"}}
+{"k": "a1b1b9f37bfcef4301b4b49b9e3199b2", "v": {"answer": "2 pieces of furniture: the user assembled an IKEA bookshelf for their home office about two months ago, and bought a coffee table from West Elm"}}
+{"k": "fd595b5ca8977030d1450a8aa18e264f", "v": {"correct": false}}
+{"k": "7ffc2767c9598c641120ead6b83cda52", "v": {"correct": false}}
+{"k": "2b8b86bd5dee49aee01aa50efcc77adb", "v": {"correct": false}}
+{"k": "c8997faa931cff6bce98841286ff6784", "v": {"correct": false}}
+{"k": "0d5f3629278b0dbe564f205625c2e791", "v": {"answer": "4 pieces of furniture: 1 coffee table purchased from West Elm, 1 mattress purchased from Casper, 1 IKEA bookshelf assembled, and 1 kitchen table with a wobbly leg that was fixed"}}
+{"k": "02d3d4f9345d6b73ec9c78afedd98a6e", "v": {"correct": true}}
+{"k": "1233811e206375933eb13684a1749698", "v": {"answer": "4 pieces of furniture: 1 coffee table (bought from West Elm), 1 mattress (ordered from Casper), 1 IKEA bookshelf (assembled), and 1 kitchen table (fixed a wobbly leg)"}}
+{"k": "4d3303ebbc37a2db49600cffb042dd3e", "v": {"correct": true}}
+{"k": "b86bf75a5e2360a0621bed77471ce1e1", "v": {"answer": "3 pieces of furniture: 1 mattress from Casper (ordered), 1 wooden coffee table from West Elm with metal legs (bought and fixed), and 1 IKEA bookshelf (assembled)"}}
+{"k": "514a6916adecd7e2d3eee4fbe1ae4b66", "v": {"correct": false}}
+{"k": "64f0d3331ed4f6474843c58f99f67796", "v": {"answer": "not in history"}}
+{"k": "100c80c4f1f388e9bf04fa69039a1769", "v": {"answer": "The history indicates $60 was spent total on coffee mugs for coworkers, but the number of mugs is not specified, so the per-mug cost cannot be determined from the history."}}
+{"k": "204341744ac42ca133b149ed4fd97372", "v": {"correct": false}}
+{"k": "e1dda7f0a6b59abc581184f22352930d", "v": {"correct": false}}
+{"k": "f854b92191d36b45ee11fbc7dac3b85e", "v": {"answer": "$12 per mug (spent $60 total on 5 coffee mugs for coworkers)"}}
+{"k": "05475a4bfe287d93fbcafe6c8ced5971", "v": {"answer": "not in history"}}
+{"k": "a1cf98e4a7c8f8c466e7640cd94ae856", "v": {"correct": true}}
+{"k": "5e90a509de7ce66b857b267ae01cc77a", "v": {"answer": "$12 per mug (based on spending $60 on 5 coffee mugs for coworkers, though this calculation is derived from information mentioned separately in the conversation)"}}
+{"k": "977dfc72db2d56c5eb4d20135a255f82", "v": {"correct": true}}
+{"k": "924659e524e0347631d7c1d4334402b1", "v": {"answer": "$12 per mug (calculated from $60 spent on 5 coffee mugs)"}}
+{"k": "5ea47f61834dc1d86afca20d21e9f40e", "v": {"correct": true}}
+{"k": "ccd0bc242d510bda2e489bbaa5ae9e88", "v": {"answer": "not in history"}}
+{"k": "ec13e846268bc31c35a5b989e3923096", "v": {"answer": "not in history"}}
+{"k": "a04241d257e33995e2cca445cae585fe", "v": {"answer": "7 years. You mentioned you completed your Bachelor's degree in Business Administration from UC Berkeley at age 25, and later stated you are 32 years old as a Digital Marketing Specialist at TechSavvy Inc. (32 - 25 = 7 years)"}}
+{"k": "42dcac783575060fc0f7087f2c6b588f", "v": {"answer": "not in history"}}
+{"k": "2a046322c0f63ec163f77e2b2923474d", "v": {"correct": true}}
+{"k": "5579fbe5ec5e68dd970fb272a61d65fa", "v": {"correct": true}}
+{"k": "2a046322c0f63ec163f77e2b2923474d", "v": {"correct": true}}
+{"k": "cb5371e08129c307fa283417afdf8672", "v": {"answer": "not in history"}}
+{"k": "ab0dc6594779f615a93066f506d9150e", "v": {"answer": "not in history"}}
+{"k": "ddf0edb00f3a697d014bfa76b3712056", "v": {"answer": "3 years"}}
+{"k": "c15b54b282fbb956b8ad00611c59e822", "v": {"answer": "not in history"}}
+{"k": "06317a19bd329f1f7e81b6b702eaa94e", "v": {"correct": false}}
+{"k": "566ba70c59430ca39fb24dc19d769ee1", "v": {"answer": "not in history"}}
+{"k": "9d183175118d494a070134627c76df54", "v": {"answer": "8"}}
+{"k": "b53b69e224e6a7e44d1e86d0b394f9fe", "v": {"answer": "not in history"}}
+{"k": "a00f69d768716ddd2e6ffc1270e3a8d9", "v": {"correct": true}}
+{"k": "12f04023574d482a47ec08bcd0dbcedc", "v": {"correct": false}}
+{"k": "12f04023574d482a47ec08bcd0dbcedc", "v": {"correct": false}}
+{"k": "b668c37678e966d7aba98c7386430775", "v": {"answer": "8"}}
+{"k": "9785f0b851bcef479fb935bdec8941f1", "v": {"answer": "8 meals total - 3 meals from the chicken fajitas and 5 lunches from the lentil soup"}}
+{"k": "5fb881a8b3b2f177dba1fa35720f5335", "v": {"answer": "8 lunch meals total - 3 from chicken fajitas and 5 from lentil soup"}}
+{"k": "3d09a03647df9cb9143570d6b61457e7", "v": {"answer": "8 meals total: 3 meals from chicken fajitas and 5 meals from lentil soup"}}
+{"k": "e58b938dc73d4adad2a372e6650b108f", "v": {"correct": true}}
+{"k": "e56d78dcd484f20fff27658a458d11a7", "v": {"correct": true}}
+{"k": "88c3f6313ea293c140448c5c3a7a6880", "v": {"correct": true}}
