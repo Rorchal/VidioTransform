@@ -7597,3 +7597,6 @@
 {"k": "dce6f4fc4ea486601b94080e60eda579", "v": {"correct": true}}
 {"k": "5c2ceef4d1ad54bd2e89ed32a78e888a", "v": {"correct": false}}
 {"k": "5c2ceef4d1ad54bd2e89ed32a78e888a", "v": {"correct": false}}
+{"k": "614f21f9ce2d9f2b51709ea2ba01a520", "v": {"answer": "not in history"}}
+{"k": "cfe2f3a2fc7e507c7f404472ee2d2516", "v": {"answer": "not in history"}}
+{"k": "db55ea45b218bc97c5e0c50ce7d663d1", "v": {"answer": "45 minutes each way"}}
