@@ -1,0 +1,252 @@
+[
+ {
+  "iid": "django__django-17084",
+  "base_commit": "f8c43aca467b7b0c4bb0a7fa41362f90b610b8df",
+  "python": "3.11"
+ },
+ {
+  "iid": "sympy__sympy-13031",
+  "base_commit": "2dfa7457f20ee187fbb09b5b6a1631da4458388c",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-11299",
+  "base_commit": "6866c91b638de5368c18713fa851bfe56253ea55",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-15037",
+  "base_commit": "dab48b7482295956973879d15bfd4d3bb0718772",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-20590",
+  "base_commit": "cffd4e0f86fefd4802349a9f9b19ed70934ea354",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-17630",
+  "base_commit": "58e78209c8577b9890e957b624466e5beed7eb08",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-11618",
+  "base_commit": "360290c4c401e386db60723ddb0109ed499c9f6e",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-14999",
+  "base_commit": "a754b82dac511475b6276039471ccd17cc64aeb8",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-13480",
+  "base_commit": "f57fe3f4b3f2cab225749e1b3b38ae1bf80b62f0",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-15731",
+  "base_commit": "93cedc82f29076c824d476354527af1150888e4f",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-12965",
+  "base_commit": "437196da9a386bd4cc62b0ce3f2de4aba468613d",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-24213",
+  "base_commit": "e8c22f6eac7314be8d92590bfff92ced79ee03e2",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-11603",
+  "base_commit": "f618e033acd37d59b536d6e6126e6c5be18037f6",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-14376",
+  "base_commit": "d06c5b358149c02a62da8a5469264d05f29ac659",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-12419",
+  "base_commit": "7fa1a93c6c8109010a6ff3f604fda83b604e0e97",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-16597",
+  "base_commit": "6fd65310fa3167b9626c38a5487e171ca407d988",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-13091",
+  "base_commit": "d1320814eda6549996190618a21eaf212cfd4d1e",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-14248",
+  "base_commit": "9986b38181cdd556a3f3411e553864f11912244e",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-16145",
+  "base_commit": "93d4c9ea1de24eb391cb2b3561b6703fd46374df",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-13810",
+  "base_commit": "429d089d0a8fbd400e0c010708df4f0d16218970",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-12125",
+  "base_commit": "89d41cba392b759732ba9f1db4ff29ed47da6a56",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-15809",
+  "base_commit": "28d913d3cead6c5646307ffa6540b21d65059dfd",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-11149",
+  "base_commit": "e245046bb6e8b32360aa48b8a41fb7050f0fc730",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-16333",
+  "base_commit": "60a7bd89860e504c0c33b02c78edcac87f6d1b5a",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-16950",
+  "base_commit": "f64fd47a7627ed6ffe2df2a32ded6ee528a784eb",
+  "python": "3.11"
+ },
+ {
+  "iid": "django__django-10554",
+  "base_commit": "14d026cccb144c6877294ba4cd4e03ebf0842498",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-12481",
+  "base_commit": "c807dfe7569692cad24f02a08477b70c1679a4dd",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-14539",
+  "base_commit": "6a5ef557f80a8eb6a758ebe99c8bb477ca47459e",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-14034",
+  "base_commit": "db1fc5cd3c5d36cdb5d0fe4404efd6623dd3e8fb",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-12209",
+  "base_commit": "5a68f024987e6d16c2626a31bf653a2edddea579",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-15315",
+  "base_commit": "652c68ffeebd510a6f59e1b56b3e007d07683ad8",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-11163",
+  "base_commit": "e6588aa4e793b7f56f4cadbfa155b581e0efc59a",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-11133",
+  "base_commit": "879cc3da6249e920b8d54518a0ae06de835d7373",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-11141",
+  "base_commit": "5d9cf79baf07fc4aed7ad1b06990532a65378155",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-21596",
+  "base_commit": "110997fe18b9f7d5ba7d22f624d156a29bf40759",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-10973",
+  "base_commit": "ddb293685235fd09e932805771ae97f72e817181",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-16255",
+  "base_commit": "444b6da7cc229a58a2c476a52e45233001dc7073",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-13837",
+  "base_commit": "415f50298f97fb17f841a9df38d995ccf347dfcc",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-16819",
+  "base_commit": "0b0998dc151feb77068e2387c34cc50ef6b356ae",
+  "python": "3.11"
+ },
+ {
+  "iid": "sympy__sympy-19954",
+  "base_commit": "6f54459aa0248bf1467ad12ee6333d8bc924a642",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-13964",
+  "base_commit": "f39634ff229887bf7790c069d0c411b38494ca38",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-7530",
+  "base_commit": "f8fab6f90233c7114d642dfe01a4e6d4cb14ee7d",
+  "python": "3.8"
+ },
+ {
+  "iid": "sympy__sympy-22714",
+  "base_commit": "3ff4717b6aef6086e78f01cdfa06f64ae23aed7e",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-14089",
+  "base_commit": "d01709aae21de9cd2565b9c52f32732ea28a2d98",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-15629",
+  "base_commit": "694cf458f16b8d340a3195244196980b2dec34fd",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-14053",
+  "base_commit": "179ee13eb37348cd87169a198aec18fedccc8668",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-13933",
+  "base_commit": "42e8cf47c7ee2db238bf91197ea398126c546741",
+  "python": "3.9"
+ },
+ {
+  "iid": "sympy__sympy-13757",
+  "base_commit": "a5e6a101869e027e7930e694f8b1cfb082603453",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-14855",
+  "base_commit": "475cffd1d64c690cdad16ede4d5e81985738ceb4",
+  "python": "3.9"
+ },
+ {
+  "iid": "django__django-16662",
+  "base_commit": "0eb3e9bd754e4c9fac8b616b705178727fc8031e",
+  "python": "3.11"
+ }
+]

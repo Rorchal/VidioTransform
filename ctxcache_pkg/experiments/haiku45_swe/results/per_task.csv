@@ -1,0 +1,51 @@
+instance_id,gemini_resolved,haiku_resolved,env_broken,haiku_cost_usd,haiku_model_calls,haiku_peak_ctx,haiku_sent,gemini_model_calls,gemini_peak_ctx,gemini_sent,haiku_files_changed
+django__django-17084,True,True,False,0.83,93,95595,4941229,70,45507,1660289,django/db/models/sql/query.py tests/expressions_window/test_issue.py tests/expressions_window/tests.py
+sympy__sympy-13031,True,True,False,0.646,81,75129,3419131,92,54539,2494173,sympy/matrices/sparse.py
+django__django-11299,True,True,False,0.523,64,67776,2789302,55,32090,918032,django/db/models/sql/query.py tests/constraints/models.py tests/constraints/tests.py
+django__django-15037,True,True,False,0.601,69,79246,3381289,50,37644,979169,django/core/management/commands/inspectdb.py
+sympy__sympy-20590,True,True,False,0.217,33,40342,926718,81,38330,1485323,sympy/core/_print_helpers.py
+sympy__sympy-17630,True,False,False,0.217,31,38710,817321,59,37168,1237745,sympy/matrices/expressions/blockmatrix.py
+sympy__sympy-11618,True,True,False,0.261,31,50132,1044591,58,51018,1604321,sympy/geometry/point.py
+django__django-14999,True,True,False,0.507,54,71895,2368666,34,31241,557232,django/db/migrations/operations/models.py tests/migrations/test_operations.py
+sympy__sympy-13480,True,True,False,0.108,13,33385,342570,26,12153,157343,sympy/functions/elementary/hyperbolic.py
+django__django-15731,True,True,False,0.214,38,35519,889756,44,19066,450059,django/db/models/manager.py
+django__django-12965,True,True,False,0.643,79,76372,3348644,50,46414,1243107,django/db/models/sql/compiler.py test_delete_sql.py tests/test_delete_debug.py
+sympy__sympy-24213,True,True,False,0.297,35,52117,1198654,45,22919,547629,sympy/physics/units/unitsystem.py
+django__django-11603,True,True,False,0.294,44,46088,1351446,69,40970,1394642,django/db/models/aggregates.py
+django__django-14376,True,False,False,0.167,27,33056,628984,40,25596,534553,django/db/backends/mysql/base.py
+django__django-12419,True,True,True,0.28,32,53768,1195493,40,30851,720819,django/conf/global_settings.py
+sympy__sympy-16597,True,False,False,0.799,95,86053,4581125,68,61050,2314904,sympy/assumptions/handlers/calculus.py sympy/core/symbol.py
+sympy__sympy-13091,True,False,False,0.493,56,72967,2498800,92,62968,2607829,sympy/core/basic.py sympy/core/numbers.py
+sympy__sympy-14248,False,False,False,0.783,83,98212,4590484,109,67683,3251262,sympy/printing/latex.py sympy/printing/pretty/pretty.py sympy/printing/str.py sympy/printing/tests/test_latex.py sympy/printing/tests/test_str.py
+django__django-16145,True,True,False,0.283,39,47569,1124479,33,22790,434450,django/core/management/commands/runserver.py
+django__django-13810,True,True,False,0.474,51,66929,2005577,32,22657,495799,django/core/handlers/base.py
+django__django-12125,True,True,False,0.665,81,78905,3811113,62,48922,1569865,django/db/migrations/serializer.py tests/migrations/test_writer.py
+sympy__sympy-15809,True,True,False,0.21,23,44756,683854,37,15993,329988,sympy/functions/elementary/miscellaneous.py
+django__django-11149,True,False,False,0.494,61,67533,2307067,29,37889,562715,django/contrib/admin/options.py
+django__django-16333,True,True,False,0.312,46,49881,1427433,34,19726,424310,django/contrib/auth/forms.py tests/auth_tests/test_forms.py
+django__django-16950,False,False,False,0.867,90,98867,4986398,82,71506,2517299,django/forms/models.py test_uuid_inline_bug.py
+django__django-10554,False,False,False,0.876,104,93504,5360143,127,125196,6970298,django/db/models/sql/query.py tests/queries/test_qs_combinators.py
+sympy__sympy-12481,True,True,False,0.306,42,52281,1387337,36,26699,524937,sympy/combinatorics/permutations.py sympy/combinatorics/tests/test_permutations.py
+django__django-14539,True,True,False,0.314,39,52936,1375968,38,33062,780954,django/utils/html.py
+django__django-14034,False,False,False,0.461,53,64275,2066516,28,46819,646647,django/forms/fields.py
+django__django-12209,True,True,True,0.483,59,67335,2465278,52,48519,1612250,django/db/models/base.py tests/model_fields/test_pk_default_issue.py tests/model_fields/test_pr_reproduction.py
+django__django-15315,True,True,False,0.257,44,41655,1138516,50,42776,970729,django/db/models/fields/__init__.py tests/model_fields/tests.py
+django__django-11163,True,True,False,0.246,29,49919,1052283,38,19215,391269,django/forms/models.py
+django__django-11133,True,True,False,0.207,32,38813,818839,29,18649,330539,django/http/response.py
+django__django-11141,True,False,False,0.429,56,58737,2146333,45,43681,1158046,django/db/migrations/loader.py tests/migrations/test_loader.py
+sympy__sympy-21596,False,False,False,0.409,39,71367,1929009,52,45346,1343236,sympy/sets/handlers/intersection.py sympy/sets/tests/test_fancysets.py
+django__django-10973,False,True,False,0.298,25,48918,677300,21,21175,246568,django/db/backends/postgresql/client.py
+django__django-16255,True,True,False,0.252,40,42570,1090480,24,17561,251554,django/contrib/sitemaps/__init__.py
+django__django-13837,True,True,False,0.412,43,63877,1822961,45,34458,732745,django/utils/autoreload.py
+django__django-16819,True,True,False,0.573,52,86232,2854032,88,87473,3697346,django/db/migrations/operations/models.py
+sympy__sympy-19954,True,True,False,0.146,23,28812,412937,19,16214,200324,sympy/combinatorics/perm_groups.py
+django__django-13964,True,True,False,0.622,71,74376,3287371,63,50567,1834732,django/db/models/fields/related_descriptors.py
+django__django-7530,True,True,True,0.435,65,57696,2102034,43,25825,672471,django/core/management/commands/makemigrations.py
+sympy__sympy-22714,True,True,False,0.243,30,48685,881602,71,51304,2133742,sympy/geometry/point.py
+django__django-14089,True,True,False,0.185,29,37525,742154,15,9209,77800,django/utils/datastructures.py
+django__django-15629,False,False,False,1.088,110,107260,6699609,103,94398,4812232,django/db/backends/base/schema.py django/db/backends/mysql/schema.py tests/test_debug.py
+django__django-14053,True,False,False,0.368,43,58418,1640463,29,29360,491645,django/contrib/staticfiles/storage.py
+django__django-13933,True,True,False,0.456,46,74163,2368413,45,35337,938339,django/forms/models.py tests/model_forms/test_modelchoicefield.py tests/model_forms/tests.py
+sympy__sympy-13757,True,True,False,0.291,45,44322,1182403,49,42474,952718,sympy/polys/polytools.py
+django__django-14855,True,True,False,0.404,52,62997,1858722,64,33118,1302359,django/contrib/admin/helpers.py tests/test_readonly_custom_admin.py
+django__django-16662,True,True,False,0.342,39,59856,1504791,26,25436,387701,django/db/migrations/writer.py
