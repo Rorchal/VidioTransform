@@ -43,6 +43,7 @@ from ctxgc.edges import add_lexical_edges, content_words
 from ctxgc.ingest import assign_roots
 from ctxgc.model import L0, Role
 from ctxgc.summarize import ExtractiveSummarizer
+from ctxgc.tokens import count
 
 from .metrics import node_order, present, stub_present
 
@@ -56,6 +57,8 @@ METHODS: dict[str, dict] = {
     "graded": {"method": "graded"},
     "graded+lex": {"method": "graded", "lexical": True},          # + word-overlap edges question -> turns
     "graded-agent+lex": {"method": "graded", "gain": "idents", "lexical": True},
+    "retrieve-turn": {"retrieve": "turn"},          # BM25 over turns, budget filled in rank order
+    "retrieve-session": {"retrieve": "session"},    # BM25 over whole sessions
 }
 
 
@@ -95,9 +98,11 @@ def _longmemeval_case(inst: dict, max_turns: int, rng: random.Random) -> dict:
     keep.sort()                                             # chronological
     messages: list[dict] = []
     evidence: list[int] = []
+    spans: list[list[int]] = []                             # [start, end) message range of each session
     for i in keep:
         sid, date, sess = sessions[i]
         first = True
+        start = len(messages)
         for m in sess:
             role = m["role"] if m["role"] in ("user", "assistant") else "user"
             content = (m.get("content") or "").strip()
@@ -109,10 +114,12 @@ def _longmemeval_case(inst: dict, max_turns: int, rng: random.Random) -> dict:
             if m.get("has_answer"):
                 evidence.append(len(messages))
             messages.append({"role": role, "content": content})
+        if len(messages) > start:
+            spans.append([start, len(messages)])
     messages.append({"role": "user", "content": inst["question"].strip()})
     answers = _answer_variants(inst["answer"])
     return {"id": inst["question_id"], "type": inst["question_type"], "messages": messages,
-            "answers": answers, "evidence": evidence, "question_index": len(messages) - 1}
+            "answers": answers, "evidence": evidence, "question_index": len(messages) - 1, "sessions": spans}
 
 
 def _answer_variants(answer) -> list[str]:
@@ -142,8 +149,10 @@ def locomo_cases(path: str | Path, per_conv: int = 10, seed: int = 0, skip_categ
                       key=lambda k: int(k.split("_")[1]))
         messages: list[dict] = []
         index_of: dict[str, int] = {}
+        spans: list[list[int]] = []
         for k in keys:
             date = c.get(f"{k}_date_time", "")
+            start = len(messages)
             for j, turn in enumerate(c[k]):
                 text = (turn.get("text") or "").strip()
                 if not text:
@@ -153,6 +162,8 @@ def locomo_cases(path: str | Path, per_conv: int = 10, seed: int = 0, skip_categ
                 role = "user" if turn.get("speaker") == a else "assistant"
                 index_of[turn["dia_id"]] = len(messages)
                 messages.append({"role": role, "content": f"{turn.get('speaker')}: {text}"})
+            if len(messages) > start:
+                spans.append([start, len(messages)])
         qas = [q for q in conv["qa"] if q.get("category") not in skip_categories and q.get("answer") is not None]
         rng.shuffle(qas)
         for q in qas[:per_conv]:
@@ -160,7 +171,7 @@ def locomo_cases(path: str | Path, per_conv: int = 10, seed: int = 0, skip_categ
             cases.append({"id": f"{conv['sample_id']}:{q['question'][:40]}", "type": f"cat{q['category']}",
                           "messages": messages + [{"role": "user", "content": str(q["question"]).strip()}],
                           "answers": _answer_variants(q["answer"]), "evidence": ev,
-                          "question_index": len(messages)})
+                          "question_index": len(messages), "sessions": spans})
     return cases
 
 
@@ -189,6 +200,9 @@ def score_case(case: dict, summarizer, methods: dict[str, dict] = METHODS, budge
     rows = []
     for name, kw in methods.items():
         kw = dict(kw)
+        if "retrieve" in kw:
+            rows += _score_retrieval(case, name, kw["retrieve"], budgets, full_tokens, len(g_plain.nodes), summarizer)
+            continue
         g = g_plain
         if kw.pop("lexical", False):
             if g_lex is None:
@@ -214,6 +228,26 @@ def score_case(case: dict, summarizer, methods: dict[str, dict] = METHODS, budge
                     "retrievable": kept or any(stub_present(r.text, nid, order) for nid in evidence),
                     "tokens": r.tokens / full_tokens, "full_tokens": full_tokens, "nodes": len(g.nodes),
                 })
+    return rows
+
+
+def _score_retrieval(case, name, unit, budgets, full_tokens, nodes, summarizer) -> list[dict]:
+    """Same row shape for the retrieval baseline: an evidence turn is either
+    shown in full or absent, and there are no stubs to find it by."""
+    from . import retrieve
+
+    evidence = set(case["evidence"])
+    rows = []
+    for frac in budgets:
+        msgs, idx = retrieve.messages(case, int(full_tokens * frac), unit)
+        g = chat_graph(msgs + [case["messages"][case["question_index"]]], len(msgs))
+        text = compress(g, 10**9, method="full", summarizer=summarizer).text
+        kept = any(present(text, a) for a in case["answers"])
+        shown = evidence & set(idx)
+        frac_shown = len(shown) / len(evidence) if evidence else None
+        rows.append({"case": case["id"], "type": case["type"], "method": name, "frac": frac, "answer": kept,
+                     "evidence_l0": frac_shown, "evidence_l1": frac_shown, "retrievable": kept or bool(shown),
+                     "tokens": count(text) / full_tokens, "full_tokens": full_tokens, "nodes": nodes})
     return rows
 
 

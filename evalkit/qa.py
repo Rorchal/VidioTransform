@@ -30,6 +30,7 @@ from ctxgc.llm import make_llm
 from ctxgc.summarize import ExtractiveSummarizer
 from ctxgc.tokens import count
 
+from . import retrieve
 from .chat import METHODS as CHAT_METHODS
 from .chat import chat_graph, locomo_cases, longmemeval_cases
 
@@ -76,6 +77,10 @@ def contexts_for(case: dict, methods: list[str], budgets: list[float], summarize
     out = {("full", 1.0): _strip_question(compress(g_plain, 10**9, method="full", summarizer=summarizer).text, case)}
     for name in methods:
         kw = dict(CHAT_METHODS[name])
+        if "retrieve" in kw:
+            for frac in budgets:
+                out[(name, frac)] = _strip_question(retrieve.context(case, int(full_tokens * frac), kw["retrieve"], summarizer), case)
+            continue
         g = g_plain
         if kw.pop("lexical", False):
             if g_lex is None:

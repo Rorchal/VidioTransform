@@ -203,3 +203,62 @@ def test_qa_run_uses_separate_judge_and_rejudge_reads_cached_answers(tmp_path):
     # a run name that never answered has nothing in the cache
     r2 = rejudge(cases, ["truncate", "graded"], [0.5], "nobody", lenient, cache)
     assert r2["answers_found"] == 0 and r2["answers_missing"] == 3
+
+
+def test_bm25_retrieval_selects_matching_turns_and_carries_the_session_date():
+    from evalkit import retrieve
+    msgs = [{"role": "user", "content": "[2023/05/20 (Sat) 02:21] The farmer needs to cross a river with a fox."},
+            {"role": "assistant", "content": "Take the chicken first, then come back."},
+            {"role": "user", "content": "I graduated with a degree in Business Administration last May."},
+            {"role": "assistant", "content": "Congratulations on the degree!"},
+            {"role": "user", "content": "[2023/05/22 (Mon) 09:00] Any tips for my new Weber grill?"},
+            {"role": "assistant", "content": "Season the grates first."},
+            {"role": "user", "content": "What degree did I graduate with?"}]
+    case = {"messages": msgs, "question_index": 6, "sessions": [[0, 4], [4, 6]], "evidence": [2], "answers": ["Business Administration"]}
+    scores = retrieve.bm25([retrieve.tokens(m["content"]) for m in msgs[:6]], retrieve.tokens(msgs[6]["content"]))
+    assert max(range(6), key=lambda i: scores[i]) == 2 and scores[0] == 0
+    assert retrieve.stem("graduated") == retrieve.stem("graduate") and retrieve.stem("degrees") == retrieve.stem("degree")
+    # a budget for one turn takes the best-scoring one; the orphaned turn gets its session's date
+    assert retrieve.select(case, 30, "turn") == [2]
+    out, idx = retrieve.messages(case, 30, "turn")
+    assert idx == [2] and out[0]["content"].startswith("[2023/05/20 (Sat) 02:21] I graduated")
+    # the unmatched rest of the budget is filled most-recent first
+    assert retrieve.select(case, 30 + 20 + 12, "turn") == [2, 3, 5]
+    # session granularity takes whole sessions, best-matching first
+    assert retrieve.select(case, 90, "session") == [0, 1, 2, 3]
+    text = retrieve.context(case, 30, "turn")
+    assert "Business Administration" in text and "farmer" not in text and "[#m0 user]" in text
+    # LoCoMo-style speaker prefix keeps the speaker ahead of the carried date
+    loco = {"messages": [{"role": "user", "content": "Caroline: [1:56 pm on 8 May, 2023] Hey Mel!"},
+                         {"role": "assistant", "content": "Melanie: I went to the LGBTQ support group yesterday."},
+                         {"role": "user", "content": "Which group did Melanie go to?"}],
+            "question_index": 2, "sessions": [[0, 2]]}
+    out, idx = retrieve.messages(loco, 20, "turn")
+    assert idx == [1] and out[0]["content"] == "Melanie: [1:56 pm on 8 May, 2023] I went to the LGBTQ support group yesterday."
+
+
+def test_loaders_record_session_spans_and_retrieval_runs_through_metrics_and_qa(tmp_path):
+    from evalkit.qa import contexts_for
+    data = [_lme_instance("q1", "single-session-user", "What degree did I graduate with?", "Business Administration")]
+    p = tmp_path / "lme.json"
+    p.write_text(json.dumps(data))
+    c = longmemeval_cases(p, n=1)[0]
+    assert [i for s, e in c["sessions"] for i in range(s, e)] == list(range(c["question_index"]))
+    assert len(c["sessions"]) == 3
+    rows = score_case(c, ExtractiveSummarizer(), methods={"retrieve-turn": {"retrieve": "turn"}, "retrieve-session": {"retrieve": "session"}},
+                      budgets=[0.5, 1.5])
+    by = {(r["method"], r["frac"]): r for r in rows}
+    assert all(r["answer"] and r["evidence_l0"] == 1.0 and r["retrievable"] for r in rows)
+    assert by[("retrieve-turn", 0.5)]["tokens"] < 0.7 < by[("retrieve-turn", 1.5)]["tokens"]
+    ctxs = contexts_for(c, ["retrieve-session"], [0.5], ExtractiveSummarizer())
+    assert "Business Administration" in ctxs[("retrieve-session", 0.5)] and "What degree" not in ctxs[("retrieve-session", 0.5)]
+    conv = {"sample_id": "conv-1",
+            "conversation": {"speaker_a": "Caroline", "speaker_b": "Melanie", "session_1_date_time": "1 pm",
+                             "session_1": [{"speaker": "Caroline", "dia_id": "D1:1", "text": "Hey Mel!"}],
+                             "session_2_date_time": "2 pm",
+                             "session_2": [{"speaker": "Melanie", "dia_id": "D2:1", "text": "I went to the LGBTQ support group."}]},
+            "qa": [{"question": "Which group did Melanie go to?", "answer": "LGBTQ support group", "evidence": ["D2:1"], "category": 2}]}
+    p2 = tmp_path / "locomo.json"
+    p2.write_text(json.dumps([conv]))
+    lc = locomo_cases(p2, per_conv=5)[0]
+    assert lc["sessions"] == [[0, 1], [1, 2]]
