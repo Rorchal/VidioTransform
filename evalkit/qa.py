@@ -2,11 +2,14 @@
 
     python -m evalkit.qa --longmemeval longmemeval_s.json --n 120 --budgets 0.2 0.35 --dry-run
     python -m evalkit.qa --longmemeval longmemeval_s.json --n 120 --budgets 0.2 0.35 --llm deepseek
+    python -m evalkit.qa ... --llm claude-cli-bare:claude-haiku-4-5-20251001 --judge claude-cli:claude-opus-5-5
 
 For every question: compress the history with each method at each budget,
 have a model answer the question from the compressed history (and once from
 the full history, the ceiling), then have a model judge the answer against the
 gold answer. Reports accuracy per method x budget and per question type.
+--judge picks the grading model separately from the answering one (default:
+the same model), so runs that answer with different models can share a judge.
 
 --dry-run makes no model calls: it builds every context and reports the token
 volume and the price at DeepSeek's off-peak / peak Flash rates, so the cost of
@@ -91,7 +94,9 @@ def _strip_question(text: str, case: dict) -> str:
 
 
 def run(cases: list[dict], methods: list[str], budgets: list[float], llm=None, dry_run: bool = False,
-        workers: int = 4, verbose: bool = True) -> dict:
+        workers: int = 4, verbose: bool = True, judge=None) -> dict:
+    """llm answers, judge grades (defaults to llm)."""
+    judge = judge or llm
     summarizer = ExtractiveSummarizer()
     rows = []
     est_in = est_out = 0
@@ -102,7 +107,7 @@ def run(cases: list[dict], methods: list[str], budgets: list[float], llm=None, d
         gold = str(case["answers"][0]) if case["answers"] else ""
         q = case["messages"][case["question_index"]]["content"]
         ans = llm.json(ANSWER_SYSTEM, answer_prompt(ctx, q), ANSWER_SCHEMA)["answer"]
-        correct = llm.json(JUDGE_SYSTEM, judge_prompt(q, gold, ans), JUDGE_SCHEMA)["correct"]
+        correct = judge.json(JUDGE_SYSTEM, judge_prompt(q, gold, ans), JUDGE_SCHEMA)["correct"]
         return key, case, ans, bool(correct)
 
     for i, case in enumerate(cases):
@@ -142,11 +147,14 @@ def run(cases: list[dict], methods: list[str], budgets: list[float], llm=None, d
         est = {"input_tokens": est_in, "output_tokens": est_out,
                "cny": {k: round((est_in * p["in"] + est_out * p["out"]) / 1e6 * CNY_PER_USD, 4) for k, p in PRICE.items()}}
     return {"n_cases": len(cases), "methods": methods, "budgets": budgets, "types": types, "table": table,
-            "rows": rows, "estimate": est, "dry_run": dry_run}
+            "rows": rows, "estimate": est, "dry_run": dry_run,
+            "answerer": getattr(llm, "name", None), "judge": getattr(judge, "name", None)}
 
 
 def to_markdown(s: dict, title: str) -> str:
     lines = [f"# {title}\n", f"{s['n_cases']} questions; methods {', '.join(s['methods'])}; budgets {s['budgets']}.\n"]
+    if s.get("answerer"):
+        lines.append(f"Answered by {s['answerer']}, judged by {s['judge']}.\n")
     if s["dry_run"]:
         e = s["estimate"]
         lines += [f"Dry run: ≈ {e['input_tokens']/1e6:.1f}M input tokens, {e['output_tokens']/1e3:.0f}k output tokens; "
@@ -173,6 +181,7 @@ def main() -> None:
     ap.add_argument("--methods", nargs="*", default=DEFAULT_METHODS)
     ap.add_argument("--budgets", nargs="*", type=float, default=DEFAULT_BUDGETS)
     ap.add_argument("--llm", default=None, help="deepseek | anthropic; omit with --dry-run")
+    ap.add_argument("--judge", default=None, help="judge backend spec (same forms as --llm); defaults to --llm")
     ap.add_argument("--effort", default="off", help="thinking effort for answering and judging")
     ap.add_argument("--cache", type=Path, default=Path("evalkit/results/llm_cache.jsonl"))
     ap.add_argument("--workers", type=int, default=4)
@@ -182,6 +191,7 @@ def main() -> None:
     if not args.dry_run and not args.llm:
         raise SystemExit("--llm is required unless --dry-run")
     llm = make_llm(args.llm, effort=args.effort, cache_path=args.cache) if args.llm else None
+    judge = make_llm(args.judge, effort=args.effort, cache_path=args.cache) if args.judge else llm
     args.out.mkdir(parents=True, exist_ok=True)
     jobs = []
     if args.longmemeval:
@@ -190,15 +200,17 @@ def main() -> None:
     if args.locomo:
         jobs.append(("locomo", locomo_cases(args.locomo, args.per_conv), "Model-answered QA on LoCoMo"))
     for name, cases, title in jobs:
-        s = run(cases, args.methods, args.budgets, llm=llm, dry_run=args.dry_run, workers=args.workers)
+        s = run(cases, args.methods, args.budgets, llm=llm, dry_run=args.dry_run, workers=args.workers, judge=judge)
         md = to_markdown(s, title)
         print(md)
         if not args.dry_run:
             (args.out / f"qa_{name}.md").write_text(md)
             (args.out / f"qa_{name}.json").write_text(json.dumps({k: v for k, v in s.items() if k != "rows"}, indent=1))
-    if llm is not None:
-        inner = getattr(llm, "inner", llm)
-        print(f"[qa] {llm.name}: cache hits {getattr(llm, 'hits', 0)}, misses {getattr(llm, 'misses', 0)}, usage {getattr(inner, 'usage', {})}")
+    for role, m in (("answerer", llm), ("judge", judge)):
+        if m is None or (role == "judge" and m is llm):
+            continue
+        inner = getattr(m, "inner", m)
+        print(f"[qa] {role} {m.name}: cache hits {getattr(m, 'hits', 0)}, misses {getattr(m, 'misses', 0)}, usage {getattr(inner, 'usage', {})}")
 
 
 if __name__ == "__main__":

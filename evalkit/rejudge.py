@@ -1,14 +1,14 @@
 """Re-judge cached QA answers with one judge model, so runs that used different
 answering models are scored by the same grader.
 
-    python -m evalkit.rejudge --longmemeval longmemeval_s.json --judge deepseek \\
+    python -m evalkit.rejudge --longmemeval longmemeval_s.json --judge claude-cli:claude-opus-5-5 \\
         --run deepseek:deepseek-flash:off:30 --run claude-cli:claude-haiku-4-5-20251001:90
 
 Each --run is <cached backend name>:<n questions>. The script rebuilds every
 prompt exactly as evalkit.qa did, pulls the answer from the reply cache (a
 miss means the prompt differs from what that run saw, so misses are reported
-as a consistency check), and judges all answers with --judge. No answering
-calls are made.
+as a consistency check), and judges all answers with --judge, --workers calls
+at a time. No answering calls are made.
 """
 
 from __future__ import annotations
@@ -32,13 +32,14 @@ class _Named:
         raise RuntimeError("lookup only")
 
 
-def rejudge(cases, methods, budgets, run_name: str, judge, cache_path: Path) -> dict:
+def rejudge(cases, methods, budgets, run_name: str, judge, cache_path: Path, workers: int = 4) -> dict:
+    from concurrent.futures import ThreadPoolExecutor
+
     lookup = CachedLLM(_Named(run_name), cache_path)
     summarizer = ExtractiveSummarizer()
     keys = [("full", 1.0)] + [(m, f) for m in methods for f in budgets]
     hits = misses = 0
-    correct = {k: [] for k in keys}
-    by_type = {}
+    items = []                                   # (key, type, question, gold, cached answer)
     for case in cases:
         ctxs = contexts_for(case, methods, budgets, summarizer)
         q = case["messages"][case["question_index"]]["content"]
@@ -49,9 +50,18 @@ def rejudge(cases, methods, budgets, run_name: str, judge, cache_path: Path) -> 
                 misses += 1
                 continue
             hits += 1
-            ok = bool(judge.json(JUDGE_SYSTEM, judge_prompt(q, gold, cached["answer"]), JUDGE_SCHEMA)["correct"])
+            items.append((k, case["type"], q, gold, cached["answer"]))
+
+    def grade(item):
+        k, t, q, gold, ans = item
+        return k, t, bool(judge.json(JUDGE_SYSTEM, judge_prompt(q, gold, ans), JUDGE_SCHEMA)["correct"])
+
+    correct = {k: [] for k in keys}
+    by_type = {}
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
+        for k, t, ok in ex.map(grade, items):
             correct[k].append(ok)
-            by_type.setdefault((k, case["type"]), []).append(ok)
+            by_type.setdefault((k, t), []).append(ok)
     table = {f"{k[0]}@{k[1]}": (sum(v) / len(v) if v else float("nan")) for k, v in correct.items()}
     types = sorted({t for _, t in by_type})
     per_type = {f"{k[0]}@{k[1]}": {t: (sum(by_type[(k, t)]) / len(by_type[(k, t)]) if (k, t) in by_type else float("nan"))
@@ -68,6 +78,7 @@ def main() -> None:
     ap.add_argument("--budgets", nargs="*", type=float, default=[0.2, 0.35])
     ap.add_argument("--run", action="append", required=True, help="<cached backend name>:<n>")
     ap.add_argument("--judge", default="deepseek")
+    ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--cache", type=Path, default=Path("evalkit/results/llm_cache.jsonl"))
     ap.add_argument("--out", type=Path, default=Path("evalkit/results/qa_longmemeval_full_rejudged.json"))
     args = ap.parse_args()
@@ -76,7 +87,7 @@ def main() -> None:
     for spec in args.run:
         name, _, n = spec.rpartition(":")
         cases = longmemeval_cases(args.longmemeval, int(n), args.max_turns)
-        r = rejudge(cases, args.methods, args.budgets, name, judge, args.cache)
+        r = rejudge(cases, args.methods, args.budgets, name, judge, args.cache, workers=args.workers)
         results.append(r)
         print(f"\n## {name} ({r['n']} questions), judged by {judge.name}: answers found {r['answers_found']}, missing {r['answers_missing']}")
         print("| context | accuracy | " + " | ".join(r["types"]) + " |")

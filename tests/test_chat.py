@@ -159,3 +159,47 @@ def test_qa_dry_run_builds_contexts_and_estimates_cost(tmp_path):
     s = qa_run(cases, ["truncate", "graded"], [0.5], dry_run=True, verbose=False)
     assert s["estimate"]["input_tokens"] > 0 and s["estimate"]["cny"]["peak"] > s["estimate"]["cny"]["off_peak"]
     assert "Dry run" in qa_md(s, "t") and "accuracy" not in s["table"]["full@1.0"]
+
+
+class _FakeQA:
+    """Answers or grades, depending on the schema it is asked for; records
+    which system prompts it saw."""
+
+    def __init__(self, name, correct=True):
+        self.name = name
+        self.correct = correct
+        self.systems = []
+
+    def json(self, system, user, schema):
+        self.systems.append(system)
+        if "answer" in schema["properties"]:
+            return {"answer": "Business Administration"}
+        return {"correct": self.correct}
+
+
+def test_qa_run_uses_separate_judge_and_rejudge_reads_cached_answers(tmp_path):
+    from ctxgc.llm import CachedLLM
+    from evalkit.qa import ANSWER_SYSTEM, JUDGE_SYSTEM, run as qa_run, to_markdown as qa_md
+    from evalkit.rejudge import rejudge
+    data = [_lme_instance("q1", "single-session-user", "What degree did I graduate with?", "Business Administration")]
+    p = tmp_path / "lme.json"
+    p.write_text(json.dumps(data))
+    cases = longmemeval_cases(p, n=1)
+    cache = tmp_path / "cache.jsonl"
+    answerer = CachedLLM(_FakeQA("fake-answerer"), cache)
+    judge = _FakeQA("fake-judge", correct=False)
+    s = qa_run(cases, ["truncate", "graded"], [0.5], llm=answerer, judge=judge, workers=2, verbose=False)
+    # the answerer only answers, the judge only grades, and the report names both
+    assert set(answerer.inner.systems) == {ANSWER_SYSTEM} and set(judge.systems) == {JUDGE_SYSTEM}
+    assert s["answerer"] == "fake-answerer" and s["judge"] == "fake-judge"
+    assert all(c["accuracy"] == 0.0 for c in s["table"].values())
+    assert "judged by fake-judge" in qa_md(s, "t")
+    # re-judging finds every cached answer of that run and regrades it with the new judge
+    lenient = _FakeQA("lenient", correct=True)
+    r = rejudge(cases, ["truncate", "graded"], [0.5], "fake-answerer", lenient, cache, workers=2)
+    assert r["answers_found"] == 3 and r["answers_missing"] == 0
+    assert set(r["accuracy"]) == {"full@1.0", "truncate@0.5", "graded@0.5"} and all(v == 1.0 for v in r["accuracy"].values())
+    assert len(lenient.systems) == 3
+    # a run name that never answered has nothing in the cache
+    r2 = rejudge(cases, ["truncate", "graded"], [0.5], "nobody", lenient, cache)
+    assert r2["answers_found"] == 0 and r2["answers_missing"] == 3
