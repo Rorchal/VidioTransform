@@ -1,0 +1,167 @@
+{
+ "judge": "deepseek:deepseek-flash:off",
+ "runs": [
+  {
+   "run": "deepseek:deepseek-flash:off",
+   "n": 30,
+   "answers_found": 210,
+   "answers_missing": 0,
+   "accuracy": {
+    "full@1.0": 0.4666666666666667,
+    "truncate@0.2": 0.23333333333333334,
+    "truncate@0.35": 0.4,
+    "graded@0.2": 0.4666666666666667,
+    "graded@0.35": 0.5333333333333333,
+    "graded-agent+lex@0.2": 0.3333333333333333,
+    "graded-agent+lex@0.35": 0.4666666666666667
+   },
+   "by_type": {
+    "full@1.0": {
+     "knowledge-update": 0.6,
+     "multi-session": 0.2,
+     "single-session-assistant": 1.0,
+     "single-session-preference": 0.0,
+     "single-session-user": 0.6,
+     "temporal-reasoning": 0.4
+    },
+    "truncate@0.2": {
+     "knowledge-update": 0.6,
+     "multi-session": 0.0,
+     "single-session-assistant": 0.0,
+     "single-session-preference": 0.2,
+     "single-session-user": 0.4,
+     "temporal-reasoning": 0.2
+    },
+    "truncate@0.35": {
+     "knowledge-update": 1.0,
+     "multi-session": 0.0,
+     "single-session-assistant": 0.4,
+     "single-session-preference": 0.4,
+     "single-session-user": 0.6,
+     "temporal-reasoning": 0.0
+    },
+    "graded@0.2": {
+     "knowledge-update": 0.8,
+     "multi-session": 0.2,
+     "single-session-assistant": 0.4,
+     "single-session-preference": 0.2,
+     "single-session-user": 0.6,
+     "temporal-reasoning": 0.6
+    },
+    "graded@0.35": {
+     "knowledge-update": 0.8,
+     "multi-session": 0.2,
+     "single-session-assistant": 0.8,
+     "single-session-preference": 0.2,
+     "single-session-user": 0.6,
+     "temporal-reasoning": 0.6
+    },
+    "graded-agent+lex@0.2": {
+     "knowledge-update": 0.8,
+     "multi-session": 0.2,
+     "single-session-assistant": 0.4,
+     "single-session-preference": 0.0,
+     "single-session-user": 0.6,
+     "temporal-reasoning": 0.0
+    },
+    "graded-agent+lex@0.35": {
+     "knowledge-update": 0.8,
+     "multi-session": 0.0,
+     "single-session-assistant": 1.0,
+     "single-session-preference": 0.4,
+     "single-session-user": 0.6,
+     "temporal-reasoning": 0.0
+    }
+   },
+   "types": [
+    "knowledge-update",
+    "multi-session",
+    "single-session-assistant",
+    "single-session-preference",
+    "single-session-user",
+    "temporal-reasoning"
+   ]
+  },
+  {
+   "run": "claude-cli:claude-haiku-4-5-20251001",
+   "n": 90,
+   "answers_found": 630,
+   "answers_missing": 0,
+   "accuracy": {
+    "full@1.0": 0.6777777777777778,
+    "truncate@0.2": 0.18888888888888888,
+    "truncate@0.35": 0.37777777777777777,
+    "graded@0.2": 0.5888888888888889,
+    "graded@0.35": 0.6333333333333333,
+    "graded-agent+lex@0.2": 0.5444444444444444,
+    "graded-agent+lex@0.35": 0.6555555555555556
+   },
+   "by_type": {
+    "full@1.0": {
+     "knowledge-update": 0.7333333333333333,
+     "multi-session": 0.6,
+     "single-session-assistant": 0.9333333333333333,
+     "single-session-preference": 0.6,
+     "single-session-user": 0.8,
+     "temporal-reasoning": 0.4
+    },
+    "truncate@0.2": {
+     "knowledge-update": 0.6,
+     "multi-session": 0.13333333333333333,
+     "single-session-assistant": 0.2,
+     "single-session-preference": 0.0,
+     "single-session-user": 0.2,
+     "temporal-reasoning": 0.0
+    },
+    "truncate@0.35": {
+     "knowledge-update": 0.8,
+     "multi-session": 0.2,
+     "single-session-assistant": 0.4666666666666667,
+     "single-session-preference": 0.26666666666666666,
+     "single-session-user": 0.3333333333333333,
+     "temporal-reasoning": 0.2
+    },
+    "graded@0.2": {
+     "knowledge-update": 0.9333333333333333,
+     "multi-session": 0.4666666666666667,
+     "single-session-assistant": 0.06666666666666667,
+     "single-session-preference": 0.4,
+     "single-session-user": 1.0,
+     "temporal-reasoning": 0.6666666666666666
+    },
+    "graded@0.35": {
+     "knowledge-update": 0.8666666666666667,
+     "multi-session": 0.6666666666666666,
+     "single-session-assistant": 0.5333333333333333,
+     "single-session-preference": 0.4666666666666667,
+     "single-session-user": 0.9333333333333333,
+     "temporal-reasoning": 0.3333333333333333
+    },
+    "graded-agent+lex@0.2": {
+     "knowledge-update": 0.8,
+     "multi-session": 0.5333333333333333,
+     "single-session-assistant": 0.13333333333333333,
+     "single-session-preference": 0.2,
+     "single-session-user": 1.0,
+     "temporal-reasoning": 0.6
+    },
+    "graded-agent+lex@0.35": {
+     "knowledge-update": 0.7333333333333333,
+     "multi-session": 0.6666666666666666,
+     "single-session-assistant": 0.7333333333333333,
+     "single-session-preference": 0.3333333333333333,
+     "single-session-user": 0.9333333333333333,
+     "temporal-reasoning": 0.5333333333333333
+    }
+   },
+   "types": [
+    "knowledge-update",
+    "multi-session",
+    "single-session-assistant",
+    "single-session-preference",
+    "single-session-user",
+    "temporal-reasoning"
+   ]
+  }
+ ]
+}
