@@ -15,4 +15,4 @@ export FRAME_TIME_LIMIT="${FRAME_TIME_LIMIT:-40}"
 mkdir -p "$OUT"
 python3 -I build_island.py --engine CYCLES --quality "$QUALITY" --animation \
     --start "$START" --end "$END" --out "$OUT" 2>&1 \
-  | grep -E "Saved|Error|Traceback|line [0-9]" || true
+  | grep --line-buffered -E "Saved|Error|Traceback|line [0-9]" || true
